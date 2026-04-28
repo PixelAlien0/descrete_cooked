@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discrete Math</title>
+    <title>Discrete Math: Logic & Propositions</title>
     
     <!-- MathJax for rendering LaTeX formulas -->
     <script>
@@ -210,10 +210,11 @@
                 <li><span class="nav-check" id="nav-check-arguments"></span> <a href="#arguments">4. Arguments & Validity</a></li>
                 <li><span class="nav-check" id="nav-check-equivalence"></span> <a href="#equivalence">5. Logical Equivalence</a></li>
                 <li><span class="nav-check" id="nav-check-implication"></span> <a href="#implication">6. Logical Implication</a></li>
-                <li><span class="nav-check" id="nav-check-practice"></span> <a href="#practice">7. Practice Generator</a></li>
+                <li><span class="nav-check" id="nav-check-masterclass"></span> <a href="#masterclass">7. Multi-Step Masterclass</a></li>
+                <li><span class="nav-check" id="nav-check-practice"></span> <a href="#practice">8. Practice Generator</a></li>
             </ul>
             <div style="margin-top: 2rem; font-size: 0.8rem; color: var(--text-muted);">
-                Exam Prep Progress: <span id="progress-text">0/6</span>
+                Exam Prep Progress: <span id="progress-text">0/7</span>
             </div>
         </nav>
 
@@ -221,7 +222,7 @@
         <main>
             <header>
                 <h1>Discrete Math</h1>
-                <p class="subtitle">Cooked</p>
+                <p class="subtitle">2-Hour Cram Guide. Use the Pomodoro timer and turn on Active Recall to test your memory before reading.</p>
             </header>
 
             <!-- SECTION 1 -->
@@ -348,9 +349,149 @@
                 <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('implication', this)">Mark Section 6 as Mastered</button>
             </section>
 
-            <!-- SECTION 7: PRACTICE GENERATOR -->
+            <!-- SECTION 7: MASTERCLASS -->
+            <section id="masterclass" class="study-section">
+                <h2>7. Multi-Step Masterclass</h2>
+                <p>When you face a massive string of propositions, don't panic. You just need a system. Here is the 4-step "Secret Sauce" to breaking down any complex logic problem:</p>
+
+                <div class="law-grid">
+                    <div class="card">
+                        <h3>1. Break the Shields</h3>
+                        <p>If you see a negation outside a bracket like $\sim(p \vee q)$, this is a "shield". You cannot simplify inside until you break it.</p>
+                        <div class="example"><strong>Action:</strong> Apply De Morgan's Law immediately to push the negation inside. Flip the sign!</div>
+                    </div>
+                    <div class="card">
+                        <h3>2. Factor it Out</h3>
+                        <p>Look for repeating variables in different brackets. If you see $(p \wedge q) \vee (p \wedge r)$, notice how $p \wedge$ is in both?</p>
+                        <div class="example"><strong>Action:</strong> Use the Distributive Law to factor it out! It becomes $p \wedge (q \vee r)$.</div>
+                    </div>
+                    <div class="card">
+                        <h3>3. Hunt for Opposites</h3>
+                        <p>Keep an eagle eye out for a variable paired with its exact opposite. These are the best because they self-destruct!</p>
+                        <div class="example"><strong>Action:</strong> Complement Laws. If you see $q \vee \sim q \rightarrow t$. If you see $p \wedge \sim p \rightarrow f$.</div>
+                    </div>
+                    <div class="card">
+                        <h3>4. Crush with T's and F's</h3>
+                        <p>Once you create a $t$ or an $f$ from Step 3, use it to destroy the rest of the equation.</p>
+                        <div class="example"><strong>Action:</strong> Identity Laws. $p \wedge t \rightarrow p$. Or the massive shortcut: $p \wedge f \rightarrow f$.</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem; margin-bottom: 1rem;">The 10-Problem Gauntlet</h3>
+                <p style="margin-bottom: 2rem;"><em>Try to solve each one on a piece of scratch paper. Turn on <strong>Active Recall Mode</strong> to blur the solutions until you are ready!</em></p>
+
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <!-- LEVEL 1 -->
+                    <div class="card">
+                        <h4 style="color: var(--text-muted); margin-bottom: 0.5rem;">Level 1: Warm-up (Easy)</h4>
+                        <div class="formula"><strong>Problem 1:</strong> Simplify $(p \wedge p) \vee f$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $p \vee f$ <em>(Idempotent Law: $p \wedge p \equiv p$)</em></p>
+                            <p><strong>Step 2:</strong> $p$ <em>(Identity Law: Anything OR False is itself)</em></p>
+                            <p><strong>Final Answer:</strong> $p$</p>
+                        </div>
+                        
+                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 2:</strong> Simplify $\sim(\sim p \wedge q)$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $\sim(\sim p) \vee \sim q$ <em>(De Morgan's Law)</em></p>
+                            <p><strong>Step 2:</strong> $p \vee \sim q$ <em>(Involution/Double Negation: $\sim(\sim p) \equiv p$)</em></p>
+                            <p><strong>Final Answer:</strong> $p \vee \sim q$</p>
+                        </div>
+                    </div>
+
+                    <!-- LEVEL 2 -->
+                    <div class="card">
+                        <h4 style="color: var(--text-muted); margin-bottom: 0.5rem;">Level 2: The Core Mechanics (Medium)</h4>
+                        
+                        <div class="formula"><strong>Problem 3:</strong> Simplify $(p \wedge q) \vee (p \wedge \sim q)$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $p \wedge (q \vee \sim q)$ <em>(Distributive Law: factor out "$p \wedge$")</em></p>
+                            <p><strong>Step 2:</strong> $p \wedge t$ <em>(Complement Law)</em></p>
+                            <p><strong>Step 3:</strong> $p$ <em>(Identity Law)</em></p>
+                        </div>
+
+                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 4:</strong> Simplify $(p \vee q) \wedge (p \vee \sim q)$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $p \vee (q \wedge \sim q)$ <em>(Distributive Law: factor out "$p \vee$")</em></p>
+                            <p><strong>Step 2:</strong> $p \vee f$ <em>(Complement Law)</em></p>
+                            <p><strong>Step 3:</strong> $p$ <em>(Identity Law)</em></p>
+                        </div>
+
+                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 5:</strong> Simplify $\sim(p \vee q) \wedge p$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $(\sim p \wedge \sim q) \wedge p$ <em>(De Morgan's Law)</em></p>
+                            <p><strong>Step 2:</strong> $(\sim p \wedge p) \wedge \sim q$ <em>(Commutative/Associative)</em></p>
+                            <p><strong>Step 3:</strong> $f \wedge \sim q$ <em>(Complement Law)</em></p>
+                            <p><strong>Final Answer:</strong> $f$ <em>(Identity/Domination Law)</em></p>
+                        </div>
+                    </div>
+
+                    <!-- LEVEL 3 -->
+                    <div class="card">
+                        <h4 style="color: var(--text-muted); margin-bottom: 0.5rem;">Level 3: Advanced Tactics (Hard)</h4>
+                        
+                        <div class="formula"><strong>Problem 6:</strong> Simplify $p \vee (\sim p \wedge q)$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $(p \vee \sim p) \wedge (p \vee q)$ <em>(Distributive Law: distribute $p \vee$ inside)</em></p>
+                            <p><strong>Step 2:</strong> $t \wedge (p \vee q)$ <em>(Complement Law)</em></p>
+                            <p><strong>Final Answer:</strong> $p \vee q$ <em>(Identity Law)</em></p>
+                        </div>
+
+                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 7:</strong> Simplify $\sim(\sim p \wedge \sim q) \wedge \sim p$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $(p \vee q) \wedge \sim p$ <em>(De Morgan's & Double Negation)</em></p>
+                            <p><strong>Step 2:</strong> $(p \wedge \sim p) \vee (q \wedge \sim p)$ <em>(Distributive Law)</em></p>
+                            <p><strong>Step 3:</strong> $f \vee (q \wedge \sim p)$ <em>(Complement Law)</em></p>
+                            <p><strong>Step 4:</strong> $q \wedge \sim p$ <em>(Identity Law)</em></p>
+                            <p><strong>Final Answer:</strong> $\sim p \wedge q$ <em>(Commutative Law)</em></p>
+                        </div>
+
+                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 8:</strong> Simplify $(p \wedge q) \vee (p \wedge \sim(p \wedge q))$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $(p \wedge q) \vee (p \wedge (\sim p \vee \sim q))$ <em>(De Morgan's)</em></p>
+                            <p><strong>Step 2:</strong> $(p \wedge q) \vee ((p \wedge \sim p) \vee (p \wedge \sim q))$ <em>(Distributive)</em></p>
+                            <p><strong>Step 3:</strong> $(p \wedge q) \vee (f \vee (p \wedge \sim q))$ <em>(Complement)</em></p>
+                            <p><strong>Step 4:</strong> $(p \wedge q) \vee (p \wedge \sim q)$ <em>(Identity)</em></p>
+                            <p><strong>Step 5:</strong> $p \wedge (q \vee \sim q)$ <em>(Distributive: factor out $p \wedge$)</em></p>
+                            <p><strong>Final Answer:</strong> $p$ <em>(Complement + Identity)</em></p>
+                        </div>
+                    </div>
+
+                    <!-- LEVEL 4 -->
+                    <div class="card">
+                        <h4 style="color: var(--text-muted); margin-bottom: 0.5rem;">Level 4: Boss Level (Extreme)</h4>
+                        
+                        <div class="formula"><strong>Problem 9:</strong> Simplify $[(p \vee q) \wedge \sim p] \rightarrow q$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><em>Hint: Implication Law is $A \rightarrow B \equiv \sim A \vee B$</em></p>
+                            <p><strong>Step 1:</strong> $\sim[(p \vee q) \wedge \sim p] \vee q$ <em>(Implication conversion)</em></p>
+                            <p><strong>Step 2:</strong> $[\sim(p \vee q) \vee p] \vee q$ <em>(De Morgan's & Involution)</em></p>
+                            <p><strong>Step 3:</strong> $[(\sim p \wedge \sim q) \vee p] \vee q$ <em>(De Morgan's)</em></p>
+                            <p><strong>Step 4:</strong> $[(\sim p \vee p) \wedge (\sim q \vee p)] \vee q$ <em>(Distributive)</em></p>
+                            <p><strong>Step 5:</strong> $[t \wedge (\sim q \vee p)] \vee q$ <em>(Complement)</em></p>
+                            <p><strong>Step 6:</strong> $(\sim q \vee p) \vee q$ <em>(Identity)</em></p>
+                            <p><strong>Step 7:</strong> $p \vee (\sim q \vee q)$ <em>(Associative/Commutative)</em></p>
+                            <p><strong>Final Answer:</strong> $t$ <em>(Complement + Domination)</em></p>
+                        </div>
+
+                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 10:</strong> Simplify $\sim(p \vee \sim q) \vee (\sim p \wedge \sim q) \vee p$</div>
+                        <div class="revealable" style="text-align: left; padding: 1rem;">
+                            <p><strong>Step 1:</strong> $(\sim p \wedge q) \vee (\sim p \wedge \sim q) \vee p$ <em>(De Morgan's & Involution)</em></p>
+                            <p><strong>Step 2:</strong> $[\sim p \wedge (q \vee \sim q)] \vee p$ <em>(Distributive: factor out $\sim p \wedge$)</em></p>
+                            <p><strong>Step 3:</strong> $[\sim p \wedge t] \vee p$ <em>(Complement)</em></p>
+                            <p><strong>Step 4:</strong> $\sim p \vee p$ <em>(Identity)</em></p>
+                            <p><strong>Final Answer:</strong> $t$ <em>(Complement)</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('masterclass', this)">Mark Section 7 as Mastered</button>
+            </section>
+
+            <!-- SECTION 8: PRACTICE GENERATOR -->
             <section id="practice">
-                <h2>7. Practice Generator (Massive Bank)</h2>
+                <h2>8. Practice Generator (Massive Bank)</h2>
                 <p>Select a category below to target your weak spots. The "Hard Multi-Step" mode will require you to combine multiple laws and will provide step-by-step solutions if you get stuck.</p>
                 
                 <div class="quiz-container">
@@ -430,7 +571,7 @@
         });
 
         // --- 3. MASTERY PROGRESS LOGIC ---
-        let masteredSections = 0; const totalSections = 6;
+        let masteredSections = 0; const totalSections = 7;
         function toggleSectionMastery(sectionId, btn) {
             const navCheck = document.getElementById(`nav-check-${sectionId}`);
             if (btn.classList.contains('mastered')) {
