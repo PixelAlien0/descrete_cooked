@@ -87,33 +87,62 @@
                 <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Core Dictionary Rules</h2>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Predicates -->
-                <div class="bg-japandi-paper p-6 rounded-xl border border-japandi-border shadow-sm hover:shadow-md transition-shadow">
-                    <h3 class="font-serif text-xl text-japandi-wood mb-3 font-semibold">1. Predicates</h3>
-                    <p class="text-sm mb-4">Represents the property, trait, or relationship. Use <strong>Uppercase Letters</strong>.</p>
-                    <div class="bg-japandi-bg p-3 rounded text-sm text-center">
-                        <span class="math-text">T(x)</span> = "is Tall"<br>
-                        <span class="math-text">L(x,y)</span> = "Loves"
-                    </div>
+            <div class="bg-japandi-paper border border-japandi-border rounded-xl shadow-sm overflow-hidden">
+                <!-- Tabs Header -->
+                <div class="flex border-b border-japandi-border bg-japandi-bg overflow-x-auto">
+                    <button onclick="switchConceptTab('predicates')" id="btn-tab-predicates" class="flex-1 py-4 px-6 font-serif text-lg font-semibold text-japandi-wood border-b-2 border-japandi-wood bg-japandi-paper transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">1. Predicates</button>
+                    <button onclick="switchConceptTab('variables')" id="btn-tab-variables" class="flex-1 py-4 px-6 font-serif text-lg font-medium text-gray-500 border-b-2 border-transparent hover:text-japandi-wood transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">2. Variables</button>
+                    <button onclick="switchConceptTab('constants')" id="btn-tab-constants" class="flex-1 py-4 px-6 font-serif text-lg font-medium text-gray-500 border-b-2 border-transparent hover:text-japandi-wood transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">3. Constants</button>
                 </div>
 
-                <!-- Variables -->
-                <div class="bg-japandi-paper p-6 rounded-xl border border-japandi-border shadow-sm hover:shadow-md transition-shadow">
-                    <h3 class="font-serif text-xl text-japandi-wood mb-3 font-semibold">2. Variables</h3>
-                    <p class="text-sm mb-4">Placeholders for general templates. Use lowercase from the <strong>end of alphabet</strong>.</p>
-                    <div class="bg-japandi-bg p-3 rounded text-sm text-center">
-                        <span class="math-text">x, y, z</span>
+                <!-- Tab Contents -->
+                <div class="p-6 md:p-8 min-h-[250px]">
+                    <!-- Predicates Tab -->
+                    <div id="tab-predicates" class="concept-tab block space-y-6 animate-fade-in">
+                        <p class="text-gray-700 text-lg">A <strong>Predicate</strong> represents the property, trait, or relationship being described. Use <strong>Uppercase Letters</strong>.</p>
+                        
+                        <div class="flex flex-col items-center justify-center p-8 bg-japandi-bg border border-japandi-border rounded-lg shadow-inner">
+                            <div id="ex-predicates" class="text-center min-h-[60px] flex items-center justify-center mb-6">
+                                <div>
+                                    <span class="math-text text-3xl">S(x)</span> <span class="text-lg text-gray-600 ml-3">= "is a suspect"</span>
+                                </div>
+                            </div>
+                            <button onclick="generateConceptEx('predicates')" class="bg-japandi-wood hover:bg-[#A38C6D] text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
+                                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Generate Predicate
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Constants -->
-                <div class="bg-japandi-paper p-6 rounded-xl border border-japandi-border shadow-sm hover:shadow-md transition-shadow">
-                    <h3 class="font-serif text-xl text-japandi-wood mb-3 font-semibold">3. Constants</h3>
-                    <p class="text-sm mb-4">Specific subjects (people, things). Use lowercase from <strong>start/middle</strong>.</p>
-                    <div class="bg-japandi-bg p-3 rounded text-sm text-center">
-                        <span class="math-text">m</span> = Mary<br>
-                        <span class="math-text">b</span> = Bill
+                    <!-- Variables Tab -->
+                    <div id="tab-variables" class="concept-tab hidden space-y-6 animate-fade-in">
+                        <p class="text-gray-700 text-lg">A <strong>Variable</strong> is a placeholder for a general template. Use lowercase letters from the <strong>end of the alphabet</strong>.</p>
+                        
+                        <div class="flex flex-col items-center justify-center p-8 bg-japandi-bg border border-japandi-border rounded-lg shadow-inner">
+                            <div id="ex-variables" class="text-center min-h-[60px] flex items-center justify-center mb-6">
+                                <div>
+                                    <span class="math-text text-3xl">x</span> <span class="text-lg text-gray-600 ml-3">(e.g., "For all x...")</span>
+                                </div>
+                            </div>
+                            <button onclick="generateConceptEx('variables')" class="bg-japandi-matcha hover:bg-japandi-matchaDark text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
+                                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Generate Variable
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Constants Tab -->
+                    <div id="tab-constants" class="concept-tab hidden space-y-6 animate-fade-in">
+                        <p class="text-gray-700 text-lg">A <strong>Constant</strong> is a specific subject (person, place, thing). Use lowercase letters from the <strong>start or middle of the alphabet</strong>.</p>
+                        
+                        <div class="flex flex-col items-center justify-center p-8 bg-japandi-bg border border-japandi-border rounded-lg shadow-inner">
+                            <div id="ex-constants" class="text-center min-h-[60px] flex items-center justify-center mb-6">
+                                <div>
+                                    <span class="math-text text-3xl">m</span> <span class="text-lg text-gray-600 ml-3">= Mary</span>
+                                </div>
+                            </div>
+                            <button onclick="generateConceptEx('constants')" class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
+                                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Generate Constant
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -289,9 +318,80 @@
         </div>
     </div>
 
+    <style>
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
     <script>
         // Initialize Icons
         lucide.createIcons();
+
+        // --- Concept Generator Logic ---
+        const conceptData = {
+            predicates: [
+                { logic: "S(x)", meaning: '"is a suspect"' },
+                { logic: "A(x)", meaning: '"has an alibi"' },
+                { logic: "K(x,y)", meaning: '"knows"' },
+                { logic: "L(x,y,z)", meaning: '"lent [y] to [z]"' },
+                { logic: "R(x)", meaning: '"is red"' },
+                { logic: "G(x)", meaning: '"has green eyes"' },
+                { logic: "T(x)", meaning: '"is tall"' },
+                { logic: "E(x)", meaning: '"is even"' }
+            ],
+            variables: [
+                { logic: "x", meaning: '(e.g., "For all x...")' },
+                { logic: "y", meaning: '(e.g., "There exists a y...")' },
+                { logic: "z", meaning: '(e.g., "x is taller than z")' }
+            ],
+            constants: [
+                { logic: "m", meaning: "Mary" },
+                { logic: "b", meaning: "Bill (or Bob)" },
+                { logic: "j", meaning: "John (or James)" },
+                { logic: "p", meaning: "Paul" },
+                { logic: "a", meaning: "Alice" },
+                { logic: "f", meaning: "Fido" },
+                { logic: "e", meaning: "Jeff" },
+                { logic: "r", meaning: "this rose" }
+            ]
+        };
+
+        function switchConceptTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.concept-tab').forEach(el => el.classList.add('hidden'));
+            
+            // Reset button styles
+            document.querySelectorAll('[id^="btn-tab-"]').forEach(btn => {
+                btn.classList.remove('text-japandi-wood', 'border-japandi-wood', 'bg-japandi-paper', 'font-semibold');
+                btn.classList.add('text-gray-500', 'border-transparent', 'font-medium');
+            });
+
+            // Show active tab
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            // Style active button
+            const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+            activeBtn.classList.remove('text-gray-500', 'border-transparent', 'font-medium');
+            activeBtn.classList.add('text-japandi-wood', 'border-japandi-wood', 'bg-japandi-paper', 'font-semibold');
+        }
+
+        function generateConceptEx(type) {
+            const arr = conceptData[type];
+            const randomEx = arr[Math.floor(Math.random() * arr.length)];
+            const displayFormat = type === 'variables' ? randomEx.meaning : `= ${randomEx.meaning}`;
+            
+            document.getElementById(`ex-${type}`).innerHTML = `
+                <div class="animate-fade-in">
+                    <span class="math-text text-3xl">${randomEx.logic}</span> 
+                    <span class="text-lg text-gray-600 ml-3">${displayFormat}</span>
+                </div>
+            `;
+        }
 
         // --- Flashcard Data & Logic ---
         const practiceData = [
