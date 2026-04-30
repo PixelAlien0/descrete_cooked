@@ -64,12 +64,16 @@
             100% { transform: translateY(0px); }
         }
         .floating { animation: float 6s ease-in-out infinite; }
+        
+        /* Hide scrollbar for horizontal scrolling elements */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="antialiased pb-32">
+<body class="antialiased pb-32 overflow-x-hidden">
 
     <!-- Header -->
-    <header class="bg-japandi-wood text-japandi-paper py-16 px-6 text-center relative overflow-hidden shadow-md">
+    <header class="bg-japandi-wood text-japandi-paper py-12 md:py-16 px-4 md:px-6 text-center relative overflow-hidden shadow-md">
         <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
         <div class="max-w-3xl mx-auto relative z-10">
             <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 tracking-wide">Predicate Logic</h1>
@@ -89,10 +93,10 @@
             
             <div class="bg-japandi-paper border border-japandi-border rounded-xl shadow-sm overflow-hidden">
                 <!-- Tabs Header -->
-                <div class="flex border-b border-japandi-border bg-japandi-bg overflow-x-auto">
-                    <button onclick="switchConceptTab('predicates')" id="btn-tab-predicates" class="flex-1 py-4 px-6 font-serif text-lg font-semibold text-japandi-wood border-b-2 border-japandi-wood bg-japandi-paper transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">1. Predicates</button>
-                    <button onclick="switchConceptTab('variables')" id="btn-tab-variables" class="flex-1 py-4 px-6 font-serif text-lg font-medium text-gray-500 border-b-2 border-transparent hover:text-japandi-wood transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">2. Variables</button>
-                    <button onclick="switchConceptTab('constants')" id="btn-tab-constants" class="flex-1 py-4 px-6 font-serif text-lg font-medium text-gray-500 border-b-2 border-transparent hover:text-japandi-wood transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">3. Constants</button>
+                <div class="flex border-b border-japandi-border bg-japandi-bg overflow-x-auto hide-scrollbar">
+                    <button onclick="switchConceptTab('predicates')" id="btn-tab-predicates" class="flex-1 py-3 px-4 md:py-4 md:px-6 font-serif text-base md:text-lg font-semibold text-japandi-wood border-b-2 border-japandi-wood bg-japandi-paper transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">1. Predicates</button>
+                    <button onclick="switchConceptTab('variables')" id="btn-tab-variables" class="flex-1 py-3 px-4 md:py-4 md:px-6 font-serif text-base md:text-lg font-medium text-gray-500 border-b-2 border-transparent hover:text-japandi-wood transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">2. Variables</button>
+                    <button onclick="switchConceptTab('constants')" id="btn-tab-constants" class="flex-1 py-3 px-4 md:py-4 md:px-6 font-serif text-base md:text-lg font-medium text-gray-500 border-b-2 border-transparent hover:text-japandi-wood transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">3. Constants</button>
                 </div>
 
                 <!-- Tab Contents -->
@@ -278,22 +282,22 @@
             <div class="bg-japandi-paper p-8 rounded-xl border-2 border-dashed border-japandi-matcha shadow-sm text-center">
                 <p class="text-gray-600 mb-6">Generate unlimited logic translations to test your mastery before time runs out.</p>
                 
-                <div id="gen-problem" class="text-xl font-serif text-japandi-charcoal font-medium min-h-[60px] flex items-center justify-center">
+                <div id="gen-problem" class="text-lg md:text-xl font-serif text-japandi-charcoal font-medium min-h-[60px] flex items-center justify-center break-words px-2">
                     Click "Generate" to start.
                 </div>
 
-                <div id="gen-answer" class="hidden mt-6 p-6 bg-japandi-bg rounded-lg border border-japandi-border text-left">
+                <div id="gen-answer" class="hidden mt-6 p-4 md:p-6 bg-japandi-bg rounded-lg border border-japandi-border text-left overflow-hidden">
                     <p class="text-xs text-gray-500 uppercase tracking-wide mb-2">Dictionary:</p>
-                    <p id="gen-dict" class="text-sm mb-4"></p>
+                    <p id="gen-dict" class="text-sm mb-4 break-words"></p>
                     <p class="text-xs text-gray-500 uppercase tracking-wide mb-2">Translation:</p>
-                    <p id="gen-logic" class="math-text text-xl"></p>
+                    <p id="gen-logic" class="math-text text-lg md:text-xl break-words"></p>
                 </div>
 
-                <div class="mt-8 flex justify-center gap-4">
-                    <button onclick="generateProblem()" class="bg-japandi-matcha hover:bg-japandi-matchaDark text-white px-6 py-3 rounded-full font-medium transition-colors flex items-center gap-2">
-                        <i data-lucide="zap" class="w-4 h-4"></i> Generate New Problem
+                <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="generateProblem()" class="bg-japandi-matcha hover:bg-japandi-matchaDark text-white px-6 py-3 rounded-full font-medium transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4 flex-shrink-0"></i> Generate New Problem
                     </button>
-                    <button id="btn-show-ans" onclick="toggleAnswer()" class="hidden bg-japandi-wood hover:bg-[#A38C6D] text-white px-6 py-3 rounded-full font-medium transition-colors">
+                    <button id="btn-show-ans" onclick="toggleAnswer()" class="hidden bg-japandi-wood hover:bg-[#A38C6D] text-white px-6 py-3 rounded-full font-medium transition-colors flex justify-center items-center">
                         Show Answer
                     </button>
                 </div>
@@ -303,17 +307,17 @@
     </main>
 
     <!-- Floating Timer Widget -->
-    <div class="fixed bottom-6 right-6 bg-japandi-charcoal text-japandi-paper p-4 rounded-2xl shadow-2xl flex items-center gap-4 z-50 border border-gray-700 transition-colors duration-500" id="timer-widget">
+    <div class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:bottom-6 max-w-sm mx-auto md:mx-0 bg-japandi-charcoal text-japandi-paper p-3 md:p-4 rounded-2xl shadow-2xl flex justify-between items-center gap-4 z-50 border border-gray-700 transition-colors duration-500" id="timer-widget">
         <div class="flex flex-col">
-            <span class="text-xs text-gray-400 uppercase tracking-widest font-semibold mb-1" id="timer-label">Study Session</span>
-            <span class="font-serif text-3xl tabular-nums leading-none" id="time-display">02:00:00</span>
+            <span class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-semibold mb-0.5 md:mb-1" id="timer-label">Study Session</span>
+            <span class="font-serif text-2xl md:text-3xl tabular-nums leading-none" id="time-display">02:00:00</span>
         </div>
-        <div class="flex flex-col gap-2 border-l border-gray-600 pl-4 ml-2">
-            <button onclick="toggleTimer()" id="play-pause-btn" class="hover:text-japandi-matcha transition-colors" title="Play/Pause">
-                <i data-lucide="pause-circle" class="w-6 h-6"></i>
+        <div class="flex gap-3 md:gap-2 border-l border-gray-600 pl-4 ml-1 md:ml-2">
+            <button onclick="toggleTimer()" id="play-pause-btn" class="hover:text-japandi-matcha transition-colors flex items-center" title="Play/Pause">
+                <i data-lucide="pause-circle" class="w-7 h-7 md:w-6 md:h-6 flex-shrink-0"></i>
             </button>
-            <button onclick="resetTimer()" class="hover:text-japandi-wood transition-colors" title="Reset">
-                <i data-lucide="rotate-ccw" class="w-5 h-5 ml-0.5"></i>
+            <button onclick="resetTimer()" class="hover:text-japandi-wood transition-colors flex items-center" title="Reset">
+                <i data-lucide="rotate-ccw" class="w-6 h-6 md:w-5 md:h-5 ml-0.5 flex-shrink-0"></i>
             </button>
         </div>
     </div>
@@ -454,14 +458,14 @@
             card.onclick = function() { this.classList.toggle('open'); };
             card.innerHTML = `
                 <div class="flex justify-between items-center">
-                    <p class="font-medium text-lg">${index + 1}. ${item.q}</p>
-                    <i data-lucide="chevron-down" class="text-japandi-wood flashcard-icon w-5 h-5"></i>
+                    <p class="font-medium text-base md:text-lg pr-4">${index + 1}. ${item.q}</p>
+                    <i data-lucide="chevron-down" class="text-japandi-wood flashcard-icon w-5 h-5 flex-shrink-0"></i>
                 </div>
                 <div class="flashcard-answer border-t border-dashed border-gray-200 pt-4">
                     <p class="text-xs text-gray-500 mb-2 uppercase tracking-wide">Dictionary:</p>
-                    <p class="text-sm mb-4 text-gray-700">${item.dict}</p>
+                    <p class="text-sm mb-4 text-gray-700 break-words">${item.dict}</p>
                     <p class="text-xs text-gray-500 mb-1 uppercase tracking-wide">Logic:</p>
-                    <p class="math-text">${item.ans}</p>
+                    <p class="math-text break-words">${item.ans}</p>
                 </div>
             `;
             container.appendChild(card);
