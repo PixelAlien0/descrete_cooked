@@ -3,753 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discrete Math: Logic & Propositions</title>
-    
-    <!-- MathJax for rendering LaTeX formulas -->
+    <title>Predicate Logic & Quantifiers | Study Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
-            },
-            svg: {
-                fontCache: 'global'
-            }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-    <style>
-        /* 1. CORE VARIABLES (Japandi Palette) */
-        :root {
-            --bg-color: #F7F5F0;     /* Wabi-Sabi Sand */
-            --bg-alt: #F0EBE1;       /* Darker Sand */
-            --text-main: #2C2A28;    /* Soft Charcoal */
-            --text-muted: #6B6862;   /* Stone/Taupe */
-            --accent: #E3DCD1;       /* Bleached Wood */
-            --accent-dark: #D4CAB7;
-            --success: #B5C4AD;      /* Muted Sage */
-            --transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        /* 2. RESET & FOUNDATION */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Helvetica Neue', Helvetica, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* PROGRESS BAR */
-        #progress-bar-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 6px;
-            background: var(--accent); z-index: 1000;
-        }
-
-        #progress-bar {
-            height: 100%; width: 0%;
-            background: var(--success); transition: width 0.5s ease;
-        }
-
-        /* 3. LAYOUT ARCHITECTURE */
-        .container {
-            display: flex; flex-direction: column;
-            max-width: 1400px; margin: 0 auto;
-            padding: 4vw; gap: 4vw; margin-top: 10px;
-        }
-
-        @media (min-width: 900px) {
-            .container { flex-direction: row; align-items: flex-start; }
-        }
-
-        /* 4. STICKY NAVIGATION */
-        nav {
-            flex: 0 0 250px; position: sticky; top: 4vw;
-            background: var(--bg-color); padding-right: 2rem;
-            border-right: 1px solid var(--accent); display: none;
-        }
-
-        @media (min-width: 900px) { nav { display: block; } }
-
-        .nav-title {
-            font-size: 0.85rem; text-transform: uppercase;
-            letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 2rem;
-        }
-
-        nav ul { list-style: none; }
-        nav li { margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-
-        .nav-check {
-            width: 12px; height: 12px; border-radius: 50%;
-            border: 1px solid var(--text-muted); display: inline-block;
-            transition: all var(--transition);
-        }
-
-        .nav-check.mastered { background: var(--success); border-color: var(--success); }
-
-        nav a {
-            color: var(--text-main); text-decoration: none;
-            font-size: 0.95rem; transition: color var(--transition);
-        }
-        nav a:hover { color: var(--text-muted); }
-
-        /* 5. MAIN CONTENT */
-        main { flex: 1; max-width: 850px; padding-bottom: 20vh; }
-        header { margin-bottom: 8vh; }
-        h1 { font-size: clamp(2rem, 5vw, 4rem); font-weight: 400; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
-        .subtitle { font-size: clamp(1.1rem, 2vw, 1.2rem); color: var(--text-muted); font-weight: 300; }
-        section { margin-bottom: 10vh; scroll-margin-top: 5vw; position: relative; }
-        h2 { font-size: 2rem; font-weight: 400; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--accent); }
-        h3 { font-size: 1.2rem; font-weight: 500; margin-bottom: 0.5rem; }
-        p { margin-bottom: 1.5rem; }
-
-        /* 6. MATH CARDS */
-        .law-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .card { background: var(--bg-alt); padding: 2rem; border-radius: 4px; transition: transform var(--transition), background var(--transition); }
-        .card:hover { background: var(--accent-dark); transform: translateY(-4px); }
-        .formula { font-size: 1.3rem; margin: 1.5rem 0; padding: 1rem; background: white; border-radius: 2px; text-align: center; transition: filter 0.3s ease, opacity 0.3s ease; }
-        .example { font-size: 0.9rem; color: var(--text-muted); border-left: 2px solid var(--text-main); padding-left: 1rem; margin-top: 1rem; transition: filter 0.3s ease, opacity 0.3s ease; }
-
-        /* ACTIVE RECALL MECHANICS */
-        .active-recall-mode .revealable { filter: blur(8px); opacity: 0.6; cursor: pointer; user-select: none; }
-        .active-recall-mode .revealable.revealed { filter: blur(0); opacity: 1; background: #E2E8DD; }
-        .active-recall-mode .revealable::after { content: "Tap to reveal"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.85rem; color: var(--text-main); font-weight: bold; display: none; }
-        .active-recall-mode .revealable:not(.revealed):hover::after { display: block; }
-
-        /* TABLES */
-        table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: var(--bg-alt); }
-        th, td { padding: 1rem; text-align: center; border: 1px solid var(--accent); }
-        th { font-weight: 500; background: var(--accent); }
-
-        /* 8. QUIZ / PRACTICE SECTION */
-        .quiz-container { background: var(--bg-alt); border: 1px solid var(--accent); padding: 2.5rem; border-radius: 4px; margin-top: 2rem; }
-        
-        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;}
-        .category-select { padding: 0.5rem; font-size: 1rem; background: white; border: 1px solid var(--accent); border-radius: 2px; color: var(--text-main); outline: none;}
-
-        .quiz-question { font-size: 1.2rem; margin-bottom: 1.5rem; }
-        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
-        .quiz-option { background: white; border: 1px solid var(--accent); padding: 1rem; border-radius: 4px; cursor: pointer; transition: all var(--transition); text-align: left; font-size: 1rem; color: var(--text-main); font-family: inherit; }
-        .quiz-option:hover { background: var(--accent-dark); }
-        
-        .quiz-option.correct { background: #E2E8DD; border-color: #B5C4AD; color: #2C3B29; }
-        .quiz-option.incorrect { background: #E8DDDD; border-color: #CFC0C0; color: #4A2A2A; }
-
-        .quiz-controls { display: flex; align-items: center; gap: 1.5rem; }
-        
-        .feedback { font-weight: 500; font-size: 1rem; max-width: 500px;}
-        .feedback-explanation { display: block; font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 400;}
-
-        /* BUTTONS */
-        .btn { background: var(--text-main); color: white; border: none; padding: 0.8rem 1.5rem; font-size: 1rem; cursor: pointer; border-radius: 2px; transition: background var(--transition); font-family: inherit; }
-        .btn:hover { background: var(--text-muted); }
-        .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--text-main); }
-        .btn-outline:hover { background: var(--text-main); color: white; }
-        .mastery-btn { display: block; width: 100%; margin-top: 1.5rem; background: var(--bg-alt); color: var(--text-main); border: 1px dashed var(--text-muted); }
-        .mastery-btn.mastered { background: var(--success); color: white; border: 1px solid var(--success); }
-
-        /* STUDY TOOLS FLOATING PANEL */
-        .study-tools { position: fixed; bottom: 2rem; right: 2rem; background: white; border: 1px solid var(--accent); border-radius: 8px; padding: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 1.5rem; z-index: 100; width: 250px; }
-        .study-tools h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
-        .timer-display { font-size: 2.5rem; font-weight: 300; text-align: center; font-variant-numeric: tabular-nums; }
-        .timer-controls { display: flex; justify-content: center; gap: 0.5rem; }
-        .timer-btn { background: var(--bg-alt); border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
-        .timer-btn:hover { background: var(--accent-dark); }
-        .toggle-container { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; cursor: pointer; }
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--accent); transition: .4s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--success); }
-        input:checked + .slider:before { transform: translateX(20px); }
-    </style>
-</head>
-<body>
-
-    <div id="progress-bar-container"><div id="progress-bar"></div></div>
-
-    <div class="study-tools">
-        <div>
-            <h4>Focus Timer</h4>
-            <div class="timer-display" id="timer-display">25:00</div>
-            <div class="timer-controls">
-                <button class="timer-btn" onclick="toggleTimer()" id="timer-toggle-btn">Start</button>
-                <button class="timer-btn" onclick="resetTimer()">Break</button>
-            </div>
-        </div>
-        <hr style="border: 0; border-top: 1px solid var(--accent);">
-        <label class="toggle-container">
-            <span>Active Recall Mode<br><small style="color:var(--text-muted);font-size:0.75rem;">Blurs answers until clicked</small></span>
-            <div class="switch">
-                <input type="checkbox" id="active-recall-toggle" onchange="toggleActiveRecall()">
-                <span class="slider"></span>
-            </div>
-        </label>
-    </div>
-
-    <div class="container">
-        <!-- Sidebar Navigation -->
-        <nav>
-            <div class="nav-title">Study Modules</div>
-            <ul>
-                <li><span class="nav-check" id="nav-check-algebra"></span> <a href="#algebra">1. Algebra of Propositions</a></li>
-                <li><span class="nav-check" id="nav-check-duality"></span> <a href="#duality">2. Duality & Replacement</a></li>
-                <li><span class="nav-check" id="nav-check-conditionals"></span> <a href="#conditionals">3. Conditionals</a></li>
-                <li><span class="nav-check" id="nav-check-arguments"></span> <a href="#arguments">4. Arguments & Validity</a></li>
-                <li><span class="nav-check" id="nav-check-equivalence"></span> <a href="#equivalence">5. Logical Equivalence</a></li>
-                <li><span class="nav-check" id="nav-check-implication"></span> <a href="#implication">6. Logical Implication</a></li>
-                <li><span class="nav-check" id="nav-check-masterclass"></span> <a href="#masterclass">7. Multi-Step Masterclass</a></li>
-                <li><span class="nav-check" id="nav-check-practice"></span> <a href="#practice">8. Practice Generator</a></li>
-            </ul>
-            <div style="margin-top: 2rem; font-size: 0.8rem; color: var(--text-muted);">
-                Exam Prep Progress: <span id="progress-text">0/7</span>
-            </div>
-        </nav>
-
-        <!-- Main Content Area -->
-        <main>
-            <header>
-                <h1>Discrete Math</h1>
-                <p class="subtitle">2-Hour Cram Guide. Use the Pomodoro timer and turn on Active Recall to test your memory before reading.</p>
-            </header>
-
-            <!-- SECTION 1 -->
-            <section id="algebra" class="study-section">
-                <h2>1. Algebra of Propositions (The 9 Core Laws)</h2>
-                <p>Think of these laws as the "rules of the game" for logical statements, similar to standard algebra. We use $t$ for an absolute True and $f$ for an absolute False.</p>
-
-                <div class="law-grid">
-                    <div class="card">
-                        <h3>Idempotent Laws</h3>
-                        <p>Applying the same operation to a single proposition repeatedly does not change it.</p>
-                        <div class="formula revealable">$p \wedge p \equiv p$ <br> $p \vee p \equiv p$</div>
-                        <div class="example revealable"><strong>Ex:</strong> Saying "It is raining AND it is raining" is the exact same as just saying "It is raining".</div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>Commutative Laws</h3>
-                        <p>The order in which you present the propositions does not change the outcome.</p>
-                        <div class="formula revealable">$p \wedge q \equiv q \wedge p$ <br> $p \vee q \equiv q \vee p$</div>
-                        <div class="example revealable"><strong>Ex:</strong> "I have a cat AND I have a dog" is the exact same as "I have a dog AND I have a cat".</div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>Associative Laws</h3>
-                        <p>When you have a chain of the exact same operators, how you group them with parentheses doesn't matter.</p>
-                        <div class="formula revealable">$(p \wedge q) \wedge r \equiv p \wedge (q \wedge r)$ <br> $(p \vee q) \vee r \equiv p \vee (q \vee r)$</div>
-                        <div class="example revealable"><strong>Ex:</strong> "I will (wash the car AND mow the lawn), AND buy groceries" is the same as "I will wash the car, AND (mow the lawn AND buy groceries)".</div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>Distributive Laws</h3>
-                        <p>Works like algebra: $x(y+z) = xy + xz$. You distribute an AND over an OR, or vice versa.</p>
-                        <div class="formula revealable">$p \wedge (q \vee r) \equiv (p \wedge q) \vee (p \wedge r)$ <br> $p \vee (q \wedge r) \equiv (p \vee q) \wedge (p \vee r)$</div>
-                        <div class="example revealable"><strong>Ex:</strong> "I will order a burger AND (get fries OR a salad)" means you get a burger and fries, OR a burger and a salad.</div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>De Morgan's Laws</h3>
-                        <p>When you distribute a NOT ($\sim$ or $\overline{p}$) into parentheses, AND flips to OR, and OR flips to AND.</p>
-                        <div class="formula revealable">$\overline{p \vee q} \equiv \overline{p} \wedge \overline{q}$ <br> $\overline{p \wedge q} \equiv \overline{p} \vee \overline{q}$</div>
-                        <div class="example revealable"><strong>Ex:</strong> "It is NOT true that I will eat pizza OR pasta" means "I will NOT eat pizza AND I will NOT eat pasta".</div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>Complement Laws</h3>
-                        <p>Defines the relationship between a proposition and its exact opposite.</p>
-                        <div class="formula revealable">$p \vee \overline{p} \equiv t$ <br> $p \wedge \overline{p} \equiv f$</div>
-                        <div class="example revealable"><strong>Ex:</strong> Law of Excluded Middle: A coin flip will result in Heads OR it will NOT result in Heads. One must be True ($t$).</div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>Absorption Laws</h3>
-                        <p>Shortcuts: If $p$ is paired with a compound statement containing both $p$ and $q$, the $p$ "absorbs" the rest.</p>
-                        <div class="formula revealable">$p \wedge (p \vee q) \equiv p$ <br> $p \vee (p \wedge q) \equiv p$</div>
-                        <div class="example revealable"><strong>Ex:</strong> "I go to work, OR (I go to work AND drive a car)" simplifies to just "I go to work".</div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>Identity (Domination) Laws</h3>
-                        <p>What happens when you combine an unknown ($p$) with an absolute True ($t$) or False ($f$).</p>
-                        <div class="formula revealable">$p \vee f \equiv p$ &nbsp;|&nbsp; $p \vee t \equiv t$ <br> $p \wedge t \equiv p$ &nbsp;|&nbsp; $p \wedge f \equiv f$</div>
-                        <div class="example revealable"><strong>Ex:</strong> "My name is John ($p$) AND the sun is a star ($t$)" is only true if my name is actually John.</div>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>Involution Law</h3>
-                        <p>Double Negation: Two negatives cancel each other out entirely.</p>
-                        <div class="formula revealable">$\overline{\overline{p}} \equiv p$</div>
-                        <div class="example revealable"><strong>Ex:</strong> "It is NOT true that I am NOT going" simply means "I am going".</div>
-                    </div>
-                </div>
-                <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('algebra', this)">Mark Section 1 as Mastered</button>
-            </section>
-
-            <!-- SECTION 2 -->
-            <section id="duality" class="study-section">
-                <h2>2. Duality & Replacement</h2>
-                <div class="card">
-                    <h3>The Duality Principle</h3>
-                    <p>Given any compound proposition involving only $\wedge$ and $\vee$, you can find its <strong>dual</strong> by replacing $\wedge$ with $\vee$ (and vice versa), and $t$ with $f$ (and vice versa).</p>
-                    <div class="example revealable"><strong>Example:</strong> The dual of $(p \vee f) \wedge q$ is $(p \wedge t) \vee q$.</div>
-                </div>
-                <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('duality', this)">Mark Section 2 as Mastered</button>
-            </section>
-
-            <!-- SECTION 3 -->
-            <section id="conditionals" class="study-section">
-                <h2>3. Conditionals (If... Then)</h2>
-                <table class="revealable" style="text-align: left;">
-                    <tr><th>Statement Type</th><th>Logic Notation</th></tr>
-                    <tr><td><strong>Original</strong></td><td>$p \rightarrow q$</td></tr>
-                    <tr><td><strong>Converse</strong></td><td>$q \rightarrow p$</td></tr>
-                    <tr><td><strong>Inverse</strong></td><td>$\overline{p} \rightarrow \overline{q}$</td></tr>
-                    <tr><td><strong>Contrapositive</strong></td><td>$\overline{q} \rightarrow \overline{p}$</td></tr>
-                </table>
-                <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('conditionals', this)">Mark Section 3 as Mastered</button>
-            </section>
-
-            <!-- SECTION 4 -->
-            <section id="arguments" class="study-section">
-                <h2>4. Arguments & Validity</h2>
-                <div class="card">
-                    <p>An argument is valid if the conjunction (ANDing) of all the premises <em>logically implies</em> the conclusion.</p>
-                    <div class="formula revealable">$(P_1 \wedge P_2 \wedge \dots \wedge P_n) \rightarrow Q \text{ is a Tautology.}$</div>
-                </div>
-                <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('arguments', this)">Mark Section 4 as Mastered</button>
-            </section>
-
-            <!-- SECTION 5 -->
-            <section id="equivalence" class="study-section">
-                <h2>5. Logical Equivalence ($P \equiv Q$)</h2>
-                <div class="card revealable">
-                    <p>Two propositions $P$ and $Q$ are logically equivalent ($P \equiv Q$) <strong>if and only if</strong> the biconditional statement $P \leftrightarrow Q$ is a tautology (always true).</p>
-                </div>
-                <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('equivalence', this)">Mark Section 5 as Mastered</button>
-            </section>
-
-            <!-- SECTION 6 -->
-            <section id="implication" class="study-section">
-                <h2>6. Logical Implication ($P \Rightarrow Q$)</h2>
-                <div class="card revealable">
-                    <p>'$P \Rightarrow Q$' and '$P \rightarrow Q$ is a tautology' mean exactly the same thing. The truth of $P$ guarantees the truth of $Q$.</p>
-                </div>
-                <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('implication', this)">Mark Section 6 as Mastered</button>
-            </section>
-
-            <!-- SECTION 7: MASTERCLASS -->
-            <section id="masterclass" class="study-section">
-                <h2>7. Multi-Step Masterclass</h2>
-                <p>When you face a massive string of propositions, don't panic. You just need a system. Here is the 4-step "Secret Sauce" to breaking down any complex logic problem:</p>
-
-                <div class="law-grid">
-                    <div class="card">
-                        <h3>1. Break the Shields</h3>
-                        <p>If you see a negation outside a bracket like $\sim(p \vee q)$, this is a "shield". You cannot simplify inside until you break it.</p>
-                        <div class="example"><strong>Action:</strong> Apply De Morgan's Law immediately to push the negation inside. Flip the sign!</div>
-                    </div>
-                    <div class="card">
-                        <h3>2. Factor it Out</h3>
-                        <p>Look for repeating variables in different brackets. If you see $(p \wedge q) \vee (p \wedge r)$, notice how $p \wedge$ is in both?</p>
-                        <div class="example"><strong>Action:</strong> Use the Distributive Law to factor it out! It becomes $p \wedge (q \vee r)$.</div>
-                    </div>
-                    <div class="card">
-                        <h3>3. Hunt for Opposites</h3>
-                        <p>Keep an eagle eye out for a variable paired with its exact opposite. These are the best because they self-destruct!</p>
-                        <div class="example"><strong>Action:</strong> Complement Laws. If you see $q \vee \sim q \rightarrow t$. If you see $p \wedge \sim p \rightarrow f$.</div>
-                    </div>
-                    <div class="card">
-                        <h3>4. Crush with T's and F's</h3>
-                        <p>Once you create a $t$ or an $f$ from Step 3, use it to destroy the rest of the equation.</p>
-                        <div class="example"><strong>Action:</strong> Identity Laws. $p \wedge t \rightarrow p$. Or the massive shortcut: $p \wedge f \rightarrow f$.</div>
-                    </div>
-                </div>
-
-                <h3 style="margin-top: 3rem; margin-bottom: 1rem;">The 10-Problem Gauntlet</h3>
-                <p style="margin-bottom: 2rem;"><em>Try to solve each one on a piece of scratch paper. Turn on <strong>Active Recall Mode</strong> to blur the solutions until you are ready!</em></p>
-
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    
-                    <!-- LEVEL 1 -->
-                    <div class="card">
-                        <h4 style="color: var(--text-muted); margin-bottom: 0.5rem;">Level 1: Warm-up (Easy)</h4>
-                        <div class="formula"><strong>Problem 1:</strong> Simplify $(p \wedge p) \vee f$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $p \vee f$ <em>(Idempotent Law: $p \wedge p \equiv p$)</em></p>
-                            <p><strong>Step 2:</strong> $p$ <em>(Identity Law: Anything OR False is itself)</em></p>
-                            <p><strong>Final Answer:</strong> $p$</p>
-                        </div>
-                        
-                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 2:</strong> Simplify $\sim(\sim p \wedge q)$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $\sim(\sim p) \vee \sim q$ <em>(De Morgan's Law)</em></p>
-                            <p><strong>Step 2:</strong> $p \vee \sim q$ <em>(Involution/Double Negation: $\sim(\sim p) \equiv p$)</em></p>
-                            <p><strong>Final Answer:</strong> $p \vee \sim q$</p>
-                        </div>
-                    </div>
-
-                    <!-- LEVEL 2 -->
-                    <div class="card">
-                        <h4 style="color: var(--text-muted); margin-bottom: 0.5rem;">Level 2: The Core Mechanics (Medium)</h4>
-                        
-                        <div class="formula"><strong>Problem 3:</strong> Simplify $(p \wedge q) \vee (p \wedge \sim q)$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $p \wedge (q \vee \sim q)$ <em>(Distributive Law: factor out "$p \wedge$")</em></p>
-                            <p><strong>Step 2:</strong> $p \wedge t$ <em>(Complement Law)</em></p>
-                            <p><strong>Step 3:</strong> $p$ <em>(Identity Law)</em></p>
-                        </div>
-
-                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 4:</strong> Simplify $(p \vee q) \wedge (p \vee \sim q)$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $p \vee (q \wedge \sim q)$ <em>(Distributive Law: factor out "$p \vee$")</em></p>
-                            <p><strong>Step 2:</strong> $p \vee f$ <em>(Complement Law)</em></p>
-                            <p><strong>Step 3:</strong> $p$ <em>(Identity Law)</em></p>
-                        </div>
-
-                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 5:</strong> Simplify $\sim(p \vee q) \wedge p$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $(\sim p \wedge \sim q) \wedge p$ <em>(De Morgan's Law)</em></p>
-                            <p><strong>Step 2:</strong> $(\sim p \wedge p) \wedge \sim q$ <em>(Commutative/Associative)</em></p>
-                            <p><strong>Step 3:</strong> $f \wedge \sim q$ <em>(Complement Law)</em></p>
-                            <p><strong>Final Answer:</strong> $f$ <em>(Identity/Domination Law)</em></p>
-                        </div>
-                    </div>
-
-                    <!-- LEVEL 3 -->
-                    <div class="card">
-                        <h4 style="color: var(--text-muted); margin-bottom: 0.5rem;">Level 3: Advanced Tactics (Hard)</h4>
-                        
-                        <div class="formula"><strong>Problem 6:</strong> Simplify $p \vee (\sim p \wedge q)$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $(p \vee \sim p) \wedge (p \vee q)$ <em>(Distributive Law: distribute $p \vee$ inside)</em></p>
-                            <p><strong>Step 2:</strong> $t \wedge (p \vee q)$ <em>(Complement Law)</em></p>
-                            <p><strong>Final Answer:</strong> $p \vee q$ <em>(Identity Law)</em></p>
-                        </div>
-
-                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 7:</strong> Simplify $\sim(\sim p \wedge \sim q) \wedge \sim p$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $(p \vee q) \wedge \sim p$ <em>(De Morgan's & Double Negation)</em></p>
-                            <p><strong>Step 2:</strong> $(p \wedge \sim p) \vee (q \wedge \sim p)$ <em>(Distributive Law)</em></p>
-                            <p><strong>Step 3:</strong> $f \vee (q \wedge \sim p)$ <em>(Complement Law)</em></p>
-                            <p><strong>Step 4:</strong> $q \wedge \sim p$ <em>(Identity Law)</em></p>
-                            <p><strong>Final Answer:</strong> $\sim p \wedge q$ <em>(Commutative Law)</em></p>
-                        </div>
-
-                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 8:</strong> Simplify $(p \wedge q) \vee (p \wedge \sim(p \wedge q))$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $(p \wedge q) \vee (p \wedge (\sim p \vee \sim q))$ <em>(De Morgan's)</em></p>
-                            <p><strong>Step 2:</strong> $(p \wedge q) \vee ((p \wedge \sim p) \vee (p \wedge \sim q))$ <em>(Distributive)</em></p>
-                            <p><strong>Step 3:</strong> $(p \wedge q) \vee (f \vee (p \wedge \sim q))$ <em>(Complement)</em></p>
-                            <p><strong>Step 4:</strong> $(p \wedge q) \vee (p \wedge \sim q)$ <em>(Identity)</em></p>
-                            <p><strong>Step 5:</strong> $p \wedge (q \vee \sim q)$ <em>(Distributive: factor out $p \wedge$)</em></p>
-                            <p><strong>Final Answer:</strong> $p$ <em>(Complement + Identity)</em></p>
-                        </div>
-                    </div>
-
-                    <!-- LEVEL 4 -->
-                    <div class="card">
-                        <h4 style="color: var(--text-muted); margin-bottom: 0.5rem;">Level 4: Boss Level (Extreme)</h4>
-                        
-                        <div class="formula"><strong>Problem 9:</strong> Simplify $[(p \vee q) \wedge \sim p] \rightarrow q$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><em>Hint: Implication Law is $A \rightarrow B \equiv \sim A \vee B$</em></p>
-                            <p><strong>Step 1:</strong> $\sim[(p \vee q) \wedge \sim p] \vee q$ <em>(Implication conversion)</em></p>
-                            <p><strong>Step 2:</strong> $[\sim(p \vee q) \vee p] \vee q$ <em>(De Morgan's & Involution)</em></p>
-                            <p><strong>Step 3:</strong> $[(\sim p \wedge \sim q) \vee p] \vee q$ <em>(De Morgan's)</em></p>
-                            <p><strong>Step 4:</strong> $[(\sim p \vee p) \wedge (\sim q \vee p)] \vee q$ <em>(Distributive)</em></p>
-                            <p><strong>Step 5:</strong> $[t \wedge (\sim q \vee p)] \vee q$ <em>(Complement)</em></p>
-                            <p><strong>Step 6:</strong> $(\sim q \vee p) \vee q$ <em>(Identity)</em></p>
-                            <p><strong>Step 7:</strong> $p \vee (\sim q \vee q)$ <em>(Associative/Commutative)</em></p>
-                            <p><strong>Final Answer:</strong> $t$ <em>(Complement + Domination)</em></p>
-                        </div>
-
-                        <div class="formula" style="margin-top: 2rem;"><strong>Problem 10:</strong> Simplify $\sim(p \vee \sim q) \vee (\sim p \wedge \sim q) \vee p$</div>
-                        <div class="revealable" style="text-align: left; padding: 1rem;">
-                            <p><strong>Step 1:</strong> $(\sim p \wedge q) \vee (\sim p \wedge \sim q) \vee p$ <em>(De Morgan's & Involution)</em></p>
-                            <p><strong>Step 2:</strong> $[\sim p \wedge (q \vee \sim q)] \vee p$ <em>(Distributive: factor out $\sim p \wedge$)</em></p>
-                            <p><strong>Step 3:</strong> $[\sim p \wedge t] \vee p$ <em>(Complement)</em></p>
-                            <p><strong>Step 4:</strong> $\sim p \vee p$ <em>(Identity)</em></p>
-                            <p><strong>Final Answer:</strong> $t$ <em>(Complement)</em></p>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn btn-outline mastery-btn" onclick="toggleSectionMastery('masterclass', this)">Mark Section 7 as Mastered</button>
-            </section>
-
-            <!-- SECTION 8: PRACTICE GENERATOR -->
-            <section id="practice">
-                <h2>8. Practice Generator (Massive Bank)</h2>
-                <p>Select a category below to target your weak spots. The "Hard Multi-Step" mode will require you to combine multiple laws and will provide step-by-step solutions if you get stuck.</p>
-                
-                <div class="quiz-container">
-                    <div class="quiz-header">
-                        <select id="category-select" class="category-select" onchange="generateProblem()">
-                            <option value="mix">Mix All Topics</option>
-                            <option value="basic">Basic Laws (Identify & Apply)</option>
-                            <option value="hard">Hard Mode (Multi-step Simplification)</option>
-                            <option value="conditionals">Conditionals (Converse, Inverse)</option>
-                            <option value="truth">Truth Tables</option>
-                        </select>
-                    </div>
-
-                    <div class="quiz-question" id="quiz-question">Loading problem...</div>
-                    <div class="quiz-options" id="quiz-options">
-                        <!-- Options injected via JavaScript -->
-                    </div>
-                    <div class="quiz-controls">
-                        <button class="btn" onclick="generateProblem()">Generate New Problem</button>
-                        <div class="feedback" id="quiz-feedback">
-                            <span id="feedback-text"></span>
-                            <span id="feedback-explanation" class="feedback-explanation"></span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-        </main>
-    </div>
-
-    <script>
-        // --- 1. POMODORO TIMER LOGIC ---
-        let timeRemaining = 25 * 60;
-        let timerInterval = null;
-        let isRunning = false;
-        const timerDisplay = document.getElementById('timer-display');
-        const timerBtn = document.getElementById('timer-toggle-btn');
-
-        function updateTimerDisplay() {
-            const m = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
-            const s = (timeRemaining % 60).toString().padStart(2, '0');
-            timerDisplay.textContent = `${m}:${s}`;
-        }
-
-        function toggleTimer() {
-            if (isRunning) { clearInterval(timerInterval); timerBtn.textContent = 'Resume'; } 
-            else {
-                timerBtn.textContent = 'Pause';
-                timerInterval = setInterval(() => {
-                    if (timeRemaining > 0) { timeRemaining--; updateTimerDisplay(); } 
-                    else { clearInterval(timerInterval); alert("Time's up! Take a 5 minute break."); resetTimer(); }
-                }, 1000);
-            }
-            isRunning = !isRunning;
-        }
-
-        function resetTimer() {
-            clearInterval(timerInterval); isRunning = false;
-            timeRemaining = timeRemaining === 25 * 60 ? 5 * 60 : 25 * 60;
-            timerBtn.textContent = timeRemaining === 5 * 60 ? 'Start Break' : 'Start Focus';
-            updateTimerDisplay();
-        }
-
-        // --- 2. ACTIVE RECALL LOGIC ---
-        function toggleActiveRecall() {
-            const isChecked = document.getElementById('active-recall-toggle').checked;
-            if (isChecked) {
-                document.body.classList.add('active-recall-mode');
-                document.querySelectorAll('.revealable').forEach(el => el.classList.remove('revealed'));
-            } else { document.body.classList.remove('active-recall-mode'); }
-        }
-
-        document.querySelectorAll('.revealable').forEach(el => {
-            el.addEventListener('click', function() {
-                if (document.body.classList.contains('active-recall-mode')) { this.classList.toggle('revealed'); }
-            });
-        });
-
-        // --- 3. MASTERY PROGRESS LOGIC ---
-        let masteredSections = 0; const totalSections = 7;
-        function toggleSectionMastery(sectionId, btn) {
-            const navCheck = document.getElementById(`nav-check-${sectionId}`);
-            if (btn.classList.contains('mastered')) {
-                btn.classList.remove('mastered'); btn.textContent = `Mark Section ${btn.textContent.match(/\d+/)[0]} as Mastered`;
-                navCheck.classList.remove('mastered'); masteredSections--;
-            } else {
-                btn.classList.add('mastered'); btn.textContent = '✓ Mastered';
-                navCheck.classList.add('mastered'); masteredSections++;
-            }
-            document.getElementById('progress-bar').style.width = ((masteredSections / totalSections) * 100) + '%';
-            document.getElementById('progress-text').textContent = `${masteredSections}/${totalSections}`;
-        }
-
-        // --- 4. MASSIVE QUESTION BANK ---
-        const basicLawsQuestions = [
-            { q: "Which law states that $p \\wedge p \\equiv p$?", ans: "Idempotent Law", options: ["Idempotent Law", "Identity Law", "Absorption Law", "Commutative Law"] },
-            { q: "Simplify using the Idempotent Law: $(p \\vee q) \\vee (p \\vee q)$", ans: "$p \\vee q$", options: ["$p \\vee q$", "$t$", "$f$", "$(p \\wedge q)$"] },
-            { q: "Which law states that $p \\vee (q \\wedge r) \\equiv (p \\vee q) \\wedge (p \\vee r)$?", ans: "Distributive Law", options: ["Distributive Law", "Associative Law", "De Morgan's Law", "Absorption Law"] },
-            { q: "Expand using Distributive Law: $p \\wedge (q \\vee r)$", ans: "$(p \\wedge q) \\vee (p \\wedge r)$", options: ["$(p \\wedge q) \\vee (p \\wedge r)$", "$(p \\vee q) \\wedge (p \\vee r)$", "$p \\vee (q \\wedge r)$", "$(p \\wedge q) \\wedge (p \\wedge r)$"] },
-            { q: "Which law is represented by $\\sim(p \\vee q) \\equiv \\sim p \\wedge \\sim q$?", ans: "De Morgan's Law", options: ["De Morgan's Law", "Complement Law", "Involution Law", "Commutative Law"] },
-            { q: "Apply De Morgan's Law to $\\sim(p \\wedge \\sim q)$", ans: "$\\sim p \\vee q$", options: ["$\\sim p \\vee q$", "$\\sim p \\wedge q$", "$p \\vee \\sim q$", "$\\sim p \\vee \\sim q$"] },
-            { q: "Which law states that $p \\vee f \\equiv p$?", ans: "Identity Law", options: ["Identity Law", "Complement Law", "Absorption Law", "Idempotent Law"] },
-            { q: "Simplify using the Identity Law: $p \\wedge t$", ans: "$p$", options: ["$p$", "$t$", "$f$", "$\\sim p$"] },
-            { q: "Which law simplifies $p \\vee t \\equiv t$?", ans: "Domination/Identity Law", options: ["Domination/Identity Law", "Complement Law", "Idempotent Law", "Involution Law"] },
-            { q: "Which law states that $p \\wedge \\sim p \\equiv f$?", ans: "Complement Law", options: ["Complement Law", "Identity Law", "Involution Law", "Absorption Law"] },
-            { q: "Simplify using the Complement Law: $q \\vee \\sim q$", ans: "$t$", options: ["$t$", "$f$", "$q$", "$\\sim q$"] },
-            { q: "Which law simplifies $p \\vee (p \\wedge q) \\equiv p$?", ans: "Absorption Law", options: ["Absorption Law", "Distributive Law", "Identity Law", "Associative Law"] },
-            { q: "Simplify using the Absorption Law: $p \\wedge (p \\vee q)$", ans: "$p$", options: ["$p$", "$p \\wedge q$", "$p \\vee q$", "$q$"] },
-            { q: "Simplify using Double Negation (Involution): $\\sim(\\sim p)$", ans: "$p$", options: ["$p$", "$\\sim p$", "$t$", "$f$"] }
-        ];
-
-        const conditionalQuestions = [
-            { q: "What is the <strong>converse</strong> of $p \\rightarrow q$?", ans: "$q \\rightarrow p$", options: ["$q \\rightarrow p$", "$\\sim p \\rightarrow \\sim q$", "$\\sim q \\rightarrow \\sim p$", "$\\sim p \\vee q$"] },
-            { q: "What is the <strong>inverse</strong> of $p \\rightarrow q$?", ans: "$\\sim p \\rightarrow \\sim q$", options: ["$\\sim p \\rightarrow \\sim q$", "$q \\rightarrow p$", "$\\sim q \\rightarrow \\sim p$", "$\\sim(p \\rightarrow q)$"] },
-            { q: "What is the <strong>contrapositive</strong> of $p \\rightarrow q$?", ans: "$\\sim q \\rightarrow \\sim p$", options: ["$\\sim q \\rightarrow \\sim p$", "$\\sim p \\rightarrow \\sim q$", "$q \\rightarrow p$", "$\\sim q \\rightarrow p$"] },
-            { q: "If the conditional is 'If it rains, then I stay inside', what is the <strong>contrapositive</strong>?", ans: "If I don't stay inside, then it is not raining.", options: ["If I don't stay inside, then it is not raining.", "If it doesn't rain, then I don't stay inside.", "If I stay inside, then it is raining.", "I stay inside and it is raining."] }
-        ];
-
-        const hardQuestions = [
-            { 
-                q: "Simplify: $(p \\wedge q) \\vee (p \\wedge \\sim q)$", 
-                ans: "$p$", 
-                options: ["$p$", "$q$", "$p \\wedge q$", "$t$"],
-                exp: "1. Distributive Law (reverse): $p \\wedge (q \\vee \\sim q)$<br>2. Complement Law: $p \\wedge t$<br>3. Identity Law: $p$"
-            },
-            { 
-                q: "Simplify: $\\sim(p \\vee \\sim q) \\vee p$", 
-                ans: "$p \\vee q$", 
-                options: ["$p \\vee q$", "$p$", "$t$", "$p \\wedge q$"],
-                exp: "1. De Morgan's: $(\\sim p \\wedge \\sim(\\sim q)) \\vee p$<br>2. Involution: $(\\sim p \\wedge q) \\vee p$<br>3. Commutative: $p \\vee (\\sim p \\wedge q)$<br>4. Distributive: $(p \\vee \\sim p) \\wedge (p \\vee q)$<br>5. Complement: $t \\wedge (p \\vee q)$<br>6. Identity: $p \\vee q$"
-            },
-            { 
-                q: "Simplify: $(p \\vee q) \\wedge \\sim p$", 
-                ans: "$\\sim p \\wedge q$", 
-                options: ["$\\sim p \\wedge q$", "$q$", "$f$", "$\\sim p \\vee q$"],
-                exp: "1. Commutative: $\\sim p \\wedge (p \\vee q)$<br>2. Distributive: $(\\sim p \\wedge p) \\vee (\\sim p \\wedge q)$<br>3. Complement: $f \\vee (\\sim p \\wedge q)$<br>4. Identity: $\\sim p \\wedge q$"
-            },
-            { 
-                q: "Simplify: $p \\vee (\\sim p \\wedge f)$", 
-                ans: "$p$", 
-                options: ["$p$", "$f$", "$t$", "$\\sim p$"],
-                exp: "1. Identity (Domination): $\\sim p \\wedge f \\equiv f$. So it becomes $p \\vee f$<br>2. Identity Law: $p \\vee f \\equiv p$"
-            },
-            { 
-                q: "Simplify: $(p \\wedge q) \\vee (\\sim p \\wedge q)$", 
-                ans: "$q$", 
-                options: ["$q$", "$p$", "$p \\vee q$", "$t$"],
-                exp: "1. Commutative: $(q \\wedge p) \\vee (q \\wedge \\sim p)$<br>2. Distributive (reverse): $q \\wedge (p \\vee \\sim p)$<br>3. Complement: $q \\wedge t$<br>4. Identity: $q$"
-            }
-        ];
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function generateTruthTableProblem() {
-            const p = Math.random() > 0.5; const q = Math.random() > 0.5;
-            const operators = [
-                { sym: "\\wedge", eval: (a,b) => a && b },
-                { sym: "\\vee", eval: (a,b) => a || b },
-                { sym: "\\rightarrow", eval: (a,b) => !a || b },
-                { sym: "\\leftrightarrow", eval: (a,b) => a === b }
-            ];
-            const op = operators[Math.floor(Math.random() * operators.length)];
-            const ansBool = op.eval(p, q);
-            const ansStr = ansBool ? "True" : "False";
-            const wrongStr = ansBool ? "False" : "True";
-
-            return {
-                q: `Given $p$ is ${p ? "True" : "False"} and $q$ is ${q ? "True" : "False"}. Evaluate the truth value of: $p ${op.sym} q$`,
-                ans: ansStr,
-                options: [ansStr, wrongStr],
-                exp: `Evaluating ${p ? "T" : "F"} ${op.sym} ${q ? "T" : "F"} results in ${ansStr}.`
-            };
-        }
-
-        let currentProblemData = {};
-
-        function generateProblem() {
-            const category = document.getElementById('category-select').value;
-            const feedbackText = document.getElementById('feedback-text');
-            const feedbackExp = document.getElementById('feedback-explanation');
-            feedbackText.textContent = ""; feedbackExp.innerHTML = "";
-            
-            let problemData;
-            
-            if (category === 'basic') { problemData = basicLawsQuestions[Math.floor(Math.random() * basicLawsQuestions.length)]; } 
-            else if (category === 'conditionals') { problemData = conditionalQuestions[Math.floor(Math.random() * conditionalQuestions.length)]; } 
-            else if (category === 'hard') { problemData = hardQuestions[Math.floor(Math.random() * hardQuestions.length)]; } 
-            else if (category === 'truth') { problemData = generateTruthTableProblem(); } 
-            else {
-                // Mix
-                const rand = Math.random();
-                if (rand < 0.3) problemData = basicLawsQuestions[Math.floor(Math.random() * basicLawsQuestions.length)];
-                else if (rand < 0.5) problemData = conditionalQuestions[Math.floor(Math.random() * conditionalQuestions.length)];
-                else if (rand < 0.75) problemData = hardQuestions[Math.floor(Math.random() * hardQuestions.length)];
-                else problemData = generateTruthTableProblem();
-            }
-
-            currentProblemData = problemData;
-            document.getElementById('quiz-question').innerHTML = problemData.q;
-            
-            const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = ''; 
-
-            const shuffledOptions = shuffleArray([...problemData.options]);
-
-            shuffledOptions.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-option';
-                btn.innerHTML = opt;
-                btn.dataset.val = opt; 
-                btn.onclick = () => checkAnswer(btn, opt);
-                optionsContainer.appendChild(btn);
-            });
-
-            if (window.MathJax && MathJax.typesetPromise) {
-                MathJax.typesetPromise([document.getElementById('practice')]).catch((err) => console.log(err.message));
-            }
-        }
-
-        function checkAnswer(btnEl, selectedAns) {
-            const allBtns = document.querySelectorAll('.quiz-option');
-            allBtns.forEach(b => { b.style.pointerEvents = 'none'; });
-
-            const feedbackText = document.getElementById('feedback-text');
-            const feedbackExp = document.getElementById('feedback-explanation');
-
-            if (selectedAns === currentProblemData.ans) {
-                btnEl.classList.add('correct');
-                feedbackText.textContent = "✓ Correct! ";
-                feedbackText.style.color = "#2C3B29"; 
-            } else {
-                btnEl.classList.add('incorrect');
-                feedbackText.textContent = "✗ Incorrect. ";
-                feedbackText.style.color = "#4A2A2A"; 
-                
-                allBtns.forEach(b => {
-                    if (b.dataset.val === currentProblemData.ans) { b.classList.add('correct'); }
-                });
-            }
-
-            // Show explanation if it exists (especially for hard problems)
-            if (currentProblemData.exp) {
-                feedbackExp.innerHTML = "<br><strong>Step-by-step logic:</strong><br>" + currentProblemData.exp;
-                if (window.MathJax && MathJax.typesetPromise) {
-                    MathJax.typesetPromise([feedbackExp]);
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Noto Serif JP', 'serif'],
+                        math: ['Times New Roman', 'serif'],
+                    },
+                    colors: {
+                        japandi: {
+                            bg: '#F4F1EB',
+                            paper: '#FCFAF8',
+                            wood: '#B89B72',
+                            matcha: '#8A9A86',
+                            matchaDark: '#6B7A68',
+                            charcoal: '#3A3A3A',
+                            border: '#E8E4D9'
+                        }
+                    }
                 }
             }
         }
+    </script>
+    <style>
+        body { background-color: #F4F1EB; color: #3A3A3A; scroll-behavior: smooth; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F4F1EB; }
+        ::-webkit-scrollbar-thumb { background: #B89B72; border-radius: 4px; }
+        
+        .math-text { font-family: 'Times New Roman', serif; font-style: italic; font-size: 1.15em; color: #6B7A68; font-weight: 600; letter-spacing: 0.5px;}
+        .logic-symbol { font-style: normal; font-weight: normal; margin: 0 2px;}
+        
+        /* Flashcard Animations */
+        .flashcard-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, margin-top 0.4s ease;
+            opacity: 0;
+        }
+        .flashcard.open .flashcard-answer {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 1rem;
+        }
+        .flashcard-icon { transition: transform 0.3s ease; }
+        .flashcard.open .flashcard-icon { transform: rotate(180deg); }
 
-        window.addEventListener('DOMContentLoaded', (event) => {
-            setTimeout(generateProblem, 200); 
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating { animation: float 6s ease-in-out infinite; }
+    </style>
+</head>
+<body class="antialiased pb-32">
+
+    <!-- Header -->
+    <header class="bg-japandi-wood text-japandi-paper py-16 px-6 text-center relative overflow-hidden shadow-md">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
+        <div class="max-w-3xl mx-auto relative z-10">
+            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 tracking-wide">Predicate Logic</h1>
+            <p class="font-sans text-lg md:text-xl font-light opacity-90">IT2 Discrete Math Master Guide</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 md:px-6 py-12 space-y-16">
+
+        <!-- Section: Core Concepts -->
+        <section id="concepts" class="space-y-6">
+            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
+                <i data-lucide="book-open" class="text-japandi-matcha"></i>
+                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Core Dictionary Rules</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Predicates -->
+                <div class="bg-japandi-paper p-6 rounded-xl border border-japandi-border shadow-sm hover:shadow-md transition-shadow">
+                    <h3 class="font-serif text-xl text-japandi-wood mb-3 font-semibold">1. Predicates</h3>
+                    <p class="text-sm mb-4">Represents the property, trait, or relationship. Use <strong>Uppercase Letters</strong>.</p>
+                    <div class="bg-japandi-bg p-3 rounded text-sm text-center">
+                        <span class="math-text">T(x)</span> = "is Tall"<br>
+                        <span class="math-text">L(x,y)</span> = "Loves"
+                    </div>
+                </div>
+
+                <!-- Variables -->
+                <div class="bg-japandi-paper p-6 rounded-xl border border-japandi-border shadow-sm hover:shadow-md transition-shadow">
+                    <h3 class="font-serif text-xl text-japandi-wood mb-3 font-semibold">2. Variables</h3>
+                    <p class="text-sm mb-4">Placeholders for general templates. Use lowercase from the <strong>end of alphabet</strong>.</p>
+                    <div class="bg-japandi-bg p-3 rounded text-sm text-center">
+                        <span class="math-text">x, y, z</span>
+                    </div>
+                </div>
+
+                <!-- Constants -->
+                <div class="bg-japandi-paper p-6 rounded-xl border border-japandi-border shadow-sm hover:shadow-md transition-shadow">
+                    <h3 class="font-serif text-xl text-japandi-wood mb-3 font-semibold">3. Constants</h3>
+                    <p class="text-sm mb-4">Specific subjects (people, things). Use lowercase from <strong>start/middle</strong>.</p>
+                    <div class="bg-japandi-bg p-3 rounded text-sm text-center">
+                        <span class="math-text">m</span> = Mary<br>
+                        <span class="math-text">b</span> = Bill
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Quantifiers -->
+        <section id="quantifiers" class="space-y-6">
+            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
+                <i data-lucide="infinity" class="text-japandi-matcha"></i>
+                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">The Quantifiers</h2>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex-1 bg-japandi-paper border-l-4 border-japandi-wood p-6 rounded-r-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-serif text-xl font-bold">Universal Quantifier</h3>
+                        <span class="text-3xl text-japandi-wood">&forall;</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4"><strong>Keywords:</strong> All, every, each, any, for all</p>
+                    <div class="bg-japandi-bg p-4 rounded border border-japandi-border">
+                        <p class="text-sm font-medium mb-1">Translation Tip:</p>
+                        <p class="text-sm mb-2">Usually paired with the conditional (<span class="math-text">&rarr;</span>).</p>
+                        <p class="text-xs italic text-gray-500">"All rats are grey"</p>
+                        <p class="math-text mt-1">&forall;x [R(x) &rarr; G(x)]</p>
+                    </div>
+                </div>
+
+                <div class="flex-1 bg-japandi-paper border-l-4 border-japandi-matcha p-6 rounded-r-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-serif text-xl font-bold">Existential Quantifier</h3>
+                        <span class="text-3xl text-japandi-matcha">&exist;</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4"><strong>Keywords:</strong> Some, there exists, at least one</p>
+                    <div class="bg-japandi-bg p-4 rounded border border-japandi-border">
+                        <p class="text-sm font-medium mb-1">Translation Tip:</p>
+                        <p class="text-sm mb-2">Usually paired with logical AND (<span class="math-text">&and;</span>).</p>
+                        <p class="text-xs italic text-gray-500">"Some rats are grey"</p>
+                        <p class="math-text mt-1">&exist;x [R(x) &and; G(x)]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Practice Sets -->
+        <section id="practice" class="space-y-6">
+            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
+                <i data-lucide="layers" class="text-japandi-matcha"></i>
+                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Interactive Practice Set</h2>
+            </div>
+            <p class="text-sm text-gray-600 mb-4">Tap on a card to reveal the translation logic. Try solving it mentally first.</p>
+
+            <div class="space-y-4" id="flashcard-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Section: Generator -->
+        <section id="generator" class="space-y-6">
+            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
+                <i data-lucide="refresh-cw" class="text-japandi-matcha"></i>
+                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Endless Problem Generator</h2>
+            </div>
+            
+            <div class="bg-japandi-paper p-8 rounded-xl border-2 border-dashed border-japandi-matcha shadow-sm text-center">
+                <p class="text-gray-600 mb-6">Generate unlimited logic translations to test your mastery before time runs out.</p>
+                
+                <div id="gen-problem" class="text-xl font-serif text-japandi-charcoal font-medium min-h-[60px] flex items-center justify-center">
+                    Click "Generate" to start.
+                </div>
+
+                <div id="gen-answer" class="hidden mt-6 p-6 bg-japandi-bg rounded-lg border border-japandi-border text-left">
+                    <p class="text-xs text-gray-500 uppercase tracking-wide mb-2">Dictionary:</p>
+                    <p id="gen-dict" class="text-sm mb-4"></p>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide mb-2">Translation:</p>
+                    <p id="gen-logic" class="math-text text-xl"></p>
+                </div>
+
+                <div class="mt-8 flex justify-center gap-4">
+                    <button onclick="generateProblem()" class="bg-japandi-matcha hover:bg-japandi-matchaDark text-white px-6 py-3 rounded-full font-medium transition-colors flex items-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4"></i> Generate New Problem
+                    </button>
+                    <button id="btn-show-ans" onclick="toggleAnswer()" class="hidden bg-japandi-wood hover:bg-[#A38C6D] text-white px-6 py-3 rounded-full font-medium transition-colors">
+                        Show Answer
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating Timer Widget -->
+    <div class="fixed bottom-6 right-6 bg-japandi-charcoal text-japandi-paper p-4 rounded-2xl shadow-2xl flex items-center gap-4 z-50 border border-gray-700 transition-colors duration-500" id="timer-widget">
+        <div class="flex flex-col">
+            <span class="text-xs text-gray-400 uppercase tracking-widest font-semibold mb-1" id="timer-label">Study Session</span>
+            <span class="font-serif text-3xl tabular-nums leading-none" id="time-display">02:00:00</span>
+        </div>
+        <div class="flex flex-col gap-2 border-l border-gray-600 pl-4 ml-2">
+            <button onclick="toggleTimer()" id="play-pause-btn" class="hover:text-japandi-matcha transition-colors" title="Play/Pause">
+                <i data-lucide="pause-circle" class="w-6 h-6"></i>
+            </button>
+            <button onclick="resetTimer()" class="hover:text-japandi-wood transition-colors" title="Reset">
+                <i data-lucide="rotate-ccw" class="w-5 h-5 ml-0.5"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // --- Flashcard Data & Logic ---
+        const practiceData = [
+            {
+                q: "Mary is a suspect and Mary does not have an alibi.",
+                dict: "S(x): x is a suspect | A(x): x has an alibi | m: Mary",
+                ans: "S(m) &and; &sim;A(m)"
+            },
+            {
+                q: "If John knows Paul, then Paul is a suspect.",
+                dict: "K(x,y): x knows y | S(x): x is a suspect | j: John | p: Paul",
+                ans: "K(j,p) &rarr; S(p)"
+            },
+            {
+                q: "Translate to English: &sim;S(p) &and; A(p)",
+                dict: "S(x): is suspect | A(x): has alibi | p: Paul",
+                ans: "Paul is not a suspect and Paul has an alibi."
+            },
+            {
+                q: "Alice lent her book to Bob, but Bob lost it.",
+                dict: "L(x,y,z): x lent y to z | O(x,y): x lost y | a: Alice | b: book | o: Bob",
+                ans: "L(a,b,o) &and; O(o,b)"
+            },
+            {
+                q: "All humans are mortal.",
+                dict: "H(x): x is human | M(x): x is mortal",
+                ans: "&forall;x [H(x) &rarr; M(x)]"
+            },
+            {
+                q: "No cats are reptiles.",
+                dict: "C(x): x is a cat | R(x): x is a reptile",
+                ans: "&forall;x [C(x) &rarr; &sim;R(x)]"
+            },
+            {
+                q: "Every student who studies hard will pass.",
+                dict: "S(x): student | H(x): studies hard | P(x): will pass",
+                ans: "&forall;x [(S(x) &and; H(x)) &rarr; P(x)]"
+            },
+            {
+                q: "Some people think of no one but themselves.",
+                dict: "P(x): person | N(x): thinks of no one but himself",
+                ans: "&exist;x [P(x) &and; N(x)]"
+            },
+            {
+                q: "Some of the children didn't apologize.",
+                dict: "C(x): child | A(x): apologized",
+                ans: "&exist;x [C(x) &and; &sim;A(x)]"
+            },
+            {
+                q: "Nobody likes cheats.",
+                dict: "P(x): person | C(x): likes cheats",
+                ans: "&sim;&exist;x [P(x) &and; C(x)]   <span class='text-sm text-gray-500 ml-2'>(or &forall;x [P(x) &rarr; &sim;C(x)])</span>"
+            }
+        ];
+
+        const container = document.getElementById('flashcard-container');
+        practiceData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'flashcard bg-japandi-paper border border-japandi-border rounded-lg p-5 cursor-pointer shadow-sm hover:border-japandi-matcha transition-colors';
+            card.onclick = function() { this.classList.toggle('open'); };
+            card.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <p class="font-medium text-lg">${index + 1}. ${item.q}</p>
+                    <i data-lucide="chevron-down" class="text-japandi-wood flashcard-icon w-5 h-5"></i>
+                </div>
+                <div class="flashcard-answer border-t border-dashed border-gray-200 pt-4">
+                    <p class="text-xs text-gray-500 mb-2 uppercase tracking-wide">Dictionary:</p>
+                    <p class="text-sm mb-4 text-gray-700">${item.dict}</p>
+                    <p class="text-xs text-gray-500 mb-1 uppercase tracking-wide">Logic:</p>
+                    <p class="math-text">${item.ans}</p>
+                </div>
+            `;
+            container.appendChild(card);
         });
+        lucide.createIcons(); // re-init icons for dynamic content
+
+
+        // --- Generator Logic ---
+        const problemTypes = [
+            { t: "Constant AND", s: "{Name} is a {Role1} and {Name} is a {Role2}.", l: "{R1}({n}) &and; {R2}({n})" },
+            { t: "Constant IF", s: "If {Name} is a {Role1}, then {Name} is a {Role2}.", l: "{R1}({n}) &rarr; {R2}({n})" },
+            { t: "Universal ALL", s: "All {P1} are {P2}.", l: "&forall;x [{R1}(x) &rarr; {R2}(x)]" },
+            { t: "Universal NONE", s: "No {P1} are {P2}.", l: "&forall;x [{R1}(x) &rarr; &sim;{R2}(x)]" },
+            { t: "Existential SOME", s: "Some {P1} are {P2}.", l: "&exist;x [{R1}(x) &and; {R2}(x)]" },
+            { t: "Existential NOT", s: "Some {P1} are not {P2}.", l: "&exist;x [{R1}(x) &and; &sim;{R2}(x)]" }
+        ];
+
+        const dictData = {
+            names: [ {n: "James", c: "j"}, {n: "Alice", c: "a"}, {n: "Bill", c: "b"}, {n: "Mary", c: "m"}, {n: "Keith", c: "k"} ],
+            roles: [ 
+                {s: "student", p: "students", f: "S"}, 
+                {s: "programmer", p: "programmers", f: "P"},
+                {s: "suspect", p: "suspects", f: "U"}, 
+                {s: "genius", p: "geniuses", f: "G"},
+                {s: "reptile", p: "reptiles", f: "R"},
+                {s: "cat", p: "cats", f: "C"}
+            ]
+        };
+
+        function generateProblem() {
+            document.getElementById('gen-answer').classList.add('hidden');
+            document.getElementById('btn-show-ans').classList.remove('hidden');
+            
+            let prob = problemTypes[Math.floor(Math.random() * problemTypes.length)];
+            let name = dictData.names[Math.floor(Math.random() * dictData.names.length)];
+            
+            let r1 = dictData.roles[Math.floor(Math.random() * dictData.roles.length)];
+            let r2 = dictData.roles[Math.floor(Math.random() * dictData.roles.length)];
+            while(r1 === r2) r2 = dictData.roles[Math.floor(Math.random() * dictData.roles.length)];
+
+            let sentence = prob.s.replace(/{Name}/g, name.n).replace(/{Role1}/g, r1.s).replace(/{Role2}/g, r2.s).replace(/{P1}/g, r1.p).replace(/{P2}/g, r2.p);
+            let logic = prob.l.replace(/{n}/g, name.c).replace(/{R1}/g, r1.f).replace(/{R2}/g, r2.f);
+            
+            let dict = `<span class="math-text">${r1.f}(x)</span>: is a ${r1.s}<br><span class="math-text">${r2.f}(x)</span>: is a ${r2.s}`;
+            if(prob.l.includes("{n}")) dict += `<br><span class="math-text">${name.c}</span>: ${name.n}`;
+
+            document.getElementById('gen-problem').innerHTML = `"${sentence}"`;
+            document.getElementById('gen-dict').innerHTML = dict;
+            document.getElementById('gen-logic').innerHTML = logic;
+        }
+
+        function toggleAnswer() {
+            const ansBox = document.getElementById('gen-answer');
+            ansBox.classList.toggle('hidden');
+        }
+
+
+        // --- Timer Logic ---
+        let totalSeconds = 2 * 60 * 60; // 2 hours
+        let timerInterval = null;
+        let isRunning = true;
+        const display = document.getElementById('time-display');
+        const widget = document.getElementById('timer-widget');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+
+        function updateDisplay() {
+            let h = Math.floor(totalSeconds / 3600);
+            let m = Math.floor((totalSeconds % 3600) / 60);
+            let s = totalSeconds % 60;
+            display.innerText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            
+            // Color warnings
+            if (totalSeconds <= 0) {
+                widget.style.backgroundColor = '#8B0000'; // Dark Red
+                document.getElementById('timer-label').innerText = "TIME'S UP";
+            } else if (totalSeconds < 300) { // under 5 mins
+                widget.style.backgroundColor = '#A94442'; // Muted Red
+            } else {
+                widget.style.backgroundColor = '#3A3A3A'; // Default Charcoal
+                document.getElementById('timer-label').innerText = "Study Session";
+            }
+        }
+
+        function tick() {
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                updateDisplay();
+            } else {
+                clearInterval(timerInterval);
+                isRunning = false;
+            }
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                playPauseBtn.innerHTML = '<i data-lucide="play-circle" class="w-6 h-6"></i>';
+            } else {
+                if(totalSeconds > 0) {
+                    timerInterval = setInterval(tick, 1000);
+                    playPauseBtn.innerHTML = '<i data-lucide="pause-circle" class="w-6 h-6"></i>';
+                }
+            }
+            isRunning = !isRunning;
+            lucide.createIcons();
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            totalSeconds = 2 * 60 * 60;
+            isRunning = true;
+            playPauseBtn.innerHTML = '<i data-lucide="pause-circle" class="w-6 h-6"></i>';
+            updateDisplay();
+            timerInterval = setInterval(tick, 1000);
+            lucide.createIcons();
+        }
+
+        // Start timer on load
+        timerInterval = setInterval(tick, 1000);
+        updateDisplay();
     </script>
 </body>
 </html>
