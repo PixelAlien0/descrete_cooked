@@ -157,6 +157,75 @@
             </div>
         </section>
 
+        <!-- Section: Step-by-Step Guide -->
+        <section id="step-by-step" class="space-y-6">
+            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
+                <i data-lucide="list-ordered" class="text-japandi-matcha"></i>
+                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Step-by-Step Translation</h2>
+            </div>
+            
+            <div class="bg-japandi-paper border border-japandi-border rounded-xl p-6 shadow-sm">
+                <div class="bg-japandi-wood/10 p-4 rounded-lg mb-8 border border-japandi-wood/20">
+                    <p class="text-sm text-japandi-charcoal"><strong>Example Sentence:</strong> <span class="italic">"Every student who studies hard will pass."</span></p>
+                </div>
+                
+                <div class="space-y-8">
+                    <!-- Step 1 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-japandi-wood text-white flex items-center justify-center font-serif text-xl font-bold shadow-sm">1</div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-japandi-charcoal mb-1">Create the Dictionary</h3>
+                            <p class="text-sm text-gray-600 mb-3">Identify the properties and assign uppercase letters.</p>
+                            <div class="bg-white p-3 rounded border border-japandi-border shadow-sm text-sm inline-block">
+                                <span class="math-text">S(x)</span>: x is a student<br>
+                                <span class="math-text">H(x)</span>: x studies hard<br>
+                                <span class="math-text">P(x)</span>: x will pass
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-japandi-wood text-white flex items-center justify-center font-serif text-xl font-bold shadow-sm">2</div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-japandi-charcoal mb-1">Identify the Quantifier</h3>
+                            <p class="text-sm text-gray-600 mb-3">Look for keywords like "Every", "All", "Some", "Nobody".</p>
+                            <div class="bg-white p-3 rounded border border-japandi-border shadow-sm text-sm inline-block">
+                                Keyword is <strong>"Every"</strong>. We use the Universal Quantifier: <span class="math-text text-lg align-middle">&forall;x</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-japandi-matcha text-white flex items-center justify-center font-serif text-xl font-bold shadow-sm">3</div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-japandi-charcoal mb-1">Determine Connectives & Groups</h3>
+                            <p class="text-sm text-gray-600 mb-3">Universals (&forall;) pair with IF-THEN (&rarr;). Existentials (&exist;) pair with AND (&and;).</p>
+                            <div class="bg-white p-3 rounded border border-japandi-border shadow-sm text-sm inline-block">
+                                <span class="text-gray-500 text-xs uppercase tracking-wide block mb-1">Condition (If):</span>
+                                <span class="math-text">S(x) &and; H(x)</span> <span class="text-gray-500 italic ml-2">"is a student AND studies hard"</span><br>
+                                <span class="text-gray-500 text-xs uppercase tracking-wide block mt-2 mb-1">Result (Then):</span>
+                                <span class="math-text">&rarr; P(x)</span> <span class="text-gray-500 italic ml-2">"will pass"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-japandi-matchaDark text-white flex items-center justify-center font-serif text-xl font-bold shadow-sm">4</div>
+                        <div class="flex-grow">
+                            <h3 class="font-serif text-lg font-bold text-japandi-charcoal mb-1">Assemble the Final Formula</h3>
+                            <p class="text-sm text-gray-600 mb-3">Combine the quantifier, the condition, and the result together in brackets.</p>
+                            <div class="bg-japandi-bg border border-japandi-matcha p-4 rounded text-center shadow-sm">
+                                <span class="math-text text-2xl">&forall;x [(S(x) &and; H(x)) &rarr; P(x)]</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Section: Practice Sets -->
         <section id="practice" class="space-y-6">
             <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
