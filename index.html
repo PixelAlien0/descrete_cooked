@@ -150,12 +150,13 @@
             <div class="bg-white border border-zen-border rounded-2xl shadow-sm overflow-hidden">
                 <div class="flex overflow-x-auto border-b border-zen-border bg-zen-bg hide-scrollbar">
                     <button onclick="switchTab('arch', 'drivers')" id="btn-arch-drivers" class="px-6 py-4 font-serif font-semibold text-zen-forest border-b-2 border-zen-forest whitespace-nowrap">I/O Architecture</button>
+                    <button onclick="switchTab('arch', 'nt')" id="btn-arch-nt" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">NT Driver Stack</button>
                     <button onclick="switchTab('arch', 'dma')" id="btn-arch-dma" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">DMA & Overlap</button>
                     <button onclick="switchTab('arch', 'buffering')" id="btn-arch-buffering" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">Buffering</button>
                 </div>
                 
                 <div class="p-6 md:p-8">
-                    <!-- Tab 1 -->
+                    <!-- Tab 1: I/O Architecture -->
                     <div id="tab-arch-drivers" class="arch-tab block space-y-6 animate-[fadeIn_0.3s_ease]">
                         <p class="text-gray-600">The Device Management Organization follows a strict hierarchy from the application down to the physical hardware.</p>
                         <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-sm text-center">
@@ -176,7 +177,23 @@
                         </div>
                     </div>
 
-                    <!-- Tab 2 -->
+                    <!-- Tab 2: NT Stack -->
+                    <div id="tab-arch-nt" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
+                        <h3 class="font-serif font-bold text-xl">Windows NT Driver Organization</h3>
+                        <p class="text-gray-600 mb-4">Windows extends device management by adding layered modules (Filter Drivers) to the stream. Drivers are invoked via an <strong>Interrupt Request Packet (IRP)</strong>.</p>
+                        <div class="flex flex-col gap-1 max-w-md mx-auto">
+                            <div class="bg-zen-charcoal text-white text-center py-2 rounded-t-xl font-bold text-sm">I/O Manager (Native API)</div>
+                            <div class="bg-white border border-zen-border text-center py-2 text-sm">File System Driver</div>
+                            <div class="bg-zen-stone/40 text-center py-2 text-sm text-zen-forest font-medium">Filter Driver</div>
+                            <div class="bg-white border border-zen-border text-center py-2 text-sm">Intermediate Driver</div>
+                            <div class="bg-zen-stone/40 text-center py-2 text-sm text-zen-forest font-medium">Filter Driver</div>
+                            <div class="bg-white border border-zen-border text-center py-2 text-sm">Device Driver</div>
+                            <div class="bg-zen-bg border border-zen-border text-center py-2 text-sm text-gray-500">HAL (Hardware Abstraction Layer)</div>
+                            <div class="bg-zen-forest text-white text-center py-2 rounded-b-xl font-bold text-sm">Physical Device</div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: DMA -->
                     <div id="tab-arch-dma" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
                         <h3 class="font-serif font-bold text-xl">Direct Memory Access (DMA) & Overlap</h3>
                         <p class="text-gray-600">Optimization relies on preventing the CPU from sitting idle while slow I/O operations occur.</p>
@@ -193,7 +210,7 @@
                         </div>
                     </div>
 
-                    <!-- Tab 3 -->
+                    <!-- Tab 4: Buffering -->
                     <div id="tab-arch-buffering" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
                         <h3 class="font-serif font-bold text-xl">Hardware & Driver Buffering</h3>
                         <p class="text-gray-600">Buffers act as temporary storage to smooth out speed differences between data producers and consumers.</p>
@@ -222,7 +239,16 @@
             <div class="border-b border-zen-border pb-4">
                 <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 02</span>
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">Disk Scheduling Algorithms</h2>
-                <p class="text-gray-600 mt-2"><strong>Access Time Formula:</strong> <span class="bg-zen-stone/30 px-2 py-1 rounded font-mono text-sm">Access Time = Seek + Latency + Transfer</span>. Seek time dominates, so we optimize the path.</p>
+                
+                <div class="bg-white border border-zen-border rounded-lg p-4 mt-4 inline-block shadow-sm">
+                    <p class="text-sm font-bold text-zen-charcoal mb-2">Access Time Components:</p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li><strong>Seek Time:</strong> Delay while R/W head moves to destination track. (Dominates access time)</li>
+                        <li><strong>Latency Time:</strong> Rotational delay waiting for sector to spin under head.</li>
+                        <li><strong>Transfer Time:</strong> Time to copy bits from disk surface to memory.</li>
+                    </ul>
+                    <p class="mt-3 font-mono text-xs bg-zen-stone/20 inline-block px-2 py-1 rounded text-zen-forest font-bold">Access Time = Seek + Latency + Transfer</p>
+                </div>
             </div>
 
             <div class="bg-zen-forest rounded-2xl p-6 md:p-8 text-white shadow-lg">
@@ -312,73 +338,152 @@
         <section id="file" class="space-y-10 scroll-mt-24">
             <div class="border-b border-zen-border pb-4">
                 <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 03</span>
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">File Organization</h2>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">File Management Core</h2>
             </div>
 
-            <!-- Flashcards Grid -->
-            <p class="text-gray-600 mb-6">Click cards to reveal the structure characteristics.</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <!-- Card 1 -->
-                <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front text-center">
-                            <i data-lucide="layers" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
-                            <h3 class="font-serif font-bold text-lg">The Pile</h3>
-                            <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+            <!-- 3.1 Data Hierarchy -->
+            <div class="space-y-4">
+                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.1 Data Hierarchy</h3>
+                <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-4 w-full">
+                    <div class="flex-1 bg-white border border-zen-border p-4 rounded-xl text-center shadow-sm">
+                        <span class="font-bold text-zen-terracotta block mb-1">Field</span>
+                        <p class="text-xs text-gray-500">Basic element. Single value (length & type).</p>
+                    </div>
+                    <div class="hidden md:block text-zen-stone"><i data-lucide="chevron-right"></i></div>
+                    <div class="flex-1 bg-white border border-zen-border p-4 rounded-xl text-center shadow-sm">
+                        <span class="font-bold text-zen-terracotta block mb-1">Record</span>
+                        <p class="text-xs text-gray-500">Collection of related fields treated as a unit.</p>
+                    </div>
+                    <div class="hidden md:block text-zen-stone"><i data-lucide="chevron-right"></i></div>
+                    <div class="flex-1 bg-white border border-zen-border p-4 rounded-xl text-center shadow-sm">
+                        <span class="font-bold text-zen-terracotta block mb-1">File</span>
+                        <p class="text-xs text-gray-500">Collection of similar records. Single entity.</p>
+                    </div>
+                    <div class="hidden md:block text-zen-stone"><i data-lucide="chevron-right"></i></div>
+                    <div class="flex-1 bg-zen-forest border border-zen-border p-4 rounded-xl text-center shadow-md">
+                        <span class="font-bold text-zen-stone block mb-1">Database</span>
+                        <p class="text-xs text-white/80">Collection of related data with relationships.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.2 File Organization -->
+            <div class="space-y-4 pt-6">
+                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.2 File Organization</h3>
+                <p class="text-sm text-gray-600 mb-4">Click cards to reveal the structure characteristics.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-center">
+                                <i data-lucide="layers" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
+                                <h3 class="font-serif font-bold text-lg">The Pile</h3>
+                                <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                            </div>
+                            <div class="flip-card-back text-center">
+                                <h4 class="font-bold border-b border-white/20 pb-2 mb-2">The Pile</h4>
+                                <p class="text-sm">Data collected in order of arrival. No structure. Exhaustive search required to find records.</p>
+                            </div>
                         </div>
-                        <div class="flip-card-back text-center">
-                            <h4 class="font-bold border-b border-white/20 pb-2 mb-2">The Pile</h4>
-                            <p class="text-sm">Data collected in order of arrival. No structure. Exhaustive search required to find records.</p>
+                    </div>
+
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-center">
+                                <i data-lucide="list-ordered" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
+                                <h3 class="font-serif font-bold text-lg">Sequential</h3>
+                                <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                            </div>
+                            <div class="flip-card-back text-center">
+                                <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Sequential</h4>
+                                <p class="text-sm">Fixed format records stored in Key sequence. Updates are merged via a batch log/transaction file.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-center">
+                                <i data-lucide="book-marked" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
+                                <h3 class="font-serif font-bold text-lg">Indexed Seq.</h3>
+                                <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                            </div>
+                            <div class="flip-card-back text-center">
+                                <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Indexed Sequential</h4>
+                                <p class="text-sm">Main file + Index file + Overflow file. Drastically reduces average accesses (e.g., 500k vs 1000).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front text-center">
+                                <i data-lucide="hash" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
+                                <h3 class="font-serif font-bold text-lg">Direct / Hashed</h3>
+                                <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                            </div>
+                            <div class="flip-card-back text-center">
+                                <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Direct File</h4>
+                                <p class="text-sm">Directly access a block at a known address using a required Key field. Fastest single access.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.3 Directories & Blocking -->
+            <div class="grid md:grid-cols-2 gap-8 pt-6">
+                <div class="space-y-4">
+                    <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.3 Directory Structures</h3>
+                    <div class="space-y-3">
+                        <div class="bg-white p-4 rounded-lg border border-zen-border">
+                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Simple Directory</h4>
+                            <p class="text-xs text-gray-600">Single list. No structure. Forces user to ensure completely unique file names globally.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-zen-border">
+                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Two-Level Scheme</h4>
+                            <p class="text-xs text-gray-600">Master directory points to individual User directories. Resolves basic naming collisions.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-zen-border border-l-4 border-l-zen-forest">
+                            <h4 class="font-bold text-sm text-zen-forest mb-1">Hierarchical / Tree-Structured</h4>
+                            <p class="text-xs text-gray-600">Master directory with subdirectories and files as entries. Files located via <strong>Pathnames</strong>.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front text-center">
-                            <i data-lucide="list-ordered" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
-                            <h3 class="font-serif font-bold text-lg">Sequential</h3>
-                            <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                <div class="space-y-4">
+                    <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.4 Record Blocking</h3>
+                    <div class="space-y-3">
+                        <div class="bg-white p-4 rounded-lg border border-zen-border">
+                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Fixed Blocking</h4>
+                            <p class="text-xs text-gray-600">Fixed record size. Causes <strong>internal fragmentation</strong> (waste due to fitting records into fixed block sizes).</p>
                         </div>
-                        <div class="flip-card-back text-center">
-                            <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Sequential</h4>
-                            <p class="text-sm">Fixed format records stored in Key sequence. Updates are merged via a batch log/transaction file.</p>
+                        <div class="bg-white p-4 rounded-lg border border-zen-border">
+                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Variable Blocking: Spanned</h4>
+                            <p class="text-xs text-gray-600">Records can span across multiple blocks. No wasted space, but requires complex pointer tracking.</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front text-center">
-                            <i data-lucide="book-marked" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
-                            <h3 class="font-serif font-bold text-lg">Indexed Seq.</h3>
-                            <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
-                        </div>
-                        <div class="flip-card-back text-center">
-                            <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Indexed Sequential</h4>
-                            <p class="text-sm">Main file + Index file + Overflow file. Drastically reduces average accesses (e.g., 500k vs 1000).</p>
+                        <div class="bg-white p-4 rounded-lg border border-zen-border">
+                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Variable Blocking: Unspanned</h4>
+                            <p class="text-xs text-gray-600">Records cannot span blocks. Wastes space if the remaining block space is too small for the next record.</p>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Card 4 -->
-                <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front text-center">
-                            <i data-lucide="hash" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
-                            <h3 class="font-serif font-bold text-lg">Direct / Hashed</h3>
-                            <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
-                        </div>
-                        <div class="flip-card-back text-center">
-                            <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Direct File</h4>
-                            <p class="text-sm">Directly access a block at a known address using a required Key field. Fastest single access.</p>
-                        </div>
-                    </div>
+            <!-- 3.5 Access Rights -->
+            <div class="bg-zen-stone/20 p-6 rounded-2xl border border-zen-stone/50 mt-6">
+                <h3 class="font-serif font-bold text-xl text-zen-charcoal mb-4">3.5 File Sharing & Access Rights</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-400">None</span>
+                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-600">Knowledge</span>
+                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-700">Execution</span>
+                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-forest">Reading</span>
+                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-forest">Appending</span>
+                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-terracotta">Updating</span>
+                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-terracotta">Protection</span>
+                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-red-600">Deletion</span>
                 </div>
-
+                <p class="text-xs text-gray-600 mt-4 italic">* <strong>Owners</strong> hold all rights listed above and can grant rights to Specific Users, User Groups, or Publicly.</p>
             </div>
         </section>
 
