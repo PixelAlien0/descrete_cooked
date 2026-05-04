@@ -153,6 +153,7 @@
                     <button onclick="switchTab('arch', 'nt')" id="btn-arch-nt" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">NT Driver Stack</button>
                     <button onclick="switchTab('arch', 'dma')" id="btn-arch-dma" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">DMA & Overlap</button>
                     <button onclick="switchTab('arch', 'buffering')" id="btn-arch-buffering" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">Buffering</button>
+                    <button onclick="switchTab('arch', 'concepts')" id="btn-arch-concepts" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">I/O Concepts</button>
                 </div>
                 
                 <div class="p-6 md:p-8">
@@ -173,6 +174,8 @@
                                 <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">close()</code> No longer using device</li>
                                 <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">ioctl()</code> Char dev specific info</li>
                                 <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">strategy()</code> Block dev I/O ops</li>
+                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">read() / write()</code> Char dev I/O ops</li>
+                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">select()</code> Char dev check for data</li>
                             </ul>
                         </div>
                     </div>
@@ -226,6 +229,23 @@
                             <div class="bg-zen-forest text-white p-4 rounded-xl text-center">
                                 <h4 class="font-bold text-sm mb-2">Ring Buffer</h4>
                                 <p class="text-xs text-zen-stone">Circular array of buffers. Best for rapid, continuous data streams.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 5: I/O Concepts -->
+                    <div id="tab-arch-concepts" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
+                        <h3 class="font-serif font-bold text-xl">Addressing & Processing States</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="border border-zen-border p-5 rounded-xl">
+                                <h4 class="font-bold mb-2 flex items-center gap-2"><i data-lucide="memory-stick" class="w-4 h-4 text-zen-terracotta"></i> Memory Mapped I/O</h4>
+                                <p class="text-sm text-gray-600 mb-2">Devices are mapped directly into the primary memory address space rather than having separate, dedicated I/O ports.</p>
+                                <p class="text-xs text-gray-500">The CPU interacts with devices by reading/writing to specific memory addresses just like regular RAM.</p>
+                            </div>
+                            <div class="border border-zen-border p-5 rounded-xl">
+                                <h4 class="font-bold mb-2 flex items-center gap-2"><i data-lucide="activity" class="w-4 h-4 text-zen-terracotta"></i> Compute vs I/O Bound</h4>
+                                <p class="text-sm text-gray-600 mb-2"><strong>Compute-Bound:</strong> Spends most of its time performing CPU calculations (peaks on execution graph).</p>
+                                <p class="text-sm text-gray-600"><strong>I/O-Bound:</strong> Spends most of its time waiting for I/O operations to complete (valleys on execution graph).</p>
                             </div>
                         </div>
                     </div>
@@ -341,9 +361,39 @@
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">File Management Core</h2>
             </div>
 
-            <!-- 3.1 Data Hierarchy -->
+            <!-- 3.1 Properties & Requirements -->
             <div class="space-y-4">
-                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.1 Data Hierarchy</h3>
+                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.1 System Properties & Requirements</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white border border-zen-border p-5 rounded-xl shadow-sm">
+                        <h4 class="font-bold text-sm mb-3">Core File Operations</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Create</span>
+                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Delete</span>
+                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Open</span>
+                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Close</span>
+                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Read</span>
+                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Write</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-4">Files guarantee long-term existence, sharability between processes, and structure.</p>
+                    </div>
+                    <div class="bg-white border border-zen-border p-5 rounded-xl shadow-sm">
+                        <h4 class="font-bold text-sm mb-3">Minimal System Requirements</h4>
+                        <ul class="text-xs text-gray-600 space-y-1 list-disc list-inside ml-4">
+                            <li>Create, delete, read, write, modify files</li>
+                            <li>Controlled access to other users' files</li>
+                            <li>Control types of access allowed</li>
+                            <li>Restructure files / Move data between files</li>
+                            <li>Back up and recover files in case of damage</li>
+                            <li>Access files using symbolic names</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.2 Data Hierarchy -->
+            <div class="space-y-4 pt-6">
+                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.2 Data Hierarchy</h3>
                 <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-4 w-full">
                     <div class="flex-1 bg-white border border-zen-border p-4 rounded-xl text-center shadow-sm">
                         <span class="font-bold text-zen-terracotta block mb-1">Field</span>
@@ -367,9 +417,18 @@
                 </div>
             </div>
 
-            <!-- 3.2 File Organization -->
+            <!-- 3.3 File Organization -->
             <div class="space-y-4 pt-6">
-                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.2 File Organization</h3>
+                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.3 File Organization & Criteria</h3>
+                
+                <div class="bg-zen-stone/10 p-4 rounded-xl border border-zen-stone/30 mb-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-zen-forest font-medium">
+                    <span class="flex items-center gap-1"><i data-lucide="zap" class="w-4 h-4"></i> Short access time</span>
+                    <span class="flex items-center gap-1"><i data-lucide="edit-3" class="w-4 h-4"></i> Ease of update</span>
+                    <span class="flex items-center gap-1"><i data-lucide="save" class="w-4 h-4"></i> Economy of storage</span>
+                    <span class="flex items-center gap-1"><i data-lucide="tool" class="w-4 h-4"></i> Simple maintenance</span>
+                    <span class="flex items-center gap-1"><i data-lucide="shield-check" class="w-4 h-4"></i> Reliability</span>
+                </div>
+
                 <p class="text-sm text-gray-600 mb-4">Click cards to reveal the structure characteristics.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     
@@ -431,10 +490,10 @@
                 </div>
             </div>
 
-            <!-- 3.3 Directories & Blocking -->
+            <!-- 3.4 Directories & Info Elements -->
             <div class="grid md:grid-cols-2 gap-8 pt-6">
                 <div class="space-y-4">
-                    <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.3 Directory Structures</h3>
+                    <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.4 Directory Structures</h3>
                     <div class="space-y-3">
                         <div class="bg-white p-4 rounded-lg border border-zen-border">
                             <h4 class="font-bold text-sm text-zen-terracotta mb-1">Simple Directory</h4>
@@ -452,38 +511,66 @@
                 </div>
 
                 <div class="space-y-4">
-                    <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.4 Record Blocking</h3>
-                    <div class="space-y-3">
-                        <div class="bg-white p-4 rounded-lg border border-zen-border">
-                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Fixed Blocking</h4>
-                            <p class="text-xs text-gray-600">Fixed record size. Causes <strong>internal fragmentation</strong> (waste due to fitting records into fixed block sizes).</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg border border-zen-border">
-                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Variable Blocking: Spanned</h4>
-                            <p class="text-xs text-gray-600">Records can span across multiple blocks. No wasted space, but requires complex pointer tracking.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg border border-zen-border">
-                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Variable Blocking: Unspanned</h4>
-                            <p class="text-xs text-gray-600">Records cannot span blocks. Wastes space if the remaining block space is too small for the next record.</p>
-                        </div>
+                    <h3 class="font-serif font-bold text-xl text-zen-charcoal">File Directory Elements</h3>
+                    <div class="bg-white border border-zen-border rounded-xl shadow-sm overflow-hidden text-sm">
+                        <table class="w-full text-left">
+                            <thead class="bg-zen-stone/20 text-zen-forest text-xs uppercase">
+                                <tr><th class="p-3">Category</th><th class="p-3">Elements Stored</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-zen-border text-xs text-gray-700">
+                                <tr><td class="p-3 font-bold">Basic</td><td class="p-3">Name, Type, Organization</td></tr>
+                                <tr><td class="p-3 font-bold">Address</td><td class="p-3">Volume, Starting Address, Size Used, Size Allocated</td></tr>
+                                <tr><td class="p-3 font-bold">Access</td><td class="p-3">Owner, Access Control Info, Permitted Actions</td></tr>
+                                <tr><td class="p-3 font-bold">Usage</td><td class="p-3">Date Created/Modified/Read, Creator/Modifier Identity, Current Usage locks</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- 3.5 Access Rights -->
-            <div class="bg-zen-stone/20 p-6 rounded-2xl border border-zen-stone/50 mt-6">
-                <h3 class="font-serif font-bold text-xl text-zen-charcoal mb-4">3.5 File Sharing & Access Rights</h3>
-                <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-400">None</span>
-                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-600">Knowledge</span>
-                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-700">Execution</span>
-                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-forest">Reading</span>
-                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-forest">Appending</span>
-                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-terracotta">Updating</span>
-                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-terracotta">Protection</span>
-                    <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-red-600">Deletion</span>
+            <!-- 3.5 Record Blocking -->
+            <div class="space-y-4 pt-6">
+                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.5 Record Blocking</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg border border-zen-border">
+                        <h4 class="font-bold text-sm text-zen-terracotta mb-1">Fixed Blocking</h4>
+                        <p class="text-xs text-gray-600">Fixed record size. Causes <strong>internal fragmentation</strong> (waste due to fitting records into fixed block sizes).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-zen-border">
+                        <h4 class="font-bold text-sm text-zen-terracotta mb-1">Variable Blocking: Spanned</h4>
+                        <p class="text-xs text-gray-600">Records can span across multiple blocks. No wasted space, but requires complex pointer tracking.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-zen-border">
+                        <h4 class="font-bold text-sm text-zen-terracotta mb-1">Variable Blocking: Unspanned</h4>
+                        <p class="text-xs text-gray-600">Records cannot span blocks. Wastes space if the remaining block space is too small for the next record.</p>
+                    </div>
                 </div>
-                <p class="text-xs text-gray-600 mt-4 italic">* <strong>Owners</strong> hold all rights listed above and can grant rights to Specific Users, User Groups, or Publicly.</p>
+            </div>
+
+            <!-- 3.6 Access Rights -->
+            <div class="bg-zen-stone/20 p-6 rounded-2xl border border-zen-stone/50 mt-6 grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="font-serif font-bold text-xl text-zen-charcoal mb-4">3.6 Access Rights</h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-400">None</span>
+                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-600">Knowledge</span>
+                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-700">Execution</span>
+                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-forest">Reading</span>
+                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-forest">Appending</span>
+                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-terracotta">Updating</span>
+                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-terracotta">Changing Protection</span>
+                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-red-600">Deletion</span>
+                    </div>
+                    <p class="text-xs text-gray-600 italic">* <strong>Owners</strong> hold all rights listed above and can grant rights to Specific Users, User Groups, or Publicly.</p>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-xl text-zen-charcoal mb-4">Simultaneous Access</h3>
+                    <ul class="text-sm text-gray-700 space-y-2 list-disc list-inside">
+                        <li>Users may <strong>lock the entire file</strong> when it is to be updated.</li>
+                        <li>Alternatively, users may <strong>lock individual records</strong> during the update for better concurrency.</li>
+                        <li><strong>Mutual exclusion</strong> and <strong>deadlock</strong> are primary issues that must be managed for shared access.</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
@@ -493,6 +580,11 @@
             <div class="border-b border-zen-border pb-4">
                 <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 04</span>
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">Allocation & OS Specifics</h2>
+            </div>
+
+            <!-- Preallocation note -->
+            <div class="bg-white border-l-4 border-l-zen-terracotta p-4 rounded-r-lg shadow-sm text-sm text-gray-700">
+                <strong>Secondary Storage Preallocation:</strong> Requires knowing the maximum size for the file at the time of creation. It is difficult to reliably estimate, often leading to overestimated file sizes to avoid running out of space.
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
@@ -530,7 +622,7 @@
                 <div>
                     <h3 class="font-serif font-bold text-2xl mb-4 text-zen-stone border-b border-white/20 pb-2">UNIX / Linux VFS</h3>
                     <ul class="space-y-3 text-sm">
-                        <li><strong class="text-white">Inodes:</strong> Index node. Control structure with key info for a particular file.</li>
+                        <li><strong class="text-white">Inodes (Index Node):</strong> Control structure with key info. Contains: File Mode (permissions), Link Count, Owner/Group ID, File Size, File Addresses (39 bytes), and Timestamps (Accessed, Modified, Inode Modified).</li>
                         <li><strong class="text-white">Superblock object:</strong> Represents specific mounted file system.</li>
                         <li><strong class="text-white">Dentry object:</strong> Represents a specific directory entry.</li>
                         <li><strong class="text-white">File Types:</strong> Regular, Directory, Special, Named pipes, Links.</li>
@@ -539,7 +631,7 @@
                 <div>
                     <h3 class="font-serif font-bold text-2xl mb-4 text-zen-stone border-b border-white/20 pb-2">Windows NTFS</h3>
                     <ul class="space-y-3 text-sm">
-                        <li><strong class="text-white">Key Features:</strong> Recoverability, Security, Large disks, Multiple data streams.</li>
+                        <li><strong class="text-white">Key Features:</strong> Recoverability, Security, Large disks, Multiple data streams, General indexing.</li>
                         <li><strong class="text-white">Sector:</strong> Smallest physical storage unit on disk.</li>
                         <li><strong class="text-white">Cluster:</strong> One or more contiguous sectors.</li>
                         <li><strong class="text-white">Volume:</strong> Logical partition on a disk.</li>
