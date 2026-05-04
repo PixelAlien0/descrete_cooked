@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predicate Logic & Quantifiers | Study Guide</title>
+    <title>OS Device & File Management | Study Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
@@ -13,18 +13,19 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        serif: ['Noto Serif JP', 'serif'],
-                        math: ['Times New Roman', 'serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
                     },
                     colors: {
-                        japandi: {
-                            bg: '#F4F1EB',
-                            paper: '#FCFAF8',
-                            wood: '#B89B72',
-                            matcha: '#8A9A86',
-                            matchaDark: '#6B7A68',
-                            charcoal: '#3A3A3A',
-                            border: '#E8E4D9'
+                        zen: {
+                            bg: '#F9F6F0',
+                            paper: '#FFFFFF',
+                            stone: '#E5D3B3',
+                            forest: '#2C4C3B',
+                            terracotta: '#C05746',
+                            charcoal: '#1A1A1A',
+                            border: '#E8E1D5',
+                            muted: '#8C8C8C'
                         }
                     }
                 }
@@ -32,226 +33,182 @@
         }
     </script>
     <style>
-        body { background-color: #F4F1EB; color: #3A3A3A; scroll-behavior: smooth; }
+        body { background-color: #F9F6F0; color: #1A1A1A; scroll-behavior: smooth; }
         
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #F4F1EB; }
-        ::-webkit-scrollbar-thumb { background: #B89B72; border-radius: 4px; }
-        
-        .math-text { font-family: 'Times New Roman', serif; font-style: italic; font-size: 1.15em; color: #6B7A68; font-weight: 600; letter-spacing: 0.5px;}
-        .logic-symbol { font-style: normal; font-weight: normal; margin: 0 2px;}
-        
-        /* Flashcard Animations */
-        .flashcard-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, margin-top 0.4s ease;
-            opacity: 0;
-        }
-        .flashcard.open .flashcard-answer {
-            max-height: 200px;
-            opacity: 1;
-            margin-top: 1rem;
-        }
-        .flashcard-icon { transition: transform 0.3s ease; }
-        .flashcard.open .flashcard-icon { transform: rotate(180deg); }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #E5D3B3; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2C4C3B; }
 
-        /* Floating Animation */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
-        .floating { animation: float 6s ease-in-out infinite; }
-        
-        /* Hide scrollbar for horizontal scrolling elements */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Typography accents */
+        .highlight { position: relative; display: inline-block; z-index: 1; }
+        .highlight::after {
+            content: ''; position: absolute; left: 0; bottom: 2px; width: 100%; height: 8px;
+            background-color: rgba(229, 211, 179, 0.6); z-index: -1;
+        }
+
+        /* Flip Card Styles */
+        .flip-card {
+            perspective: 1000px;
+            height: 180px;
+        }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .flip-card-front {
+            background-color: #FFFFFF; border: 1px solid #E8E1D5;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .flip-card-back {
+            background-color: #2C4C3B; color: #F9F6F0;
+            transform: rotateY(180deg);
+        }
+
+        /* Glass Nav */
+        .glass-nav {
+            background: rgba(249, 246, 240, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(232, 225, 213, 0.5);
+        }
     </style>
 </head>
-<body class="antialiased pb-32 overflow-x-hidden">
+<body class="antialiased pb-24 text-zen-charcoal">
 
-    <!-- Header -->
-    <header class="bg-japandi-wood text-japandi-paper py-12 md:py-16 px-4 md:px-6 text-center relative overflow-hidden shadow-md">
-        <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
-        <div class="max-w-3xl mx-auto relative z-10">
-            <h1 class="font-serif text-4xl md:text-5xl font-bold mb-4 tracking-wide">Predicate Logic</h1>
-            <p class="font-sans text-lg md:text-xl font-light opacity-90">IT2 Discrete Math Master Guide</p>
+    <!-- Sticky Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-nav px-4 py-3 md:py-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="font-serif font-bold text-xl text-zen-forest tracking-tight">Keith's OS Notes.</div>
+            <div class="flex gap-4 overflow-x-auto hide-scrollbar text-sm font-medium text-zen-muted">
+                <a href="#device" class="hover:text-zen-forest whitespace-nowrap transition-colors">1. Device</a>
+                <a href="#disk" class="hover:text-zen-forest whitespace-nowrap transition-colors">2. Disk Math</a>
+                <a href="#file" class="hover:text-zen-forest whitespace-nowrap transition-colors">3. File Sys</a>
+                <a href="#allocation" class="hover:text-zen-forest whitespace-nowrap transition-colors">4. Allocation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-16 px-4 md:px-8 max-w-6xl mx-auto text-center md:text-left flex flex-col md:flex-row items-center gap-8 md:gap-16">
+        <div class="flex-1 space-y-6">
+            <h1 class="font-serif text-5xl md:text-7xl font-bold leading-tight text-zen-forest">
+                Mastering <br> <span class="text-zen-charcoal">OS Architecture</span>
+            </h1>
+            <p class="text-lg md:text-xl font-light text-gray-600 max-w-xl mx-auto md:mx-0">
+                A comprehensive breakdown of Device Management, I/O optimizations, and File Management Systems.
+            </p>
+            <div class="inline-flex items-center gap-2 bg-zen-stone/20 text-zen-forest px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
+                <i data-lucide="book-open" class="w-4 h-4"></i> IT2 Review Guide
+            </div>
+        </div>
+        <div class="hidden md:block flex-1">
+            <!-- Decorative Abstract Elements -->
+            <div class="relative w-full aspect-square max-w-md mx-auto">
+                <div class="absolute inset-0 bg-zen-stone rounded-full opacity-20 blur-3xl"></div>
+                <div class="absolute top-10 right-10 w-48 h-48 bg-zen-forest rounded-full opacity-10 blur-2xl"></div>
+                <div class="grid grid-cols-2 gap-4 h-full p-8 relative z-10">
+                    <div class="bg-white rounded-2xl shadow-sm border border-zen-border p-6 flex flex-col justify-end">
+                        <i data-lucide="cpu" class="w-8 h-8 text-zen-terracotta mb-auto"></i>
+                        <h3 class="font-serif font-bold text-lg mt-4">Device Mgt</h3>
+                        <p class="text-xs text-gray-500">I/O & Interrupts</p>
+                    </div>
+                    <div class="bg-zen-forest rounded-2xl shadow-sm p-6 flex flex-col justify-end text-white translate-y-8">
+                        <i data-lucide="folder-tree" class="w-8 h-8 text-zen-stone mb-auto"></i>
+                        <h3 class="font-serif font-bold text-lg mt-4">File Systems</h3>
+                        <p class="text-xs text-zen-stone/80">NTFS & UNIX</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-4 md:px-6 py-12 space-y-16">
+    <main class="max-w-6xl mx-auto px-4 md:px-8 space-y-24">
 
-        <!-- Section: Core Concepts -->
-        <section id="concepts" class="space-y-6">
-            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
-                <i data-lucide="book-open" class="text-japandi-matcha"></i>
-                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Core Dictionary Rules</h2>
-            </div>
-            
-            <div class="bg-japandi-paper border border-japandi-border rounded-xl shadow-sm overflow-hidden">
-                <!-- Tabs Header -->
-                <div class="flex border-b border-japandi-border bg-japandi-bg overflow-x-auto hide-scrollbar">
-                    <button onclick="switchConceptTab('predicates')" id="btn-tab-predicates" class="flex-1 py-3 px-4 md:py-4 md:px-6 font-serif text-base md:text-lg font-semibold text-japandi-wood border-b-2 border-japandi-wood bg-japandi-paper transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">1. Predicates</button>
-                    <button onclick="switchConceptTab('variables')" id="btn-tab-variables" class="flex-1 py-3 px-4 md:py-4 md:px-6 font-serif text-base md:text-lg font-medium text-gray-500 border-b-2 border-transparent hover:text-japandi-wood transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">2. Variables</button>
-                    <button onclick="switchConceptTab('constants')" id="btn-tab-constants" class="flex-1 py-3 px-4 md:py-4 md:px-6 font-serif text-base md:text-lg font-medium text-gray-500 border-b-2 border-transparent hover:text-japandi-wood transition-colors whitespace-nowrap outline-none focus:ring-2 focus:ring-japandi-matcha/50">3. Constants</button>
-                </div>
-
-                <!-- Tab Contents -->
-                <div class="p-6 md:p-8 min-h-[250px]">
-                    <!-- Predicates Tab -->
-                    <div id="tab-predicates" class="concept-tab block space-y-6 animate-fade-in">
-                        <p class="text-gray-700 text-lg">A <strong>Predicate</strong> represents the property, trait, or relationship being described. Use <strong>Uppercase Letters</strong>.</p>
-                        
-                        <div class="flex flex-col items-center justify-center p-8 bg-japandi-bg border border-japandi-border rounded-lg shadow-inner">
-                            <div id="ex-predicates" class="text-center min-h-[60px] flex items-center justify-center mb-6">
-                                <div>
-                                    <span class="math-text text-3xl">S(x)</span> <span class="text-lg text-gray-600 ml-3">= "is a suspect"</span>
-                                </div>
-                            </div>
-                            <button onclick="generateConceptEx('predicates')" class="bg-japandi-wood hover:bg-[#A38C6D] text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
-                                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Generate Predicate
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Variables Tab -->
-                    <div id="tab-variables" class="concept-tab hidden space-y-6 animate-fade-in">
-                        <p class="text-gray-700 text-lg">A <strong>Variable</strong> is a placeholder for a general template. Use lowercase letters from the <strong>end of the alphabet</strong>.</p>
-                        
-                        <div class="flex flex-col items-center justify-center p-8 bg-japandi-bg border border-japandi-border rounded-lg shadow-inner">
-                            <div id="ex-variables" class="text-center min-h-[60px] flex items-center justify-center mb-6">
-                                <div>
-                                    <span class="math-text text-3xl">x</span> <span class="text-lg text-gray-600 ml-3">(e.g., "For all x...")</span>
-                                </div>
-                            </div>
-                            <button onclick="generateConceptEx('variables')" class="bg-japandi-matcha hover:bg-japandi-matchaDark text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
-                                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Generate Variable
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Constants Tab -->
-                    <div id="tab-constants" class="concept-tab hidden space-y-6 animate-fade-in">
-                        <p class="text-gray-700 text-lg">A <strong>Constant</strong> is a specific subject (person, place, thing). Use lowercase letters from the <strong>start or middle of the alphabet</strong>.</p>
-                        
-                        <div class="flex flex-col items-center justify-center p-8 bg-japandi-bg border border-japandi-border rounded-lg shadow-inner">
-                            <div id="ex-constants" class="text-center min-h-[60px] flex items-center justify-center mb-6">
-                                <div>
-                                    <span class="math-text text-3xl">m</span> <span class="text-lg text-gray-600 ml-3">= Mary</span>
-                                </div>
-                            </div>
-                            <button onclick="generateConceptEx('constants')" class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 shadow-sm">
-                                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Generate Constant
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: Quantifiers -->
-        <section id="quantifiers" class="space-y-6">
-            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
-                <i data-lucide="infinity" class="text-japandi-matcha"></i>
-                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">The Quantifiers</h2>
+        <!-- SECTION 1: DEVICE MANAGEMENT -->
+        <section id="device" class="space-y-10 scroll-mt-24">
+            <div class="border-b border-zen-border pb-4">
+                <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 01</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">Device Management & I/O</h2>
             </div>
 
-            <div class="flex flex-col md:flex-row gap-6">
-                <div class="flex-1 bg-japandi-paper border-l-4 border-japandi-wood p-6 rounded-r-xl shadow-sm">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-serif text-xl font-bold">Universal Quantifier</h3>
-                        <span class="text-3xl text-japandi-wood">&forall;</span>
-                    </div>
-                    <p class="text-sm text-gray-600 mb-4"><strong>Keywords:</strong> All, every, each, any, for all</p>
-                    <div class="bg-japandi-bg p-4 rounded border border-japandi-border">
-                        <p class="text-sm font-medium mb-1">Translation Tip:</p>
-                        <p class="text-sm mb-2">Usually paired with the conditional (<span class="math-text">&rarr;</span>).</p>
-                        <p class="text-xs italic text-gray-500">"All rats are grey"</p>
-                        <p class="math-text mt-1">&forall;x [R(x) &rarr; G(x)]</p>
-                    </div>
-                </div>
-
-                <div class="flex-1 bg-japandi-paper border-l-4 border-japandi-matcha p-6 rounded-r-xl shadow-sm">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-serif text-xl font-bold">Existential Quantifier</h3>
-                        <span class="text-3xl text-japandi-matcha">&exist;</span>
-                    </div>
-                    <p class="text-sm text-gray-600 mb-4"><strong>Keywords:</strong> Some, there exists, at least one</p>
-                    <div class="bg-japandi-bg p-4 rounded border border-japandi-border">
-                        <p class="text-sm font-medium mb-1">Translation Tip:</p>
-                        <p class="text-sm mb-2">Usually paired with logical AND (<span class="math-text">&and;</span>).</p>
-                        <p class="text-xs italic text-gray-500">"Some rats are grey"</p>
-                        <p class="math-text mt-1">&exist;x [R(x) &and; G(x)]</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: Step-by-Step Guide -->
-        <section id="step-by-step" class="space-y-6">
-            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
-                <i data-lucide="list-ordered" class="text-japandi-matcha"></i>
-                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Step-by-Step Translation</h2>
-            </div>
-            
-            <div class="bg-japandi-paper border border-japandi-border rounded-xl p-6 shadow-sm">
-                <div class="bg-japandi-wood/10 p-4 rounded-lg mb-8 border border-japandi-wood/20">
-                    <p class="text-sm text-japandi-charcoal"><strong>Example Sentence:</strong> <span class="italic">"Every student who studies hard will pass."</span></p>
+            <!-- Architecture Tabs -->
+            <div class="bg-white border border-zen-border rounded-2xl shadow-sm overflow-hidden">
+                <div class="flex overflow-x-auto border-b border-zen-border bg-zen-bg hide-scrollbar">
+                    <button onclick="switchTab('arch', 'drivers')" id="btn-arch-drivers" class="px-6 py-4 font-serif font-semibold text-zen-forest border-b-2 border-zen-forest whitespace-nowrap">I/O Architecture</button>
+                    <button onclick="switchTab('arch', 'dma')" id="btn-arch-dma" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">DMA & Overlap</button>
+                    <button onclick="switchTab('arch', 'buffering')" id="btn-arch-buffering" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">Buffering</button>
                 </div>
                 
-                <div class="space-y-8">
-                    <!-- Step 1 -->
-                    <div class="flex gap-4">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-japandi-wood text-white flex items-center justify-center font-serif text-xl font-bold shadow-sm">1</div>
-                        <div>
-                            <h3 class="font-serif text-lg font-bold text-japandi-charcoal mb-1">Create the Dictionary</h3>
-                            <p class="text-sm text-gray-600 mb-3">Identify the properties and assign uppercase letters.</p>
-                            <div class="bg-white p-3 rounded border border-japandi-border shadow-sm text-sm inline-block">
-                                <span class="math-text">S(x)</span>: x is a student<br>
-                                <span class="math-text">H(x)</span>: x studies hard<br>
-                                <span class="math-text">P(x)</span>: x will pass
+                <div class="p-6 md:p-8">
+                    <!-- Tab 1 -->
+                    <div id="tab-arch-drivers" class="arch-tab block space-y-6 animate-[fadeIn_0.3s_ease]">
+                        <p class="text-gray-600">The Device Management Organization follows a strict hierarchy from the application down to the physical hardware.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-sm text-center">
+                            <div class="bg-zen-bg p-4 rounded-xl border border-zen-border"><span class="font-bold block mb-1">App Process</span>User Space</div>
+                            <div class="hidden md:flex items-center justify-center"><i data-lucide="arrow-right" class="text-zen-muted"></i></div>
+                            <div class="bg-zen-bg p-4 rounded-xl border border-zen-border"><span class="font-bold block mb-1">File Manager</span>System Interface</div>
+                            <div class="hidden md:flex items-center justify-center"><i data-lucide="arrow-right" class="text-zen-muted"></i></div>
+                            <div class="bg-zen-forest text-white p-4 rounded-xl shadow-md"><span class="font-bold block mb-1">Device Driver</span>Hardware Interface</div>
+                        </div>
+                        <div class="bg-zen-stone/10 p-5 rounded-xl border border-zen-stone/30 mt-6">
+                            <h4 class="font-serif font-bold text-zen-forest mb-2">System Call Interface (BSD UNIX)</h4>
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">open()</code> Prepare dev for operation</li>
+                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">close()</code> No longer using device</li>
+                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">ioctl()</code> Char dev specific info</li>
+                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">strategy()</code> Block dev I/O ops</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2 -->
+                    <div id="tab-arch-dma" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
+                        <h3 class="font-serif font-bold text-xl">Direct Memory Access (DMA) & Overlap</h3>
+                        <p class="text-gray-600">Optimization relies on preventing the CPU from sitting idle while slow I/O operations occur.</p>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="border border-zen-border p-5 rounded-xl">
+                                <h4 class="font-bold mb-2 flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4 text-zen-terracotta"></i> Polling vs Interrupts</h4>
+                                <p class="text-sm text-gray-600 mb-2"><strong>Polling:</strong> CPU actively checks if device is ready (wastes cycles).</p>
+                                <p class="text-sm text-gray-600"><strong>Interrupts:</strong> CPU works on other tasks. Device controller sends a signal (Interrupt) when I/O is complete.</p>
+                            </div>
+                            <div class="border border-zen-border p-5 rounded-xl">
+                                <h4 class="font-bold mb-2 flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-zen-terracotta"></i> DMA Architecture</h4>
+                                <p class="text-sm text-gray-600">Bypasses the CPU entirely for data transfer. Data flows directly between the <strong>Primary Memory</strong> and the <strong>Device Controller</strong>.</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Step 2 -->
-                    <div class="flex gap-4">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-japandi-wood text-white flex items-center justify-center font-serif text-xl font-bold shadow-sm">2</div>
-                        <div>
-                            <h3 class="font-serif text-lg font-bold text-japandi-charcoal mb-1">Identify the Quantifier</h3>
-                            <p class="text-sm text-gray-600 mb-3">Look for keywords like "Every", "All", "Some", "Nobody".</p>
-                            <div class="bg-white p-3 rounded border border-japandi-border shadow-sm text-sm inline-block">
-                                Keyword is <strong>"Every"</strong>. We use the Universal Quantifier: <span class="math-text text-lg align-middle">&forall;x</span>
+                    <!-- Tab 3 -->
+                    <div id="tab-arch-buffering" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
+                        <h3 class="font-serif font-bold text-xl">Hardware & Driver Buffering</h3>
+                        <p class="text-gray-600">Buffers act as temporary storage to smooth out speed differences between data producers and consumers.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="bg-zen-bg p-4 rounded-xl text-center">
+                                <h4 class="font-bold text-sm mb-2">Single Buffering</h4>
+                                <p class="text-xs text-gray-500">Controller reads block <i>i</i> while Process reads block <i>i-1</i>.</p>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="flex gap-4">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-japandi-matcha text-white flex items-center justify-center font-serif text-xl font-bold shadow-sm">3</div>
-                        <div>
-                            <h3 class="font-serif text-lg font-bold text-japandi-charcoal mb-1">Determine Connectives & Groups</h3>
-                            <p class="text-sm text-gray-600 mb-3">Universals (&forall;) pair with IF-THEN (&rarr;). Existentials (&exist;) pair with AND (&and;).</p>
-                            <div class="bg-white p-3 rounded border border-japandi-border shadow-sm text-sm inline-block">
-                                <span class="text-gray-500 text-xs uppercase tracking-wide block mb-1">Condition (If):</span>
-                                <span class="math-text">S(x) &and; H(x)</span> <span class="text-gray-500 italic ml-2">"is a student AND studies hard"</span><br>
-                                <span class="text-gray-500 text-xs uppercase tracking-wide block mt-2 mb-1">Result (Then):</span>
-                                <span class="math-text">&rarr; P(x)</span> <span class="text-gray-500 italic ml-2">"will pass"</span>
+                            <div class="bg-zen-bg p-4 rounded-xl text-center border border-zen-forest/20">
+                                <h4 class="font-bold text-sm mb-2">Double Buffering</h4>
+                                <p class="text-xs text-gray-500">Two buffers (A & B). Swaps back and forth to ensure continuous flow.</p>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 4 -->
-                    <div class="flex gap-4">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-japandi-matchaDark text-white flex items-center justify-center font-serif text-xl font-bold shadow-sm">4</div>
-                        <div class="flex-grow">
-                            <h3 class="font-serif text-lg font-bold text-japandi-charcoal mb-1">Assemble the Final Formula</h3>
-                            <p class="text-sm text-gray-600 mb-3">Combine the quantifier, the condition, and the result together in brackets.</p>
-                            <div class="bg-japandi-bg border border-japandi-matcha p-4 rounded text-center shadow-sm">
-                                <span class="math-text text-2xl">&forall;x [(S(x) &and; H(x)) &rarr; P(x)]</span>
+                            <div class="bg-zen-forest text-white p-4 rounded-xl text-center">
+                                <h4 class="font-bold text-sm mb-2">Ring Buffer</h4>
+                                <p class="text-xs text-zen-stone">Circular array of buffers. Best for rapid, continuous data streams.</p>
                             </div>
                         </div>
                     </div>
@@ -259,333 +216,288 @@
             </div>
         </section>
 
-        <!-- Section: Practice Sets -->
-        <section id="practice" class="space-y-6">
-            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
-                <i data-lucide="layers" class="text-japandi-matcha"></i>
-                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Interactive Practice Set</h2>
-            </div>
-            <p class="text-sm text-gray-600 mb-4">Tap on a card to reveal the translation logic. Try solving it mentally first.</p>
 
-            <div class="space-y-4" id="flashcard-container">
-                <!-- Populated by JS -->
+        <!-- SECTION 2: DISK MATH -->
+        <section id="disk" class="space-y-10 scroll-mt-24">
+            <div class="border-b border-zen-border pb-4">
+                <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 02</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">Disk Scheduling Algorithms</h2>
+                <p class="text-gray-600 mt-2"><strong>Access Time Formula:</strong> <span class="bg-zen-stone/30 px-2 py-1 rounded font-mono text-sm">Access Time = Seek + Latency + Transfer</span>. Seek time dominates, so we optimize the path.</p>
+            </div>
+
+            <div class="bg-zen-forest rounded-2xl p-6 md:p-8 text-white shadow-lg">
+                <div class="mb-6 pb-4 border-b border-white/20">
+                    <p class="font-mono text-sm text-zen-stone mb-1">Scenario Parameters</p>
+                    <p class="text-lg">Tracks 0 to 99. Head starts at <strong>75</strong>.</p>
+                    <p class="text-lg">Queue Requests: <strong>23, 87, 36, 93, 66</strong></p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- FCFS -->
+                    <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden cursor-pointer">
+                        <summary class="p-4 font-serif text-xl font-semibold flex justify-between items-center outline-none">
+                            FCFS (First-Come, First-Served)
+                            <span class="text-sm font-sans bg-white/20 px-3 py-1 rounded-full group-open:bg-zen-terracotta transition-colors">251 steps</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm text-zen-stone/90 font-mono border-t border-white/10 mt-2 pt-4">
+                            <p>Path: 75 &rarr; 23 &rarr; 87 &rarr; 36 &rarr; 93 &rarr; 66</p>
+                            <p class="mt-2 text-white">Math: |75-23| + |23-87| + |87-36| + |36-93| + |93-66|</p>
+                            <p>52 + 64 + 51 + 57 + 27 = <strong class="text-white text-base">251</strong></p>
+                        </div>
+                    </details>
+
+                    <!-- SSTF -->
+                    <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden cursor-pointer" open>
+                        <summary class="p-4 font-serif text-xl font-semibold flex justify-between items-center outline-none">
+                            SSTF (Shortest Seek Time First)
+                            <span class="text-sm font-sans bg-zen-terracotta px-3 py-1 rounded-full text-white transition-colors">107 steps</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm text-zen-stone/90 font-mono border-t border-white/10 mt-2 pt-4">
+                            <p>Always go to the closest track next.</p>
+                            <p class="mt-2">Path: 75 &rarr; 66 &rarr; 87 &rarr; 93 &rarr; 36 &rarr; 23</p>
+                            <p class="mt-2 text-white">Math: 9 + 21 + 6 + 57 + 13</p>
+                            <p>Total = <strong class="text-white text-base">107</strong></p>
+                        </div>
+                    </details>
+
+                    <!-- SCAN -->
+                    <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden cursor-pointer">
+                        <summary class="p-4 font-serif text-xl font-semibold flex justify-between items-center outline-none">
+                            SCAN (Elevator Algorithm)
+                            <span class="text-sm font-sans bg-white/20 px-3 py-1 rounded-full group-open:bg-zen-terracotta transition-colors">100 steps</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm text-zen-stone/90 font-mono border-t border-white/10 mt-2 pt-4">
+                            <p>Move in one direction all the way to the end (99), then reverse.</p>
+                            <p class="mt-2">Path: 75 &rarr; 87 &rarr; 93 &rarr; <strong>99</strong> &rarr; 66 &rarr; 36 &rarr; 23</p>
+                            <p class="mt-2 text-white">Math: 12 + 6 + 6 + 33 + 30 + 13</p>
+                            <p>Total = <strong class="text-white text-base">100</strong></p>
+                        </div>
+                    </details>
+
+                    <!-- LOOK -->
+                    <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden cursor-pointer">
+                        <summary class="p-4 font-serif text-xl font-semibold flex justify-between items-center outline-none">
+                            LOOK
+                            <span class="text-sm font-sans bg-white/20 px-3 py-1 rounded-full group-open:bg-zen-terracotta transition-colors">87 steps</span>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm text-zen-stone/90 font-mono border-t border-white/10 mt-2 pt-4">
+                            <p>Like SCAN, but stops at the last request in that direction (93), doesn't go to 99.</p>
+                            <p class="mt-2">Path: 75 &rarr; 87 &rarr; 93 &rarr; 66 &rarr; 36 &rarr; 23</p>
+                            <p class="mt-2 text-white">Math: 12 + 6 + 27 + 30 + 13</p>
+                            <p>Total = <strong class="text-white text-base">87</strong></p>
+                        </div>
+                    </details>
+
+                    <!-- C-SCAN & C-LOOK -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="font-serif font-bold text-lg mb-2">C-SCAN (Circular)</h4>
+                            <p class="text-xs text-zen-stone mb-2">Hits 99, returns to 0 (home), goes up again.</p>
+                            <p class="text-sm font-mono text-white">Path: 75 &rarr; 87 &rarr; 93 &rarr; 99 &rarr; 23 &rarr; 36 &rarr; 66</p>
+                            <p class="text-sm font-mono text-zen-terracotta mt-1">90 + home steps</p>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                            <h4 class="font-serif font-bold text-lg mb-2">C-LOOK</h4>
+                            <p class="text-xs text-zen-stone mb-2">Hits 93, returns to lowest request (23), goes up.</p>
+                            <p class="text-sm font-mono text-white">Path: 75 &rarr; 87 &rarr; 93 &rarr; 23 &rarr; 36 &rarr; 66</p>
+                            <p class="text-sm font-mono text-zen-terracotta mt-1">84 + home steps</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Section: Generator -->
-        <section id="generator" class="space-y-6">
-            <div class="flex items-center gap-3 mb-6 border-b border-japandi-border pb-2">
-                <i data-lucide="refresh-cw" class="text-japandi-matcha"></i>
-                <h2 class="font-serif text-2xl font-semibold text-japandi-charcoal">Endless Problem Generator</h2>
+
+        <!-- SECTION 3: FILE SYSTEMS -->
+        <section id="file" class="space-y-10 scroll-mt-24">
+            <div class="border-b border-zen-border pb-4">
+                <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 03</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">File Organization</h2>
             </div>
-            
-            <div class="bg-japandi-paper p-8 rounded-xl border-2 border-dashed border-japandi-matcha shadow-sm text-center">
-                <p class="text-gray-600 mb-6">Generate unlimited logic translations to test your mastery before time runs out.</p>
+
+            <!-- Flashcards Grid -->
+            <p class="text-gray-600 mb-6">Click cards to reveal the structure characteristics.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <div id="gen-problem" class="text-lg md:text-xl font-serif text-japandi-charcoal font-medium min-h-[60px] flex items-center justify-center break-words px-2">
-                    Click "Generate" to start.
+                <!-- Card 1 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front text-center">
+                            <i data-lucide="layers" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
+                            <h3 class="font-serif font-bold text-lg">The Pile</h3>
+                            <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                        </div>
+                        <div class="flip-card-back text-center">
+                            <h4 class="font-bold border-b border-white/20 pb-2 mb-2">The Pile</h4>
+                            <p class="text-sm">Data collected in order of arrival. No structure. Exhaustive search required to find records.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="gen-answer" class="hidden mt-6 p-4 md:p-6 bg-japandi-bg rounded-lg border border-japandi-border text-left overflow-hidden">
-                    <p class="text-xs text-gray-500 uppercase tracking-wide mb-2">Dictionary:</p>
-                    <p id="gen-dict" class="text-sm mb-4 break-words"></p>
-                    <p class="text-xs text-gray-500 uppercase tracking-wide mb-2">Translation:</p>
-                    <p id="gen-logic" class="math-text text-lg md:text-xl break-words"></p>
+                <!-- Card 2 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front text-center">
+                            <i data-lucide="list-ordered" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
+                            <h3 class="font-serif font-bold text-lg">Sequential</h3>
+                            <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                        </div>
+                        <div class="flip-card-back text-center">
+                            <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Sequential</h4>
+                            <p class="text-sm">Fixed format records stored in Key sequence. Updates are merged via a batch log/transaction file.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                    <button onclick="generateProblem()" class="bg-japandi-matcha hover:bg-japandi-matchaDark text-white px-6 py-3 rounded-full font-medium transition-colors flex items-center justify-center gap-2">
-                        <i data-lucide="zap" class="w-4 h-4 flex-shrink-0"></i> Generate New Problem
-                    </button>
-                    <button id="btn-show-ans" onclick="toggleAnswer()" class="hidden bg-japandi-wood hover:bg-[#A38C6D] text-white px-6 py-3 rounded-full font-medium transition-colors flex justify-center items-center">
-                        Show Answer
-                    </button>
+                <!-- Card 3 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front text-center">
+                            <i data-lucide="book-marked" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
+                            <h3 class="font-serif font-bold text-lg">Indexed Seq.</h3>
+                            <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                        </div>
+                        <div class="flip-card-back text-center">
+                            <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Indexed Sequential</h4>
+                            <p class="text-sm">Main file + Index file + Overflow file. Drastically reduces average accesses (e.g., 500k vs 1000).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front text-center">
+                            <i data-lucide="hash" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
+                            <h3 class="font-serif font-bold text-lg">Direct / Hashed</h3>
+                            <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                        </div>
+                        <div class="flip-card-back text-center">
+                            <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Direct File</h4>
+                            <p class="text-sm">Directly access a block at a known address using a required Key field. Fastest single access.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- SECTION 4: ALLOCATION & UNIX/NTFS -->
+        <section id="allocation" class="space-y-10 scroll-mt-24">
+            <div class="border-b border-zen-border pb-4">
+                <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 04</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">Allocation & OS Specifics</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Contiguous -->
+                <div class="bg-white p-6 rounded-2xl border border-zen-border shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-zen-stone/20 rounded-bl-full"></div>
+                    <h3 class="font-serif font-bold text-xl mb-3">Contiguous</h3>
+                    <p class="text-sm text-gray-600 mb-4">Single set of continuous blocks. Only starting block and length in FAT.</p>
+                    <div class="bg-red-50 text-red-700 text-xs px-3 py-2 rounded-lg font-medium">
+                        Issue: External fragmentation (requires compaction).
+                    </div>
+                </div>
+                <!-- Chained -->
+                <div class="bg-white p-6 rounded-2xl border border-zen-border shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-zen-stone/20 rounded-bl-full"></div>
+                    <h3 class="font-serif font-bold text-xl mb-3">Chained</h3>
+                    <p class="text-sm text-gray-600 mb-4">Each block contains a pointer to the next block. No external fragmentation.</p>
+                    <div class="bg-orange-50 text-orange-700 text-xs px-3 py-2 rounded-lg font-medium">
+                        Issue: Cannot accommodate principle of locality.
+                    </div>
+                </div>
+                <!-- Indexed -->
+                <div class="bg-white p-6 rounded-2xl border border-zen-border shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-zen-forest/10 rounded-bl-full"></div>
+                    <h3 class="font-serif font-bold text-xl mb-3">Indexed</h3>
+                    <p class="text-sm text-gray-600 mb-4">FAT contains a separate one-level index for each file (entry for every portion).</p>
+                    <div class="bg-green-50 text-green-700 text-xs px-3 py-2 rounded-lg font-medium">
+                        Best of both worlds: Allows random access without fragmentation.
+                    </div>
                 </div>
             </div>
+
+            <!-- UNIX vs NTFS -->
+            <div class="grid md:grid-cols-2 gap-8 mt-12 bg-zen-forest p-8 rounded-2xl text-white">
+                <div>
+                    <h3 class="font-serif font-bold text-2xl mb-4 text-zen-stone border-b border-white/20 pb-2">UNIX / Linux VFS</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><strong class="text-white">Inodes:</strong> Index node. Control structure with key info for a particular file.</li>
+                        <li><strong class="text-white">Superblock object:</strong> Represents specific mounted file system.</li>
+                        <li><strong class="text-white">Dentry object:</strong> Represents a specific directory entry.</li>
+                        <li><strong class="text-white">File Types:</strong> Regular, Directory, Special, Named pipes, Links.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-serif font-bold text-2xl mb-4 text-zen-stone border-b border-white/20 pb-2">Windows NTFS</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li><strong class="text-white">Key Features:</strong> Recoverability, Security, Large disks, Multiple data streams.</li>
+                        <li><strong class="text-white">Sector:</strong> Smallest physical storage unit on disk.</li>
+                        <li><strong class="text-white">Cluster:</strong> One or more contiguous sectors.</li>
+                        <li><strong class="text-white">Volume:</strong> Logical partition on a disk.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER / KNOWLEDGE CHECK -->
+        <section class="pb-16 text-center">
+            <h3 class="font-serif text-2xl font-bold mb-4">Ready to test your knowledge, Keith?</h3>
+            <p class="text-sm text-gray-500 max-w-md mx-auto mb-8">Review the flashcards and disk scheduling math above. The key to OS is understanding how these architectural layers interact.</p>
+            <button onclick="window.scrollTo(0,0)" class="bg-zen-charcoal text-white px-8 py-3 rounded-full hover:bg-zen-forest transition-colors font-medium">
+                Back to Top
+            </button>
         </section>
 
     </main>
 
-    <!-- Floating Timer Widget -->
-    <div class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:bottom-6 max-w-sm mx-auto md:mx-0 bg-japandi-charcoal text-japandi-paper p-3 md:p-4 rounded-2xl shadow-2xl flex justify-between items-center gap-4 z-50 border border-gray-700 transition-colors duration-500" id="timer-widget">
-        <div class="flex flex-col">
-            <span class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest font-semibold mb-0.5 md:mb-1" id="timer-label">Study Session</span>
-            <span class="font-serif text-2xl md:text-3xl tabular-nums leading-none" id="time-display">02:00:00</span>
-        </div>
-        <div class="flex gap-3 md:gap-2 border-l border-gray-600 pl-4 ml-1 md:ml-2">
-            <button onclick="toggleTimer()" id="play-pause-btn" class="hover:text-japandi-matcha transition-colors flex items-center" title="Play/Pause">
-                <i data-lucide="pause-circle" class="w-7 h-7 md:w-6 md:h-6 flex-shrink-0"></i>
-            </button>
-            <button onclick="resetTimer()" class="hover:text-japandi-wood transition-colors flex items-center" title="Reset">
-                <i data-lucide="rotate-ccw" class="w-6 h-6 md:w-5 md:h-5 ml-0.5 flex-shrink-0"></i>
-            </button>
-        </div>
-    </div>
-
-    <style>
-        .animate-fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-
     <script>
-        // Initialize Icons
+        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // --- Concept Generator Logic ---
-        const conceptData = {
-            predicates: [
-                { logic: "S(x)", meaning: '"is a suspect"' },
-                { logic: "A(x)", meaning: '"has an alibi"' },
-                { logic: "K(x,y)", meaning: '"knows"' },
-                { logic: "L(x,y,z)", meaning: '"lent [y] to [z]"' },
-                { logic: "R(x)", meaning: '"is red"' },
-                { logic: "G(x)", meaning: '"has green eyes"' },
-                { logic: "T(x)", meaning: '"is tall"' },
-                { logic: "E(x)", meaning: '"is even"' }
-            ],
-            variables: [
-                { logic: "x", meaning: '(e.g., "For all x...")' },
-                { logic: "y", meaning: '(e.g., "There exists a y...")' },
-                { logic: "z", meaning: '(e.g., "x is taller than z")' }
-            ],
-            constants: [
-                { logic: "m", meaning: "Mary" },
-                { logic: "b", meaning: "Bill (or Bob)" },
-                { logic: "j", meaning: "John (or James)" },
-                { logic: "p", meaning: "Paul" },
-                { logic: "a", meaning: "Alice" },
-                { logic: "f", meaning: "Fido" },
-                { logic: "e", meaning: "Jeff" },
-                { logic: "r", meaning: "this rose" }
-            ]
-        };
-
-        function switchConceptTab(tabId) {
-            // Hide all tabs
-            document.querySelectorAll('.concept-tab').forEach(el => el.classList.add('hidden'));
+        // Architecture Tab Logic
+        function switchTab(group, tabId) {
+            // Hide all tabs in group
+            document.querySelectorAll(`.${group}-tab`).forEach(el => el.classList.add('hidden'));
             
             // Reset button styles
-            document.querySelectorAll('[id^="btn-tab-"]').forEach(btn => {
-                btn.classList.remove('text-japandi-wood', 'border-japandi-wood', 'bg-japandi-paper', 'font-semibold');
+            document.querySelectorAll(`[id^="btn-${group}-"]`).forEach(btn => {
+                btn.classList.remove('text-zen-forest', 'border-zen-forest', 'font-semibold');
                 btn.classList.add('text-gray-500', 'border-transparent', 'font-medium');
             });
 
             // Show active tab
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${group}-${tabId}`).classList.remove('hidden');
             
             // Style active button
-            const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+            const activeBtn = document.getElementById(`btn-${group}-${tabId}`);
             activeBtn.classList.remove('text-gray-500', 'border-transparent', 'font-medium');
-            activeBtn.classList.add('text-japandi-wood', 'border-japandi-wood', 'bg-japandi-paper', 'font-semibold');
+            activeBtn.classList.add('text-zen-forest', 'border-zen-forest', 'font-semibold');
         }
 
-        function generateConceptEx(type) {
-            const arr = conceptData[type];
-            const randomEx = arr[Math.floor(Math.random() * arr.length)];
-            const displayFormat = type === 'variables' ? randomEx.meaning : `= ${randomEx.meaning}`;
-            
-            document.getElementById(`ex-${type}`).innerHTML = `
-                <div class="animate-fade-in">
-                    <span class="math-text text-3xl">${randomEx.logic}</span> 
-                    <span class="text-lg text-gray-600 ml-3">${displayFormat}</span>
-                </div>
-            `;
-        }
+        // Active state for Sticky Nav based on scroll
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll("nav div div a");
 
-        // --- Flashcard Data & Logic ---
-        const practiceData = [
-            {
-                q: "Mary is a suspect and Mary does not have an alibi.",
-                dict: "S(x): x is a suspect | A(x): x has an alibi | m: Mary",
-                ans: "S(m) &and; &sim;A(m)"
-            },
-            {
-                q: "If John knows Paul, then Paul is a suspect.",
-                dict: "K(x,y): x knows y | S(x): x is a suspect | j: John | p: Paul",
-                ans: "K(j,p) &rarr; S(p)"
-            },
-            {
-                q: "Translate to English: &sim;S(p) &and; A(p)",
-                dict: "S(x): is suspect | A(x): has alibi | p: Paul",
-                ans: "Paul is not a suspect and Paul has an alibi."
-            },
-            {
-                q: "Alice lent her book to Bob, but Bob lost it.",
-                dict: "L(x,y,z): x lent y to z | O(x,y): x lost y | a: Alice | b: book | o: Bob",
-                ans: "L(a,b,o) &and; O(o,b)"
-            },
-            {
-                q: "All humans are mortal.",
-                dict: "H(x): x is human | M(x): x is mortal",
-                ans: "&forall;x [H(x) &rarr; M(x)]"
-            },
-            {
-                q: "No cats are reptiles.",
-                dict: "C(x): x is a cat | R(x): x is a reptile",
-                ans: "&forall;x [C(x) &rarr; &sim;R(x)]"
-            },
-            {
-                q: "Every student who studies hard will pass.",
-                dict: "S(x): student | H(x): studies hard | P(x): will pass",
-                ans: "&forall;x [(S(x) &and; H(x)) &rarr; P(x)]"
-            },
-            {
-                q: "Some people think of no one but themselves.",
-                dict: "P(x): person | N(x): thinks of no one but himself",
-                ans: "&exist;x [P(x) &and; N(x)]"
-            },
-            {
-                q: "Some of the children didn't apologize.",
-                dict: "C(x): child | A(x): apologized",
-                ans: "&exist;x [C(x) &and; &sim;A(x)]"
-            },
-            {
-                q: "Nobody likes cheats.",
-                dict: "P(x): person | C(x): likes cheats",
-                ans: "&sim;&exist;x [P(x) &and; C(x)]   <span class='text-sm text-gray-500 ml-2'>(or &forall;x [P(x) &rarr; &sim;C(x)])</span>"
-            }
-        ];
-
-        const container = document.getElementById('flashcard-container');
-        practiceData.forEach((item, index) => {
-            const card = document.createElement('div');
-            card.className = 'flashcard bg-japandi-paper border border-japandi-border rounded-lg p-5 cursor-pointer shadow-sm hover:border-japandi-matcha transition-colors';
-            card.onclick = function() { this.classList.toggle('open'); };
-            card.innerHTML = `
-                <div class="flex justify-between items-center">
-                    <p class="font-medium text-base md:text-lg pr-4">${index + 1}. ${item.q}</p>
-                    <i data-lucide="chevron-down" class="text-japandi-wood flashcard-icon w-5 h-5 flex-shrink-0"></i>
-                </div>
-                <div class="flashcard-answer border-t border-dashed border-gray-200 pt-4">
-                    <p class="text-xs text-gray-500 mb-2 uppercase tracking-wide">Dictionary:</p>
-                    <p class="text-sm mb-4 text-gray-700 break-words">${item.dict}</p>
-                    <p class="text-xs text-gray-500 mb-1 uppercase tracking-wide">Logic:</p>
-                    <p class="math-text break-words">${item.ans}</p>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-        lucide.createIcons(); // re-init icons for dynamic content
-
-
-        // --- Generator Logic ---
-        const problemTypes = [
-            { t: "Constant AND", s: "{Name} is a {Role1} and {Name} is a {Role2}.", l: "{R1}({n}) &and; {R2}({n})" },
-            { t: "Constant IF", s: "If {Name} is a {Role1}, then {Name} is a {Role2}.", l: "{R1}({n}) &rarr; {R2}({n})" },
-            { t: "Universal ALL", s: "All {P1} are {P2}.", l: "&forall;x [{R1}(x) &rarr; {R2}(x)]" },
-            { t: "Universal NONE", s: "No {P1} are {P2}.", l: "&forall;x [{R1}(x) &rarr; &sim;{R2}(x)]" },
-            { t: "Existential SOME", s: "Some {P1} are {P2}.", l: "&exist;x [{R1}(x) &and; {R2}(x)]" },
-            { t: "Existential NOT", s: "Some {P1} are not {P2}.", l: "&exist;x [{R1}(x) &and; &sim;{R2}(x)]" }
-        ];
-
-        const dictData = {
-            names: [ {n: "James", c: "j"}, {n: "Alice", c: "a"}, {n: "Bill", c: "b"}, {n: "Mary", c: "m"}, {n: "Keith", c: "k"} ],
-            roles: [ 
-                {s: "student", p: "students", f: "S"}, 
-                {s: "programmer", p: "programmers", f: "P"},
-                {s: "suspect", p: "suspects", f: "U"}, 
-                {s: "genius", p: "geniuses", f: "G"},
-                {s: "reptile", p: "reptiles", f: "R"},
-                {s: "cat", p: "cats", f: "C"}
-            ]
-        };
-
-        function generateProblem() {
-            document.getElementById('gen-answer').classList.add('hidden');
-            document.getElementById('btn-show-ans').classList.remove('hidden');
-            
-            let prob = problemTypes[Math.floor(Math.random() * problemTypes.length)];
-            let name = dictData.names[Math.floor(Math.random() * dictData.names.length)];
-            
-            let r1 = dictData.roles[Math.floor(Math.random() * dictData.roles.length)];
-            let r2 = dictData.roles[Math.floor(Math.random() * dictData.roles.length)];
-            while(r1 === r2) r2 = dictData.roles[Math.floor(Math.random() * dictData.roles.length)];
-
-            let sentence = prob.s.replace(/{Name}/g, name.n).replace(/{Role1}/g, r1.s).replace(/{Role2}/g, r2.s).replace(/{P1}/g, r1.p).replace(/{P2}/g, r2.p);
-            let logic = prob.l.replace(/{n}/g, name.c).replace(/{R1}/g, r1.f).replace(/{R2}/g, r2.f);
-            
-            let dict = `<span class="math-text">${r1.f}(x)</span>: is a ${r1.s}<br><span class="math-text">${r2.f}(x)</span>: is a ${r2.s}`;
-            if(prob.l.includes("{n}")) dict += `<br><span class="math-text">${name.c}</span>: ${name.n}`;
-
-            document.getElementById('gen-problem').innerHTML = `"${sentence}"`;
-            document.getElementById('gen-dict').innerHTML = dict;
-            document.getElementById('gen-logic').innerHTML = logic;
-        }
-
-        function toggleAnswer() {
-            const ansBox = document.getElementById('gen-answer');
-            ansBox.classList.toggle('hidden');
-        }
-
-
-        // --- Timer Logic ---
-        let totalSeconds = 2 * 60 * 60; // 2 hours
-        let timerInterval = null;
-        let isRunning = true;
-        const display = document.getElementById('time-display');
-        const widget = document.getElementById('timer-widget');
-        const playPauseBtn = document.getElementById('play-pause-btn');
-
-        function updateDisplay() {
-            let h = Math.floor(totalSeconds / 3600);
-            let m = Math.floor((totalSeconds % 3600) / 60);
-            let s = totalSeconds % 60;
-            display.innerText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-            
-            // Color warnings
-            if (totalSeconds <= 0) {
-                widget.style.backgroundColor = '#8B0000'; // Dark Red
-                document.getElementById('timer-label').innerText = "TIME'S UP";
-            } else if (totalSeconds < 300) { // under 5 mins
-                widget.style.backgroundColor = '#A94442'; // Muted Red
-            } else {
-                widget.style.backgroundColor = '#3A3A3A'; // Default Charcoal
-                document.getElementById('timer-label').innerText = "Study Session";
-            }
-        }
-
-        function tick() {
-            if (totalSeconds > 0) {
-                totalSeconds--;
-                updateDisplay();
-            } else {
-                clearInterval(timerInterval);
-                isRunning = false;
-            }
-        }
-
-        function toggleTimer() {
-            if (isRunning) {
-                clearInterval(timerInterval);
-                playPauseBtn.innerHTML = '<i data-lucide="play-circle" class="w-6 h-6"></i>';
-            } else {
-                if(totalSeconds > 0) {
-                    timerInterval = setInterval(tick, 1000);
-                    playPauseBtn.innerHTML = '<i data-lucide="pause-circle" class="w-6 h-6"></i>';
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute("id");
                 }
-            }
-            isRunning = !isRunning;
-            lucide.createIcons();
-        }
+            });
 
-        function resetTimer() {
-            clearInterval(timerInterval);
-            totalSeconds = 2 * 60 * 60;
-            isRunning = true;
-            playPauseBtn.innerHTML = '<i data-lucide="pause-circle" class="w-6 h-6"></i>';
-            updateDisplay();
-            timerInterval = setInterval(tick, 1000);
-            lucide.createIcons();
-        }
-
-        // Start timer on load
-        timerInterval = setInterval(tick, 1000);
-        updateDisplay();
+            navLinks.forEach((link) => {
+                link.classList.remove("text-zen-forest", "font-bold");
+                if (link.getAttribute("href").includes(current)) {
+                    link.classList.add("text-zen-forest", "font-bold");
+                }
+            });
+        });
     </script>
 </body>
 </html>
