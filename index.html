@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algebra of Propositions | Interactive Recitation Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600&family=Shippori+Mincho:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
@@ -13,29 +13,29 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
+                        serif: ['Shippori Mincho', 'serif'],
                         mono: ['Fira Code', 'monospace'],
                     },
                     colors: {
-                        nordic: {
-                            bg: '#F1F5F9',
-                            paper: '#FFFFFF',
-                            navy: '#0F172A',
-                            navyLight: '#1E293B',
-                            amber: '#F59E0B',
-                            amberLight: '#FEF3C7',
-                            slate: '#475569',
-                            border: '#E2E8F0'
+                        paper: {
+                            bg: '#F2EFE9',
+                            card: '#FAFAF8',
+                            dark: '#E2DCD0'
+                        },
+                        ink: {
+                            main: '#1C1C1C',
+                            muted: '#5A5A5A'
+                        },
+                        accent: {
+                            matcha: '#72826A',
+                            terracotta: '#D47A61',
+                            sand: '#D4C5B3'
                         }
                     },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
+                    boxShadow: {
+                        'brutal': '4px 4px 0px #1C1C1C',
+                        'brutal-sm': '2px 2px 0px #1C1C1C',
+                        'brutal-hover': '2px 2px 0px #1C1C1C',
                     }
                 }
             }
@@ -43,265 +43,264 @@
     </script>
     <style>
         body { 
-            background-color: #F1F5F9; 
-            color: #475569; 
-            background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-color: #F2EFE9; 
+            color: #1C1C1C; 
         }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+        /* Brutalist Scrollbar */
+        ::-webkit-scrollbar { width: 8px; border-left: 2px solid #1C1C1C; }
+        ::-webkit-scrollbar-track { background: #F2EFE9; }
+        ::-webkit-scrollbar-thumb { background: #1C1C1C; }
         
-        .math-sym { font-family: 'Fira Code', monospace; font-size: 1.05em; font-weight: 600; letter-spacing: -0.5px;}
-        .math-op { color: #F59E0B; margin: 0 6px;}
+        .math-sym { font-family: 'Fira Code', monospace; font-size: 1.1em; font-weight: 600; letter-spacing: -0.5px;}
+        .math-op { color: #D47A61; margin: 0 6px;}
         .overbar { text-decoration: overline; text-decoration-thickness: 2px; }
         
         /* Sidebar active state */
         .nav-link.active {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: #F59E0B;
-            border-left-color: #F59E0B;
-            font-weight: 600;
+            background-color: #1C1C1C;
+            color: #F2EFE9;
         }
 
-        /* Hover lift & Glow */
-        .hover-lift { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .hover-lift:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-            border-color: #CBD5E1;
+        /* Hover Interaction */
+        .btn-brutal {
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn-brutal:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px #1C1C1C !important;
         }
 
         /* Dynamic Reveal */
         .reveal-content {
-            max-height: 0;
+            max-height: 200px;
             overflow: hidden;
-            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin-top 0.4s ease-in-out;
-            opacity: 0;
-        }
-        .reveal-content.open {
-            max-height: 150px;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
             opacity: 1;
             margin-top: 0.75rem;
         }
-
-        /* Glassmorphism */
-        .glass {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        .reveal-content.closed {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
         }
 
-        /* Scroll Progress */
+        /* Progress Bar */
         #progress-bar {
             position: fixed;
             top: 0;
             left: 0;
-            height: 4px;
-            background: #F59E0B;
+            height: 6px;
+            background: #D47A61;
             z-index: 100;
-            transition: width 0.1s ease;
+            border-bottom: 2px solid #1C1C1C;
+            border-right: 2px solid #1C1C1C;
+            transition: width 0.1s linear;
+        }
+
+        /* structural grid pattern */
+        .bg-grid {
+            background-image: linear-gradient(#E2DCD0 1px, transparent 1px), linear-gradient(90deg, #E2DCD0 1px, transparent 1px);
+            background-size: 24px 24px;
         }
     </style>
 </head>
-<body class="antialiased flex flex-col md:flex-row min-h-screen">
+<body class="antialiased flex flex-col md:flex-row min-h-screen bg-grid">
 
     <div id="progress-bar" style="width: 0%;"></div>
 
     <!-- Mobile Header -->
-    <header class="md:hidden glass text-white p-4 sticky top-0 z-50 shadow-md flex justify-between items-center">
-        <h1 class="font-serif font-bold text-lg text-nordic-amber">Keith's Logic Engine</h1>
-        <button id="mobile-menu-btn" class="p-2 hover:bg-white/10 rounded transition-colors"><i data-lucide="menu"></i></button>
+    <header class="md:hidden bg-paper-bg border-b-2 border-ink-main p-4 sticky top-0 z-50 flex justify-between items-center">
+        <h1 class="font-serif font-bold text-xl text-ink-main">LOGIC<span class="text-accent-terracotta">.</span>ENGINE</h1>
+        <button id="mobile-menu-btn" class="p-2 border-2 border-ink-main shadow-brutal-sm bg-white active:translate-y-1 active:shadow-none transition-all"><i data-lucide="menu"></i></button>
     </header>
 
     <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 glass border-r border-slate-800 fixed h-full z-40 transition-transform duration-300 shadow-2xl">
-        <div class="p-8">
-            <h1 class="font-serif font-black text-2xl mb-1 tracking-tight text-white">IT2 Recitation</h1>
-            <p class="text-xs text-nordic-amber font-mono uppercase tracking-widest">Algebra of Propositions</p>
+    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-paper-bg border-r-4 border-ink-main fixed h-full z-40 transition-transform duration-300">
+        <div class="p-8 border-b-4 border-ink-main bg-white">
+            <h1 class="font-serif font-bold text-3xl mb-1 text-ink-main tracking-tight">LOGIC<span class="text-accent-terracotta">.</span></h1>
+            <p class="text-xs text-ink-muted font-mono uppercase tracking-widest font-semibold">IT2 Recitation Tool</p>
         </div>
-        <nav class="flex-grow overflow-y-auto py-2" id="nav-menu">
-            <p class="px-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Engine Modules</p>
-            <a href="#laws" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">1. The 9 Laws</a>
-            <a href="#duality" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">2. Duality & Replacement</a>
-            <a href="#conditionals" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">3. Conditionals</a>
-            <a href="#equivalence" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">4. Equivalence vs Implication</a>
-            <a href="#arguments" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">5. Valid Arguments</a>
+        <nav class="flex-grow overflow-y-auto py-6" id="nav-menu">
+            <p class="px-8 text-[10px] font-bold text-ink-muted uppercase tracking-widest mb-4">Structural Modules</p>
+            <a href="#laws" class="nav-link block px-8 py-3 text-ink-main border-y-2 border-transparent hover:border-ink-main hover:bg-paper-dark transition-all text-sm font-mono font-semibold uppercase tracking-wide">01. The 9 Laws</a>
+            <a href="#duality" class="nav-link block px-8 py-3 text-ink-main border-y-2 border-transparent hover:border-ink-main hover:bg-paper-dark transition-all text-sm font-mono font-semibold uppercase tracking-wide">02. Duality</a>
+            <a href="#conditionals" class="nav-link block px-8 py-3 text-ink-main border-y-2 border-transparent hover:border-ink-main hover:bg-paper-dark transition-all text-sm font-mono font-semibold uppercase tracking-wide">03. Conditionals</a>
+            <a href="#equivalence" class="nav-link block px-8 py-3 text-ink-main border-y-2 border-transparent hover:border-ink-main hover:bg-paper-dark transition-all text-sm font-mono font-semibold uppercase tracking-wide">04. Equivalence</a>
+            <a href="#arguments" class="nav-link block px-8 py-3 text-ink-main border-y-2 border-transparent hover:border-ink-main hover:bg-paper-dark transition-all text-sm font-mono font-semibold uppercase tracking-wide">05. Arguments</a>
+            <a href="#generators" class="nav-link block px-8 py-3 text-ink-main border-y-2 border-transparent hover:border-ink-main hover:bg-accent-terracotta hover:text-white transition-all text-sm font-mono font-semibold uppercase tracking-wide">06. Generators</a>
         </nav>
-        <div class="p-6 border-t border-slate-800 bg-slate-900/50 text-xs text-slate-400">
-            <p class="flex items-start gap-2 leading-relaxed">
-                <i data-lucide="zap" class="w-4 h-4 text-nordic-amber flex-shrink-0"></i> 
-                <span>Dynamic Mode: Tap "Reveal" on cards to view English translations.</span>
+        <div class="p-6 border-t-4 border-ink-main bg-white text-xs text-ink-main font-mono">
+            <p class="flex items-start gap-3 leading-relaxed">
+                <i data-lucide="scan-line" class="w-4 h-4 flex-shrink-0"></i> 
+                <span>All logic currently expanded for rapid visual scanning.</span>
             </p>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 md:ml-72 p-4 md:p-10 lg:p-14 max-w-7xl mx-auto w-full">
+    <main class="flex-1 md:ml-72 p-4 md:p-12 lg:p-16 max-w-[1400px] mx-auto w-full">
         
         <!-- SECTION 1: THE 9 LAWS -->
-        <section id="laws" class="scroll-mt-20 mb-24 animate-fade-in-up">
-            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
-                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">The 9 Propositional Laws</h2>
-                <p class="text-nordic-slate text-lg">Fundamental rules for manipulating and simplifying logical statements.</p>
+        <section id="laws" class="scroll-mt-20 mb-28">
+            <div class="mb-12 border-l-8 border-ink-main pl-6 py-2">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-ink-main tracking-tight uppercase">01. The 9 Laws</h2>
+                <p class="text-ink-muted text-lg mt-2 font-mono">Fundamental manipulation operations.</p>
             </div>
 
-            <!-- Staggered Masonry-style Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <!-- Brutalist Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 
                 <!-- Idempotent -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="repeat" class="w-16 h-16"></i></div>
-                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Idempotent</h3>
-                    <p class="text-xs text-gray-500 mb-4 relative z-10">Applying same operation repeatedly does not change it.</p>
-                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-accent-sand border-2 border-ink-main px-3 py-1 font-mono font-bold text-ink-main shadow-brutal-sm">01</div>
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-2">Idempotent</h3>
+                    <p class="text-xs text-ink-muted mb-4 font-mono">Repeated execution yields same result.</p>
+                    <div class="bg-white p-4 border-2 border-ink-main shadow-inner mb-auto text-center">
                         <span class="math-sym">p<span class="math-op">&and;</span>p <span class="math-op">&equiv;</span> p</span><br>
                         <span class="math-sym mt-2 block">p<span class="math-op">&or;</span>p <span class="math-op">&equiv;</span> p</span>
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
-                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
-                    </button>
-                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
-                        "It is raining AND it is raining" &rarr; It is raining.
+                    <div class="reveal-content bg-paper-dark border-2 border-ink-main p-3 mt-4 text-sm font-mono text-ink-main">
+                        <span class="text-accent-terracotta font-bold">ENG:</span> "It is raining AND it is raining" &rarr; It is raining.
                     </div>
+                    <button class="reveal-btn mt-3 w-full py-2 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal flex justify-center items-center gap-2">
+                        <i data-lucide="eye-off" class="w-4 h-4"></i> Hide Translation
+                    </button>
                 </div>
 
                 <!-- Commutative -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="arrow-left-right" class="w-16 h-16"></i></div>
-                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Commutative</h3>
-                    <p class="text-xs text-gray-500 mb-4 relative z-10">The order of propositions does not change the outcome.</p>
-                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-accent-sand border-2 border-ink-main px-3 py-1 font-mono font-bold text-ink-main shadow-brutal-sm">02</div>
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-2">Commutative</h3>
+                    <p class="text-xs text-ink-muted mb-4 font-mono">Order of propositions is irrelevant.</p>
+                    <div class="bg-white p-4 border-2 border-ink-main shadow-inner mb-auto text-center">
                         <span class="math-sym">p<span class="math-op">&and;</span>q <span class="math-op">&equiv;</span> q<span class="math-op">&and;</span>p</span><br>
-                        <span class="math-sym mt-1 block">p<span class="math-op">&or;</span>q <span class="math-op">&equiv;</span> q<span class="math-op">&or;</span>p</span><br>
-                        <span class="math-sym mt-1 block">p<span class="math-op">&harr;</span>q <span class="math-op">&equiv;</span> q<span class="math-op">&harr;</span>p</span>
+                        <span class="math-sym mt-2 block">p<span class="math-op">&or;</span>q <span class="math-op">&equiv;</span> q<span class="math-op">&or;</span>p</span><br>
+                        <span class="math-sym mt-2 block">p<span class="math-op">&harr;</span>q <span class="math-op">&equiv;</span> q<span class="math-op">&harr;</span>p</span>
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
-                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    <div class="reveal-content bg-paper-dark border-2 border-ink-main p-3 mt-4 text-sm font-mono text-ink-main">
+                        <span class="text-accent-terracotta font-bold">ENG:</span> "I have a cat AND a dog" &equiv; "I have a dog AND a cat"
+                    </div>
+                    <button class="reveal-btn mt-3 w-full py-2 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal flex justify-center items-center gap-2">
+                        <i data-lucide="eye-off" class="w-4 h-4"></i> Hide Translation
                     </button>
-                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
-                        "I have a cat AND a dog" &equiv; "I have a dog AND a cat"
-                    </div>
                 </div>
 
                 <!-- Associative -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="network" class="w-16 h-16"></i></div>
-                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Associative</h3>
-                    <p class="text-xs text-gray-500 mb-4 relative z-10">Parenthesis grouping doesn't matter for chains of same operators.</p>
-                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-accent-sand border-2 border-ink-main px-3 py-1 font-mono font-bold text-ink-main shadow-brutal-sm">03</div>
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-2">Associative</h3>
+                    <p class="text-xs text-ink-muted mb-4 font-mono">Parenthesis grouping is ignored for same operators.</p>
+                    <div class="bg-white p-4 border-2 border-ink-main shadow-inner mb-auto text-center">
                         <span class="math-sym text-[0.9em]">(p<span class="math-op">&and;</span>q)<span class="math-op">&and;</span>r <span class="math-op">&equiv;</span> p<span class="math-op">&and;</span>(q<span class="math-op">&and;</span>r)</span><br>
-                        <span class="math-sym text-[0.9em] mt-2 block">(p<span class="math-op">&or;</span>q)<span class="math-op">&or;</span>r <span class="math-op">&equiv;</span> p<span class="math-op">&or;</span>(q<span class="math-op">&or;</span>r)</span>
+                        <span class="math-sym text-[0.9em] mt-3 block">(p<span class="math-op">&or;</span>q)<span class="math-op">&or;</span>r <span class="math-op">&equiv;</span> p<span class="math-op">&or;</span>(q<span class="math-op">&or;</span>r)</span>
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
-                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    <div class="reveal-content bg-paper-dark border-2 border-ink-main p-3 mt-4 text-sm font-mono text-ink-main">
+                        <span class="text-accent-terracotta font-bold">ENG:</span> "Wash car AND mow lawn, AND buy groceries" &equiv; "Wash car, AND mow lawn AND buy groceries"
+                    </div>
+                    <button class="reveal-btn mt-3 w-full py-2 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal flex justify-center items-center gap-2">
+                        <i data-lucide="eye-off" class="w-4 h-4"></i> Hide Translation
                     </button>
-                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
-                        "Wash car AND mow lawn, AND buy groceries" &equiv; "Wash car, AND mow lawn AND buy groceries"
-                    </div>
                 </div>
 
                 <!-- Distributive -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="split" class="w-16 h-16"></i></div>
-                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Distributive</h3>
-                    <p class="text-xs text-gray-500 mb-4 relative z-10">Distribute AND over OR, or OR over AND.</p>
-                    <div class="bg-slate-50 p-3 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-accent-sand border-2 border-ink-main px-3 py-1 font-mono font-bold text-ink-main shadow-brutal-sm">04</div>
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-2">Distributive</h3>
+                    <p class="text-xs text-ink-muted mb-4 font-mono">Distribute AND over OR, or OR over AND.</p>
+                    <div class="bg-white p-3 border-2 border-ink-main shadow-inner mb-auto text-center">
                         <span class="math-sym text-[0.8em]">p<span class="math-op">&and;</span>(q<span class="math-op">&or;</span>r) <span class="math-op">&equiv;</span> (p<span class="math-op">&and;</span>q)<span class="math-op">&or;</span>(p<span class="math-op">&and;</span>r)</span><br>
-                        <span class="math-sym text-[0.8em] mt-2 block">p<span class="math-op">&or;</span>(q<span class="math-op">&and;</span>r) <span class="math-op">&equiv;</span> (p<span class="math-op">&or;</span>q)<span class="math-op">&and;</span>(p<span class="math-op">&or;</span>r)</span>
+                        <span class="math-sym text-[0.8em] mt-3 block">p<span class="math-op">&or;</span>(q<span class="math-op">&and;</span>r) <span class="math-op">&equiv;</span> (p<span class="math-op">&or;</span>q)<span class="math-op">&and;</span>(p<span class="math-op">&or;</span>r)</span>
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
-                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    <div class="reveal-content bg-paper-dark border-2 border-ink-main p-3 mt-4 text-sm font-mono text-ink-main">
+                        <span class="text-accent-terracotta font-bold">ENG:</span> "I will order a burger AND (either fries OR salad)"
+                    </div>
+                    <button class="reveal-btn mt-3 w-full py-2 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal flex justify-center items-center gap-2">
+                        <i data-lucide="eye-off" class="w-4 h-4"></i> Hide Translation
                     </button>
-                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
-                        "I will order a burger AND (either fries OR salad)"
-                    </div>
                 </div>
 
-                <!-- De Morgan's (Span 2 cols on Desktop) -->
-                <div class="bg-gradient-to-br from-nordic-navy to-slate-800 border-none rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group xl:col-span-2 text-white shadow-lg">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="flip-vertical" class="w-24 h-24 text-nordic-amber"></i></div>
-                    <div class="flex items-center gap-3 mb-2 relative z-10">
-                        <span class="px-2 py-1 bg-nordic-amber text-nordic-navy text-[10px] font-black rounded uppercase tracking-widest">Crucial</span>
-                        <h3 class="font-bold text-2xl">De Morgan's Laws</h3>
+                <!-- De Morgan's -->
+                <div class="bg-accent-matcha border-4 border-ink-main shadow-brutal p-6 flex flex-col relative xl:col-span-2">
+                    <div class="absolute -top-3 -right-3 bg-ink-main text-white border-2 border-ink-main px-3 py-1 font-mono font-bold shadow-brutal-sm">05</div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="px-2 py-1 bg-white border-2 border-ink-main text-ink-main text-[10px] font-mono font-black uppercase tracking-widest shadow-brutal-sm">Crucial</span>
+                        <h3 class="font-serif font-bold text-3xl text-white">De Morgan's</h3>
                     </div>
-                    <p class="text-sm text-slate-300 mb-4 relative z-10 max-w-md">Negating a grouped AND turns it into an OR. Negating a grouped OR turns it into an AND.</p>
+                    <p class="text-xs text-white/90 mb-4 font-mono max-w-md">Negating a grouped AND turns it into an OR. Negating a grouped OR turns it into an AND.</p>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto relative z-10">
-                        <div class="bg-white/10 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
-                            <div class="text-center mb-3">
-                                <span class="math-sym text-nordic-amber"><span class="overbar text-white">p <span class="math-op text-white">&or;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar text-white">p</span> <span class="math-op text-white">&and;</span> <span class="overbar text-white">q</span></span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-auto">
+                        <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm">
+                            <div class="text-center mb-4 border-b-2 border-ink-main pb-3">
+                                <span class="math-sym text-ink-main"><span class="overbar text-ink-main">p <span class="math-op text-ink-main">&or;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar text-ink-main">p</span> <span class="math-op text-ink-main">&and;</span> <span class="overbar text-ink-main">q</span></span>
                             </div>
-                            <p class="text-xs text-slate-300 text-center">"NOT (pizza OR pasta)" <br>&equiv; "NOT pizza AND NOT pasta"</p>
+                            <p class="text-xs text-ink-main text-center font-mono">"NOT (pizza OR pasta)" <br>&equiv; "NOT pizza AND NOT pasta"</p>
                         </div>
-                        <div class="bg-white/10 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
-                            <div class="text-center mb-3">
-                                <span class="math-sym text-nordic-amber"><span class="overbar text-white">p <span class="math-op text-white">&and;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar text-white">p</span> <span class="math-op text-white">&or;</span> <span class="overbar text-white">q</span></span>
+                        <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm">
+                            <div class="text-center mb-4 border-b-2 border-ink-main pb-3">
+                                <span class="math-sym text-ink-main"><span class="overbar text-ink-main">p <span class="math-op text-ink-main">&and;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar text-ink-main">p</span> <span class="math-op text-ink-main">&or;</span> <span class="overbar text-ink-main">q</span></span>
                             </div>
-                            <p class="text-xs text-slate-300 text-center">"NOT (A and B)" <br>&equiv; "NOT A or NOT B"</p>
+                            <p class="text-xs text-ink-main text-center font-mono">"NOT (A and B)" <br>&equiv; "NOT A or NOT B"</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Absorption -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="shrink" class="w-16 h-16"></i></div>
-                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Absorption</h3>
-                    <p class="text-xs text-gray-500 mb-4 relative z-10">Shortcuts! <span class="math-sym text-[0.8em]">p</span> absorbs compounds containing <span class="math-sym text-[0.8em]">p</span>.</p>
-                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-accent-sand border-2 border-ink-main px-3 py-1 font-mono font-bold text-ink-main shadow-brutal-sm">06</div>
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-2">Absorption</h3>
+                    <p class="text-xs text-ink-muted mb-4 font-mono">Shortcut: <span class="math-sym text-[0.8em]">p</span> absorbs compounds containing <span class="math-sym text-[0.8em]">p</span>.</p>
+                    <div class="bg-white p-4 border-2 border-ink-main shadow-inner mb-auto text-center">
                         <span class="math-sym">p<span class="math-op">&and;</span>(p<span class="math-op">&or;</span>q) <span class="math-op">&equiv;</span> p</span><br>
-                        <span class="math-sym mt-2 block">p<span class="math-op">&or;</span>(p<span class="math-op">&and;</span>q) <span class="math-op">&equiv;</span> p</span>
+                        <span class="math-sym mt-3 block">p<span class="math-op">&or;</span>(p<span class="math-op">&and;</span>q) <span class="math-op">&equiv;</span> p</span>
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
-                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    <div class="reveal-content bg-paper-dark border-2 border-ink-main p-3 mt-4 text-sm font-mono text-ink-main">
+                        <span class="text-accent-terracotta font-bold">ENG:</span> "I go to work, OR (I go to work AND drive)" &rarr; I go to work.
+                    </div>
+                    <button class="reveal-btn mt-3 w-full py-2 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal flex justify-center items-center gap-2">
+                        <i data-lucide="eye-off" class="w-4 h-4"></i> Hide Translation
                     </button>
-                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
-                        "I go to work, OR (I go to work AND drive)" &rarr; I go to work.
-                    </div>
                 </div>
 
                 <!-- Involution -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="undo-2" class="w-16 h-16"></i></div>
-                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Involution</h3>
-                    <p class="text-xs text-gray-500 mb-4 relative z-10">Double negation. Two negatives cancel out.</p>
-                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner flex items-center justify-center">
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-accent-sand border-2 border-ink-main px-3 py-1 font-mono font-bold text-ink-main shadow-brutal-sm">07</div>
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-2">Involution</h3>
+                    <p class="text-xs text-ink-muted mb-4 font-mono">Double negation. Negatives cancel.</p>
+                    <div class="bg-white p-4 border-2 border-ink-main shadow-inner mb-auto flex items-center justify-center">
                         <span class="math-sym text-2xl"><span class="overbar"><span class="overbar">p</span></span> <span class="math-op">&equiv;</span> p</span>
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
-                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
-                    </button>
-                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
-                        "I am NOT NOT hungry" &rarr; I am hungry.
+                    <div class="reveal-content bg-paper-dark border-2 border-ink-main p-3 mt-4 text-sm font-mono text-ink-main">
+                        <span class="text-accent-terracotta font-bold">ENG:</span> "I am NOT NOT hungry" &rarr; I am hungry.
                     </div>
+                    <button class="reveal-btn mt-3 w-full py-2 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal flex justify-center items-center gap-2">
+                        <i data-lucide="eye-off" class="w-4 h-4"></i> Hide Translation
+                    </button>
                 </div>
 
                 <!-- Identity / Domination -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="fingerprint" class="w-16 h-16"></i></div>
-                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Identity & Domination</h3>
-                    <p class="text-xs text-gray-500 mb-4 relative z-10">Combining <span class="math-sym text-[0.8em]">p</span> with True (<span class="math-sym text-[0.8em]">t</span>) or False (<span class="math-sym text-[0.8em]">f</span>).</p>
-                    <div class="bg-slate-50 p-4 rounded-xl mb-auto border border-slate-100 shadow-inner grid grid-cols-2 gap-y-3 gap-x-2 text-center items-center">
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-accent-sand border-2 border-ink-main px-3 py-1 font-mono font-bold text-ink-main shadow-brutal-sm">08</div>
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-2">Identity/Dominate</h3>
+                    <p class="text-xs text-ink-muted mb-4 font-mono">Combining <span class="math-sym text-[0.8em]">p</span> with True (<span class="math-sym text-[0.8em]">t</span>) or False (<span class="math-sym text-[0.8em]">f</span>).</p>
+                    <div class="bg-white p-4 border-2 border-ink-main shadow-inner mb-auto grid grid-cols-2 gap-y-4 gap-x-2 text-center items-center">
                         <span class="math-sym text-[0.9em]">p<span class="math-op">&or;</span>f <span class="math-op">&equiv;</span> p</span>
                         <span class="math-sym text-[0.9em]">p<span class="math-op">&and;</span>t <span class="math-op">&equiv;</span> p</span>
-                        <span class="math-sym text-[0.9em]">p<span class="math-op">&or;</span>t <span class="math-op">&equiv;</span> t</span>
-                        <span class="math-sym text-[0.9em]">p<span class="math-op">&and;</span>f <span class="math-op">&equiv;</span> f</span>
+                        <span class="math-sym text-[0.9em] border-t-2 border-ink-main pt-2">p<span class="math-op">&or;</span>t <span class="math-op">&equiv;</span> t</span>
+                        <span class="math-sym text-[0.9em] border-t-2 border-ink-main pt-2">p<span class="math-op">&and;</span>f <span class="math-op">&equiv;</span> f</span>
                     </div>
                 </div>
 
                 <!-- Complement -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="pie-chart" class="w-16 h-16"></i></div>
-                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Complement</h3>
-                    <p class="text-xs text-gray-500 mb-4 relative z-10">Relationship between proposition and its exact opposite.</p>
-                    <div class="bg-slate-50 p-4 rounded-xl mb-auto border border-slate-100 shadow-inner grid grid-cols-2 gap-y-3 gap-x-2 text-center items-center">
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col relative">
+                    <div class="absolute -top-3 -right-3 bg-accent-sand border-2 border-ink-main px-3 py-1 font-mono font-bold text-ink-main shadow-brutal-sm">09</div>
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-2">Complement</h3>
+                    <p class="text-xs text-ink-muted mb-4 font-mono">Interaction with an exact opposite.</p>
+                    <div class="bg-white p-4 border-2 border-ink-main shadow-inner mb-auto grid grid-cols-2 gap-y-4 gap-x-2 text-center items-center">
                         <span class="math-sym text-[0.9em]" title="Excluded Middle">p<span class="math-op">&or;</span><span class="overbar">p</span> <span class="math-op">&equiv;</span> t</span>
                         <span class="math-sym text-[0.9em]" title="Non-Contradiction">p<span class="math-op">&and;</span><span class="overbar">p</span> <span class="math-op">&equiv;</span> f</span>
-                        <span class="math-sym text-[0.9em]"><span class="overbar">f</span> <span class="math-op">&equiv;</span> t</span>
-                        <span class="math-sym text-[0.9em]"><span class="overbar">t</span> <span class="math-op">&equiv;</span> f</span>
+                        <span class="math-sym text-[0.9em] border-t-2 border-ink-main pt-2"><span class="overbar">f</span> <span class="math-op">&equiv;</span> t</span>
+                        <span class="math-sym text-[0.9em] border-t-2 border-ink-main pt-2"><span class="overbar">t</span> <span class="math-op">&equiv;</span> f</span>
                     </div>
                 </div>
 
@@ -309,77 +308,80 @@
         </section>
 
         <!-- SECTION 2: DUALITY & REPLACEMENT -->
-        <section id="duality" class="scroll-mt-24 mb-24">
-            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
-                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">Core Principles</h2>
-                <p class="text-nordic-slate text-lg">The mechanical rules that govern logical equivalence.</p>
+        <section id="duality" class="scroll-mt-24 mb-28">
+            <div class="mb-12 border-l-8 border-ink-main pl-6 py-2">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-ink-main tracking-tight uppercase">02. Core Principles</h2>
+                <p class="text-ink-muted text-lg mt-2 font-mono">Mechanical operations for substitution.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Duality Principle -->
-                <div class="bg-gradient-to-br from-nordic-amber to-amber-600 text-white rounded-2xl p-8 shadow-xl relative overflow-hidden">
-                    <div class="absolute -bottom-10 -right-10 opacity-20"><i data-lucide="yin-yang" class="w-64 h-64"></i></div>
-                    <h3 class="font-serif text-3xl font-black mb-4 relative z-10">The Duality Principle</h3>
-                    <p class="text-amber-50 mb-6 relative z-10 leading-relaxed font-medium">To find the dual of a compound proposition, you execute strict mechanical swaps. <br><br><strong>Golden Rule:</strong> If two propositions are logically equivalent, their duals are also logically equivalent.</p>
+                <div class="bg-accent-terracotta text-white border-4 border-ink-main shadow-brutal p-8 relative overflow-hidden">
+                    <h3 class="font-serif text-4xl font-bold mb-4 border-b-4 border-ink-main pb-4">Duality Principle</h3>
+                    <p class="mb-6 font-mono text-sm leading-relaxed font-semibold">To find the dual of a compound proposition, execute strict mechanical swaps. <br><br><strong>Golden Rule:</strong> If two propositions are logically equivalent, their duals are also logically equivalent.</p>
                     
-                    <div class="bg-black/20 rounded-xl p-5 mb-6 backdrop-blur-sm relative z-10 border border-white/10">
-                        <h4 class="font-bold text-xs uppercase text-amber-200 tracking-widest mb-4">The Required Swaps:</h4>
+                    <div class="bg-white text-ink-main border-4 border-ink-main p-5 mb-6 shadow-brutal-sm">
+                        <h4 class="font-mono font-bold text-xs uppercase text-ink-muted tracking-widest mb-4">Required Structural Swaps:</h4>
                         <div class="flex justify-around text-center items-center">
-                            <div class="bg-white/10 px-6 py-3 rounded-lg flex items-center gap-3">
-                                <span class="math-sym text-2xl">&and;</span> <i data-lucide="arrow-right-left" class="w-4 h-4 text-amber-200"></i> <span class="math-sym text-2xl">&or;</span>
+                            <div class="flex items-center gap-4">
+                                <span class="math-sym text-2xl border-2 border-ink-main px-3 py-1 bg-paper-bg shadow-brutal-sm">&and;</span> 
+                                <i data-lucide="arrow-right-left" class="w-5 h-5"></i> 
+                                <span class="math-sym text-2xl border-2 border-ink-main px-3 py-1 bg-paper-bg shadow-brutal-sm">&or;</span>
                             </div>
-                            <div class="bg-white/10 px-6 py-3 rounded-lg flex items-center gap-3">
-                                <span class="math-sym text-2xl">t</span> <i data-lucide="arrow-right-left" class="w-4 h-4 text-amber-200"></i> <span class="math-sym text-2xl">f</span>
+                            <div class="flex items-center gap-4">
+                                <span class="math-sym text-2xl border-2 border-ink-main px-3 py-1 bg-paper-bg shadow-brutal-sm">t</span> 
+                                <i data-lucide="arrow-right-left" class="w-5 h-5"></i> 
+                                <span class="math-sym text-2xl border-2 border-ink-main px-3 py-1 bg-paper-bg shadow-brutal-sm">f</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="space-y-4 relative z-10">
-                        <div>
-                            <p class="text-[10px] text-amber-200 uppercase tracking-widest mb-1">Example 1</p>
-                            <p class="font-mono text-sm bg-black/10 px-3 py-2 rounded">
-                                (p <span class="text-nordic-navy font-bold">&and;</span> q) <span class="text-nordic-navy font-bold">&or;</span> <span class="overbar">p</span> &nbsp;&rarr;&nbsp; (p <span class="text-white font-bold">&or;</span> q) <span class="text-white font-bold">&and;</span> <span class="overbar">p</span>
+                    <div class="space-y-4">
+                        <div class="bg-ink-main text-white p-4 border-2 border-ink-main">
+                            <p class="text-[10px] uppercase font-mono font-bold tracking-widest mb-2 text-accent-terracotta">Dual Transformation 01</p>
+                            <p class="font-mono text-sm">
+                                (p <span class="text-white font-bold">&and;</span> q) <span class="text-white font-bold">&or;</span> <span class="overbar">p</span> &nbsp;&rarr;&nbsp; (p <span class="text-accent-terracotta font-bold">&or;</span> q) <span class="text-accent-terracotta font-bold">&and;</span> <span class="overbar">p</span>
                             </p>
                         </div>
-                        <div>
-                            <p class="text-[10px] text-amber-200 uppercase tracking-widest mb-1">Example 2</p>
-                            <p class="font-mono text-sm bg-black/10 px-3 py-2 rounded">
-                                (p <span class="text-nordic-navy font-bold">&or;</span> <span class="text-nordic-navy font-bold">f</span>) <span class="text-nordic-navy font-bold">&and;</span> q &nbsp;&rarr;&nbsp; (p <span class="text-white font-bold">&and;</span> <span class="text-white font-bold">t</span>) <span class="text-white font-bold">&or;</span> q
+                        <div class="bg-ink-main text-white p-4 border-2 border-ink-main">
+                            <p class="text-[10px] uppercase font-mono font-bold tracking-widest mb-2 text-accent-terracotta">Dual Transformation 02</p>
+                            <p class="font-mono text-sm">
+                                (p <span class="text-white font-bold">&or;</span> <span class="text-white font-bold">f</span>) <span class="text-white font-bold">&and;</span> q &nbsp;&rarr;&nbsp; (p <span class="text-accent-terracotta font-bold">&and;</span> <span class="text-accent-terracotta font-bold">t</span>) <span class="text-accent-terracotta font-bold">&or;</span> q
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Replacement Rule -->
-                <div class="bg-white border border-nordic-border rounded-2xl p-8 shadow-md flex flex-col">
-                    <h3 class="font-serif text-3xl font-black text-nordic-navy mb-4 flex items-center gap-3"><i data-lucide="replace" class="text-nordic-amber w-8 h-8"></i> Replacement Rule</h3>
-                    <p class="text-slate-600 mb-6 leading-relaxed">Substituting a logically equivalent proposition for another in a compound proposition <strong>does not alter the ultimate truth value</strong>.</p>
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-8 flex flex-col">
+                    <h3 class="font-serif text-4xl font-bold text-ink-main mb-4 border-b-4 border-ink-main pb-4">Replacement Rule</h3>
+                    <p class="text-ink-main font-mono text-sm mb-6 leading-relaxed">Substituting a logically equivalent proposition for another in a compound proposition <strong>does not alter the ultimate truth value</strong>.</p>
                     
-                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex-grow shadow-inner">
-                        <p class="text-[10px] font-black text-nordic-navy uppercase tracking-widest mb-3">Live Proof Demonstration</p>
-                        <p class="text-sm font-semibold mb-4 bg-white px-3 py-2 border border-slate-200 rounded inline-block shadow-sm">
+                    <div class="bg-white p-6 border-4 border-ink-main shadow-brutal-sm flex-grow">
+                        <p class="text-[10px] font-bold font-mono text-ink-muted uppercase tracking-widest mb-3">Live Proof Demonstration</p>
+                        <p class="text-sm font-semibold mb-6 bg-paper-dark border-2 border-ink-main px-3 py-2 text-center">
                             Prove: <span class="math-sym">(<span class="overbar">p</span> <span class="math-op">&and;</span> q) <span class="math-op">&or;</span> (<span class="overbar">p <span class="math-op">&or;</span> q</span>) <span class="math-op">&equiv;</span> <span class="overbar">p</span></span>
                         </p>
                         
-                        <div class="space-y-3 font-mono text-sm">
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded shadow-sm border border-slate-100">
+                        <div class="space-y-4 font-mono text-sm">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 border-2 border-ink-main shadow-brutal-sm">
                                 <span><span class="math-sym">(<span class="overbar">p</span> &and; q) &or; (<span class="overbar">p</span> &and; <span class="overbar">q</span>)</span></span>
-                                <span class="text-nordic-amber text-[10px] uppercase font-bold tracking-wider mt-1 sm:mt-0">De Morgan's</span>
+                                <span class="bg-ink-main text-white px-2 py-1 text-[10px] uppercase font-bold mt-2 sm:mt-0">De Morgan's</span>
                             </div>
-                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-slate-300"></i></div>
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded shadow-sm border border-slate-100">
+                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-5 h-5 text-ink-main"></i></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 border-2 border-ink-main shadow-brutal-sm">
                                 <span><span class="math-sym"><span class="overbar">p</span> &and; (q &or; <span class="overbar">q</span>)</span></span>
-                                <span class="text-nordic-amber text-[10px] uppercase font-bold tracking-wider mt-1 sm:mt-0">Distributive</span>
+                                <span class="bg-ink-main text-white px-2 py-1 text-[10px] uppercase font-bold mt-2 sm:mt-0">Distributive</span>
                             </div>
-                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-slate-300"></i></div>
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded shadow-sm border border-slate-100">
+                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-5 h-5 text-ink-main"></i></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 border-2 border-ink-main shadow-brutal-sm">
                                 <span><span class="math-sym"><span class="overbar">p</span> &and; t</span></span>
-                                <span class="text-nordic-amber text-[10px] uppercase font-bold tracking-wider mt-1 sm:mt-0">Complement</span>
+                                <span class="bg-ink-main text-white px-2 py-1 text-[10px] uppercase font-bold mt-2 sm:mt-0">Complement</span>
                             </div>
-                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-slate-300"></i></div>
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-nordic-navy text-white p-3 rounded shadow-md border border-nordic-navy">
-                                <span class="font-bold text-nordic-amber"><span class="math-sym"><span class="overbar text-white">p</span></span></span>
-                                <span class="text-nordic-amber text-[10px] uppercase font-bold tracking-wider mt-1 sm:mt-0">Identity</span>
+                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-5 h-5 text-ink-main"></i></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-accent-matcha text-white p-3 border-2 border-ink-main shadow-brutal-sm">
+                                <span class="font-bold"><span class="math-sym"><span class="overbar text-white">p</span></span></span>
+                                <span class="bg-white text-ink-main px-2 py-1 text-[10px] uppercase font-bold mt-2 sm:mt-0">Identity</span>
                             </div>
                         </div>
                     </div>
@@ -388,99 +390,96 @@
         </section>
 
         <!-- SECTION 3: CONDITIONALS & TRUTH TABLES -->
-        <section id="conditionals" class="scroll-mt-24 mb-24">
-            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
-                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">Conditionals Matrix</h2>
-                <p class="text-nordic-slate text-lg">Given a base conditional <span class="math-sym">p <span class="math-op text-nordic-amber">&rarr;</span> q</span>, explore its 3 structural variations.</p>
+        <section id="conditionals" class="scroll-mt-24 mb-28">
+            <div class="mb-12 border-l-8 border-ink-main pl-6 py-2">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-ink-main tracking-tight uppercase">03. Conditionals</h2>
+                <p class="text-ink-muted text-lg mt-2 font-mono">Structural permutations of a basic proposition.</p>
             </div>
 
-            <div class="grid lg:grid-cols-5 gap-6">
+            <div class="grid lg:grid-cols-5 gap-8">
                 
                 <!-- Diagram Side -->
-                <div class="lg:col-span-3 bg-white rounded-2xl shadow-md border border-nordic-border overflow-hidden flex flex-col">
-                    <div class="p-8 bg-slate-50 border-b border-nordic-border text-center">
-                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2">Base Proposition</p>
-                        <p class="text-2xl font-serif text-nordic-navy"><span class="math-sym bg-white px-3 py-1 shadow-sm border border-slate-200 rounded text-nordic-amber">p <span class="math-op text-nordic-navy">&rarr;</span> q</span></p>
-                        <p class="mt-4 text-slate-600 italic">"If Jack plays his guitar, then Sara will sing."</p>
+                <div class="lg:col-span-3 bg-paper-card border-4 border-ink-main shadow-brutal flex flex-col">
+                    <div class="p-8 bg-white border-b-4 border-ink-main text-center">
+                        <p class="text-[10px] text-ink-muted font-bold uppercase tracking-widest font-mono mb-3">Base Proposition</p>
+                        <p class="text-3xl font-serif text-ink-main"><span class="math-sym bg-paper-dark border-2 border-ink-main px-4 py-1 shadow-brutal-sm">p <span class="math-op text-ink-main">&rarr;</span> q</span></p>
+                        <p class="mt-6 font-mono text-sm border-2 border-ink-main inline-block px-4 py-2">"If Jack plays his guitar, then Sara will sing."</p>
                     </div>
                     
-                    <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-nordic-border flex-grow bg-white">
-                        <div class="p-6 text-center hover:bg-slate-50 transition-colors">
-                            <h4 class="font-bold text-nordic-navy text-sm uppercase tracking-wider mb-4">Converse</h4>
-                            <div class="text-xl font-mono font-bold bg-white inline-block px-4 py-2 rounded shadow border border-slate-100 mb-4 text-nordic-navy"><span class="math-sym">q <span class="math-op">&rarr;</span> p</span></div>
-                            <p class="text-xs text-slate-500 italic">"If Sara will sing, then Jack plays his guitar."</p>
+                    <div class="grid md:grid-cols-3 divide-y-4 md:divide-y-0 md:divide-x-4 divide-ink-main flex-grow bg-paper-dark">
+                        <div class="p-6 text-center hover:bg-white transition-colors">
+                            <h4 class="font-bold text-ink-main text-xs uppercase tracking-widest font-mono mb-4">Converse</h4>
+                            <div class="text-xl font-mono font-bold bg-white border-2 border-ink-main inline-block px-4 py-2 shadow-brutal-sm mb-4"><span class="math-sym">q <span class="math-op">&rarr;</span> p</span></div>
+                            <p class="text-xs text-ink-muted font-mono leading-relaxed">"If Sara will sing, then Jack plays his guitar."</p>
                         </div>
-                        <div class="p-6 text-center hover:bg-slate-50 transition-colors">
-                            <h4 class="font-bold text-nordic-navy text-sm uppercase tracking-wider mb-4">Inverse</h4>
-                            <div class="text-xl font-mono font-bold bg-white inline-block px-4 py-2 rounded shadow border border-slate-100 mb-4 text-nordic-navy"><span class="math-sym"><span class="overbar">p</span> <span class="math-op">&rarr;</span> <span class="overbar">q</span></span></div>
-                            <p class="text-xs text-slate-500 italic">"If Jack doesn't play his guitar, then Sara won't sing."</p>
+                        <div class="p-6 text-center hover:bg-white transition-colors">
+                            <h4 class="font-bold text-ink-main text-xs uppercase tracking-widest font-mono mb-4">Inverse</h4>
+                            <div class="text-xl font-mono font-bold bg-white border-2 border-ink-main inline-block px-4 py-2 shadow-brutal-sm mb-4"><span class="math-sym"><span class="overbar">p</span> <span class="math-op">&rarr;</span> <span class="overbar">q</span></span></div>
+                            <p class="text-xs text-ink-muted font-mono leading-relaxed">"If Jack doesn't play his guitar, then Sara won't sing."</p>
                         </div>
-                        <div class="p-6 text-center bg-amber-50/50 hover:bg-amber-50 transition-colors relative">
-                            <div class="absolute top-0 right-0 w-0 h-0 border-t-[30px] border-t-nordic-amber border-l-[30px] border-l-transparent"></div>
-                            <h4 class="font-bold text-nordic-amber text-sm uppercase tracking-wider mb-4">Contrapositive</h4>
-                            <div class="text-xl font-mono font-black bg-white inline-block px-4 py-2 rounded shadow-md border border-amber-200 mb-4 text-nordic-navy"><span class="math-sym"><span class="overbar">q</span> <span class="math-op">&rarr;</span> <span class="overbar">p</span></span></div>
-                            <p class="text-xs text-slate-600 italic font-medium">"If Sara won't sing, then Jack doesn't play his guitar."</p>
+                        <div class="p-6 text-center bg-accent-terracotta text-white">
+                            <h4 class="font-bold text-white text-xs uppercase tracking-widest font-mono mb-4">Contrapositive</h4>
+                            <div class="text-xl font-mono font-black bg-ink-main text-white border-2 border-ink-main inline-block px-4 py-2 shadow-brutal-sm mb-4"><span class="math-sym"><span class="overbar">q</span> <span class="math-op text-accent-terracotta">&rarr;</span> <span class="overbar">p</span></span></div>
+                            <p class="text-xs text-white/90 font-mono leading-relaxed">"If Sara won't sing, then Jack doesn't play his guitar."</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Truth Table Side -->
-                <div class="lg:col-span-2 bg-nordic-navy rounded-2xl shadow-xl p-6 flex flex-col text-white">
-                    <h3 class="font-serif text-xl font-bold text-nordic-amberLight mb-2 flex items-center gap-2">
-                        <i data-lucide="table-2" class="w-5 h-5 text-nordic-amber"></i> Verification Table
-                    </h3>
-                    <p class="text-xs text-slate-400 mb-4">Observe how the Base matches Contrapositive, and Converse matches Inverse.</p>
+                <div class="lg:col-span-2 bg-ink-main border-4 border-ink-main shadow-brutal p-8 flex flex-col text-white">
+                    <h3 class="font-serif text-3xl font-bold mb-2">Verification Matrix</h3>
+                    <p class="text-xs font-mono text-paper-dark mb-6">Observe equivalent truth values.</p>
                     
-                    <div class="overflow-x-auto border border-slate-700 rounded-lg">
-                        <table class="w-full text-center text-sm font-mono">
-                            <thead class="bg-slate-800 text-slate-300 text-xs">
+                    <div class="overflow-x-auto bg-white border-4 border-ink-main">
+                        <table class="w-full text-center font-mono border-collapse">
+                            <thead class="bg-paper-dark text-ink-main border-b-4 border-ink-main text-xs">
                                 <tr>
-                                    <th class="py-2 px-1 border-b border-slate-700">p</th>
-                                    <th class="py-2 px-1 border-b border-slate-700 border-r">q</th>
-                                    <th class="py-2 px-2 border-b border-slate-700 bg-slate-800/50" title="Base">p&rarr;q</th>
-                                    <th class="py-2 px-2 border-b border-slate-700" title="Converse">q&rarr;p</th>
-                                    <th class="py-2 px-2 border-b border-slate-700" title="Inverse"><span class="overbar">p</span>&rarr;<span class="overbar">q</span></th>
-                                    <th class="py-2 px-2 border-b border-slate-700 text-nordic-amber bg-slate-800/50" title="Contrapositive"><span class="overbar">q</span>&rarr;<span class="overbar">p</span></th>
+                                    <th class="py-3 px-2 border-r-2 border-ink-main">p</th>
+                                    <th class="py-3 px-2 border-r-4 border-ink-main">q</th>
+                                    <th class="py-3 px-2 border-r-2 border-ink-main bg-white" title="Base">p&rarr;q</th>
+                                    <th class="py-3 px-2 border-r-2 border-ink-main" title="Converse">q&rarr;p</th>
+                                    <th class="py-3 px-2 border-r-2 border-ink-main" title="Inverse"><span class="overbar">p</span>&rarr;<span class="overbar">q</span></th>
+                                    <th class="py-3 px-2 bg-accent-terracotta text-white" title="Contrapositive"><span class="overbar">q</span>&rarr;<span class="overbar">p</span></th>
                                 </tr>
                             </thead>
-                            <tbody class="text-slate-300">
-                                <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                                    <td class="py-2 px-1">T</td>
-                                    <td class="py-2 px-1 border-r border-slate-700">T</td>
-                                    <td class="py-2 px-2 font-bold text-white bg-slate-800/30">T</td>
-                                    <td class="py-2 px-2">T</td>
-                                    <td class="py-2 px-2">T</td>
-                                    <td class="py-2 px-2 font-bold text-nordic-amber bg-slate-800/30">T</td>
+                            <tbody class="text-ink-main text-sm">
+                                <tr class="border-b-2 border-ink-main">
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 border-r-4 border-ink-main">T</td>
+                                    <td class="py-3 px-2 font-bold bg-white border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 font-bold bg-accent-terracotta text-white">T</td>
                                 </tr>
-                                <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                                    <td class="py-2 px-1">T</td>
-                                    <td class="py-2 px-1 border-r border-slate-700">F</td>
-                                    <td class="py-2 px-2 font-bold text-slate-500 bg-slate-800/30">F</td>
-                                    <td class="py-2 px-2 text-white">T</td>
-                                    <td class="py-2 px-2 text-white">T</td>
-                                    <td class="py-2 px-2 font-bold text-slate-500 bg-slate-800/30">F</td>
+                                <tr class="border-b-2 border-ink-main">
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 border-r-4 border-ink-main">F</td>
+                                    <td class="py-3 px-2 font-bold bg-white text-ink-muted border-r-2 border-ink-main">F</td>
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 font-bold bg-accent-terracotta text-ink-main">F</td>
                                 </tr>
-                                <tr class="border-b border-slate-800 hover:bg-slate-800/50">
-                                    <td class="py-2 px-1">F</td>
-                                    <td class="py-2 px-1 border-r border-slate-700">T</td>
-                                    <td class="py-2 px-2 font-bold text-white bg-slate-800/30">T</td>
-                                    <td class="py-2 px-2 text-slate-500">F</td>
-                                    <td class="py-2 px-2 text-slate-500">F</td>
-                                    <td class="py-2 px-2 font-bold text-nordic-amber bg-slate-800/30">T</td>
+                                <tr class="border-b-2 border-ink-main">
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">F</td>
+                                    <td class="py-3 px-2 border-r-4 border-ink-main">T</td>
+                                    <td class="py-3 px-2 font-bold bg-white border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 text-ink-muted border-r-2 border-ink-main">F</td>
+                                    <td class="py-3 px-2 text-ink-muted border-r-2 border-ink-main">F</td>
+                                    <td class="py-3 px-2 font-bold bg-accent-terracotta text-white">T</td>
                                 </tr>
-                                <tr class="hover:bg-slate-800/50">
-                                    <td class="py-2 px-1">F</td>
-                                    <td class="py-2 px-1 border-r border-slate-700">F</td>
-                                    <td class="py-2 px-2 font-bold text-white bg-slate-800/30">T</td>
-                                    <td class="py-2 px-2 text-white">T</td>
-                                    <td class="py-2 px-2 text-white">T</td>
-                                    <td class="py-2 px-2 font-bold text-nordic-amber bg-slate-800/30">T</td>
+                                <tr>
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">F</td>
+                                    <td class="py-3 px-2 border-r-4 border-ink-main">F</td>
+                                    <td class="py-3 px-2 font-bold bg-white border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 border-r-2 border-ink-main">T</td>
+                                    <td class="py-3 px-2 font-bold bg-accent-terracotta text-white">T</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="mt-4 bg-slate-800/80 p-3 rounded border border-slate-700 text-xs text-slate-300 font-medium">
-                        <span class="text-nordic-amber">Conclusion:</span> A conditional and its contrapositive are logically equivalent.
+                    <div class="mt-6 bg-white text-ink-main p-4 border-4 border-ink-main font-mono text-xs shadow-brutal-sm font-bold">
+                        A conditional &amp; its contrapositive are logically equivalent.
                     </div>
                 </div>
 
@@ -488,63 +487,57 @@
         </section>
 
         <!-- SECTION 4: EQUIVALENCE VS IMPLICATION -->
-        <section id="equivalence" class="scroll-mt-24 mb-24">
-            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
-                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">Equivalence vs. Implication</h2>
+        <section id="equivalence" class="scroll-mt-24 mb-28">
+            <div class="mb-12 border-l-8 border-ink-main pl-6 py-2">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-ink-main tracking-tight uppercase">04. Equivalence vs. Implication</h2>
+                <p class="text-ink-muted text-lg mt-2 font-mono">Differentiating strict logic states.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Logical Equivalence -->
-                <div class="bg-white border-t-[6px] border-t-nordic-navy rounded-2xl p-8 shadow-md">
-                    <h3 class="font-bold text-2xl text-nordic-navy mb-4 flex items-center justify-between">
+                <div class="bg-paper-card border-4 border-ink-main rounded-none p-8 shadow-brutal">
+                    <h3 class="font-bold font-serif text-3xl text-ink-main mb-6 pb-4 border-b-4 border-ink-main flex flex-col xl:flex-row xl:items-center justify-between gap-4">
                         Logical Equivalence
-                        <span class="math-sym text-3xl font-black bg-slate-50 px-3 py-1 rounded shadow-sm border border-slate-100">P <span class="math-op">&equiv;</span> Q</span>
+                        <span class="math-sym text-3xl font-black bg-white px-4 py-2 border-4 border-ink-main shadow-brutal-sm">P <span class="math-op">&equiv;</span> Q</span>
                     </h3>
-                    <ul class="text-sm text-slate-600 space-y-4 mt-6 list-none">
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="check-circle-2" class="w-5 h-5 text-nordic-navy flex-shrink-0 mt-0.5"></i>
-                            <span>Two propositions have <strong>identical truth values</strong> for every possible set of components.</span>
+                    <ul class="text-sm font-mono text-ink-main space-y-6 mt-6 list-none">
+                        <li class="flex items-start gap-4">
+                            <div class="bg-ink-main text-white p-1 border-2 border-ink-main mt-0.5"><i data-lucide="check" class="w-4 h-4"></i></div>
+                            <span class="leading-relaxed">Two propositions have <strong>identical truth values</strong> for every possible set of components.</span>
                         </li>
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="check-circle-2" class="w-5 h-5 text-nordic-navy flex-shrink-0 mt-0.5"></i>
-                            <span>It means the biconditional statement <span class="math-sym font-mono bg-slate-100 px-2 py-0.5 rounded shadow-sm">P <span class="math-op text-nordic-navy">&harr;</span> Q</span> is a <strong>tautology</strong> (always true).</span>
+                        <li class="flex items-start gap-4">
+                            <div class="bg-ink-main text-white p-1 border-2 border-ink-main mt-0.5"><i data-lucide="check" class="w-4 h-4"></i></div>
+                            <span class="leading-relaxed">The biconditional statement <span class="math-sym bg-paper-dark px-2 py-0.5 border border-ink-main">P <span class="math-op text-ink-main">&harr;</span> Q</span> is a <strong>tautology</strong> (always true).</span>
                         </li>
-                        <li class="flex items-start gap-3 mt-4 pt-4 border-t border-slate-100">
-                            <i data-lucide="code" class="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5"></i>
-                            <div class="w-full">
-                                <span class="text-xs uppercase font-bold text-slate-400 tracking-widest block mb-1">Example</span>
-                                <span class="math-sym font-mono block bg-slate-50 p-3 rounded border border-slate-200 text-center"><span class="overbar">p <span class="math-op">&and;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar">p</span> <span class="math-op">&or;</span> <span class="overbar">q</span></span>
-                            </div>
+                        <li class="mt-8 pt-6 border-t-2 border-ink-main">
+                            <span class="text-[10px] uppercase font-bold text-ink-muted tracking-widest block mb-2">Example Equation</span>
+                            <span class="math-sym block bg-white p-4 border-4 border-ink-main shadow-brutal-sm text-center text-lg"><span class="overbar">p <span class="math-op">&and;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar">p</span> <span class="math-op">&or;</span> <span class="overbar">q</span></span>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Logical Implication -->
-                <div class="bg-white border-t-[6px] border-t-nordic-amber rounded-2xl p-8 shadow-md relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 opacity-5"><i data-lucide="arrow-right-circle" class="w-48 h-48"></i></div>
-                    <h3 class="font-bold text-2xl text-nordic-navy mb-4 flex items-center justify-between relative z-10">
+                <div class="bg-paper-card border-4 border-ink-main rounded-none p-8 shadow-brutal bg-grid relative">
+                    <h3 class="font-bold font-serif text-3xl text-ink-main mb-6 pb-4 border-b-4 border-ink-main flex flex-col xl:flex-row xl:items-center justify-between gap-4 relative z-10 bg-paper-card pr-4">
                         Logical Implication
-                        <span class="math-sym text-3xl font-black bg-slate-50 px-3 py-1 rounded shadow-sm border border-slate-100">P <span class="math-op text-nordic-amber">&rArr;</span> Q</span>
+                        <span class="math-sym text-3xl font-black bg-white px-4 py-2 border-4 border-ink-main shadow-brutal-sm">P <span class="math-op text-accent-terracotta">&rArr;</span> Q</span>
                     </h3>
-                    <ul class="text-sm text-slate-600 space-y-4 mt-6 list-none relative z-10">
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="arrow-right" class="w-5 h-5 text-nordic-amber flex-shrink-0 mt-0.5"></i>
-                            <span>Whenever <span class="math-sym font-mono">P</span> is true, then <span class="math-sym font-mono">Q</span> is also true. (<span class="math-sym font-mono">Q</span> is <em>never</em> false when <span class="math-sym font-mono">P</span> is true).</span>
+                    <ul class="text-sm font-mono text-ink-main space-y-6 mt-6 list-none relative z-10 bg-paper-card p-4 border-4 border-ink-main">
+                        <li class="flex items-start gap-4">
+                            <div class="bg-accent-terracotta text-white p-1 border-2 border-ink-main mt-0.5"><i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+                            <span class="leading-relaxed">Whenever <span class="math-sym font-mono">P</span> is true, then <span class="math-sym font-mono">Q</span> is also true. (<span class="math-sym font-mono">Q</span> is <em>never</em> false when <span class="math-sym font-mono">P</span> is true).</span>
                         </li>
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="arrow-right" class="w-5 h-5 text-nordic-amber flex-shrink-0 mt-0.5"></i>
-                            <span>It means the conditional statement <span class="math-sym font-mono bg-slate-100 px-2 py-0.5 rounded shadow-sm">P <span class="math-op text-nordic-navy">&rarr;</span> Q</span> is a <strong>tautology</strong>.</span>
+                        <li class="flex items-start gap-4">
+                            <div class="bg-accent-terracotta text-white p-1 border-2 border-ink-main mt-0.5"><i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+                            <span class="leading-relaxed">The conditional statement <span class="math-sym bg-paper-dark px-2 py-0.5 border border-ink-main">P <span class="math-op text-ink-main">&rarr;</span> Q</span> is a <strong>tautology</strong>.</span>
                         </li>
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="alert-triangle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
-                            <span class="text-red-600 font-medium">Warning: The converse does not apply. <span class="math-sym font-mono">Q</span> may be true when <span class="math-sym font-mono">P</span> is false.</span>
+                        <li class="flex items-start gap-4 bg-paper-dark p-3 border-2 border-ink-main">
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-accent-terracotta flex-shrink-0 mt-0.5"></i>
+                            <span class="font-semibold text-xs leading-relaxed">Warning: The converse does not apply. <span class="math-sym font-mono">Q</span> may be true when <span class="math-sym font-mono">P</span> is false.</span>
                         </li>
-                        <li class="flex items-start gap-3 mt-2 pt-4 border-t border-slate-100">
-                            <i data-lucide="code" class="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5"></i>
-                            <div class="w-full">
-                                <span class="text-xs uppercase font-bold text-slate-400 tracking-widest block mb-1">Example</span>
-                                <span class="math-sym font-mono block bg-slate-50 p-3 rounded border border-slate-200 text-center">q <span class="math-op text-nordic-amber">&rArr;</span> (p <span class="math-op">&or;</span> q)</span>
-                            </div>
+                        <li class="mt-4 pt-4 border-t-2 border-ink-main">
+                            <span class="text-[10px] uppercase font-bold text-ink-muted tracking-widest block mb-2">Example Equation</span>
+                            <span class="math-sym block bg-white p-4 border-4 border-ink-main shadow-brutal-sm text-center text-lg">q <span class="math-op text-accent-terracotta">&rArr;</span> (p <span class="math-op">&or;</span> q)</span>
                         </li>
                     </ul>
                 </div>
@@ -552,51 +545,51 @@
         </section>
 
         <!-- SECTION 5: VALID ARGUMENTS -->
-        <section id="arguments" class="scroll-mt-24 mb-20">
-            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
-                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">Valid Arguments Validation</h2>
+        <section id="arguments" class="scroll-mt-24 mb-28">
+            <div class="mb-12 border-l-8 border-ink-main pl-6 py-2">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-ink-main tracking-tight uppercase">05. Argument Validity</h2>
+                <p class="text-ink-muted text-lg mt-2 font-mono">Proving argument structures via tautology.</p>
             </div>
 
-            <div class="bg-gradient-to-r from-slate-900 to-nordic-navy p-8 rounded-2xl border border-slate-800 mb-10 shadow-xl text-white relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-8 opacity-10"><i data-lucide="cpu" class="w-32 h-32 text-nordic-amber"></i></div>
-                <h3 class="font-bold text-xl text-nordic-amber mb-3 relative z-10 uppercase tracking-widest text-sm">Validation Formula</h3>
-                <p class="text-base text-slate-300 leading-relaxed max-w-3xl relative z-10 mb-6">
+            <div class="bg-accent-matcha p-8 border-4 border-ink-main mb-12 shadow-brutal text-white relative">
+                <h3 class="font-mono text-xl font-bold mb-4 uppercase tracking-widest border-b-2 border-ink-main pb-2 inline-block">Validation Formula</h3>
+                <p class="text-base font-mono leading-relaxed max-w-3xl mb-8 font-medium">
                     An argument is <strong>VALID</strong> if the conjunction (AND) of the premises logically implies the conclusion. If the premises are true, the conclusion <em>cannot</em> be false.
                 </p>
-                <div class="bg-black/40 border border-white/10 p-5 rounded-xl inline-block relative z-10 backdrop-blur-md">
-                    <span class="math-sym font-mono text-xl md:text-2xl text-white">
-                        (P<sub>1</sub> <span class="math-op text-nordic-amber">&and;</span> P<sub>2</sub> <span class="math-op text-nordic-amber">&and;</span> ... P<sub>n</sub>) <span class="math-op text-nordic-amber">&rarr;</span> Q
+                <div class="bg-white text-ink-main border-4 border-ink-main p-6 inline-block shadow-brutal">
+                    <span class="math-sym font-mono text-xl md:text-2xl">
+                        (P<sub>1</sub> <span class="math-op">&and;</span> P<sub>2</sub> <span class="math-op">&and;</span> ... P<sub>n</sub>) <span class="math-op text-accent-terracotta">&rarr;</span> Q
                     </span>
-                    <span class="ml-4 text-sm font-bold uppercase tracking-widest text-nordic-amber bg-nordic-amber/10 px-3 py-1 rounded-full border border-nordic-amber/30">Must = Tautology</span>
+                    <span class="ml-6 text-sm font-bold uppercase tracking-widest text-white bg-ink-main px-4 py-2 border-2 border-ink-main shadow-brutal-sm">Must = Tautology</span>
                 </div>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Example 1: Bob (Valid) -->
-                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden flex flex-col">
-                    <div class="bg-green-500 text-white p-4 flex items-center justify-between">
-                        <h4 class="font-bold font-serif text-lg">Example 1</h4>
-                        <span class="text-xs font-black uppercase tracking-widest bg-black/20 px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="check-circle" class="w-3 h-3"></i> Valid</span>
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal flex flex-col">
+                    <div class="bg-ink-main text-white p-4 flex items-center justify-between border-b-4 border-ink-main">
+                        <h4 class="font-bold font-mono text-lg uppercase tracking-widest">Example 01</h4>
+                        <span class="text-xs font-black uppercase tracking-widest bg-accent-matcha text-white border-2 border-ink-main px-3 py-1 flex items-center gap-2 shadow-brutal-sm"><i data-lucide="check" class="w-4 h-4"></i> Valid</span>
                     </div>
-                    <div class="p-6 flex-grow">
-                        <p class="text-sm italic text-slate-600 mb-6 border-l-4 border-slate-200 pl-4 py-1">"If you insulted Bob, then I'll never speak to you again. You insulted Bob so I'll never speak to you again."</p>
+                    <div class="p-8 flex-grow">
+                        <p class="text-sm font-mono text-ink-main mb-8 border-l-4 border-accent-matcha pl-4 py-1 bg-white border-y-2 border-r-2 p-3 shadow-brutal-sm">"If you insulted Bob, then I'll never speak to you again. You insulted Bob so I'll never speak to you again."</p>
                         
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Premises</p>
-                                <p class="font-mono font-bold text-nordic-navy text-lg"><span class="math-sym">p &rarr; q</span></p>
-                                <p class="font-mono font-bold text-nordic-navy text-lg mt-1"><span class="math-sym">p</span></p>
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm">
+                                <p class="text-[10px] uppercase font-bold text-ink-muted tracking-widest mb-3 border-b-2 border-ink-main pb-1">Premises</p>
+                                <p class="font-mono font-bold text-ink-main text-lg"><span class="math-sym">p &rarr; q</span></p>
+                                <p class="font-mono font-bold text-ink-main text-lg mt-2"><span class="math-sym">p</span></p>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col justify-center">
-                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Conclusion</p>
-                                <p class="font-mono font-bold text-nordic-navy text-2xl text-center"><span class="math-sym">q</span></p>
+                            <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm flex flex-col justify-center text-center bg-paper-dark">
+                                <p class="text-[10px] uppercase font-bold text-ink-main tracking-widest mb-3 border-b-2 border-ink-main pb-1">Conclusion</p>
+                                <p class="font-mono font-bold text-ink-main text-3xl"><span class="math-sym">q</span></p>
                             </div>
                         </div>
 
-                        <div class="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
-                            <p class="text-[10px] text-green-700 font-bold uppercase tracking-widest mb-2">Engine Test</p>
-                            <p class="font-mono font-black text-lg text-nordic-navy bg-white px-4 py-2 rounded shadow-sm inline-block"><span class="math-sym">[(p &rarr; q) <span class="text-nordic-amber">&and;</span> p] <span class="text-nordic-amber">&rarr;</span> q</span></p>
-                            <p class="mt-3 text-green-600 font-bold text-sm flex items-center justify-center gap-2">
+                        <div class="bg-accent-matcha border-4 border-ink-main p-6 text-center shadow-brutal-sm">
+                            <p class="text-[10px] text-ink-main font-black uppercase tracking-widest mb-3">Engine Test Output</p>
+                            <p class="font-mono font-black text-xl text-ink-main bg-white px-4 py-3 border-4 border-ink-main shadow-brutal-sm inline-block"><span class="math-sym">[(p &rarr; q) <span class="math-op">&and;</span> p] <span class="math-op">&rarr;</span> q</span></p>
+                            <p class="mt-4 text-white font-bold text-sm flex items-center justify-center gap-2 font-mono uppercase tracking-widest">
                                 <i data-lucide="shield-check" class="w-5 h-5"></i> Confirmed Tautology
                             </p>
                         </div>
@@ -604,35 +597,103 @@
                 </div>
 
                 <!-- Example 2: Mathematician (Invalid) -->
-                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden flex flex-col">
-                    <div class="bg-red-500 text-white p-4 flex items-center justify-between">
-                        <h4 class="font-bold font-serif text-lg">Example 2</h4>
-                        <span class="text-xs font-black uppercase tracking-widest bg-black/20 px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="x-circle" class="w-3 h-3"></i> Invalid</span>
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal flex flex-col">
+                    <div class="bg-ink-main text-white p-4 flex items-center justify-between border-b-4 border-ink-main">
+                        <h4 class="font-bold font-mono text-lg uppercase tracking-widest">Example 02</h4>
+                        <span class="text-xs font-black uppercase tracking-widest bg-accent-terracotta text-white border-2 border-ink-main px-3 py-1 flex items-center gap-2 shadow-brutal-sm"><i data-lucide="x" class="w-4 h-4"></i> Invalid</span>
                     </div>
-                    <div class="p-6 flex-grow">
-                        <p class="text-sm italic text-slate-600 mb-6 border-l-4 border-slate-200 pl-4 py-1">"If you are a mathematician then you are clever. You are clever and rich. Therefore if you are rich then you are a mathematician."</p>
+                    <div class="p-8 flex-grow">
+                        <p class="text-sm font-mono text-ink-main mb-8 border-l-4 border-accent-terracotta pl-4 py-1 bg-white border-y-2 border-r-2 p-3 shadow-brutal-sm">"If you are a mathematician then you are clever. You are clever and rich. Therefore if you are rich then you are a mathematician."</p>
                         
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Premises</p>
-                                <p class="font-mono font-bold text-nordic-navy text-lg"><span class="math-sym">p &rarr; q</span></p>
-                                <p class="font-mono font-bold text-nordic-navy text-lg mt-1"><span class="math-sym">q &and; r</span></p>
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm">
+                                <p class="text-[10px] uppercase font-bold text-ink-muted tracking-widest mb-3 border-b-2 border-ink-main pb-1">Premises</p>
+                                <p class="font-mono font-bold text-ink-main text-lg"><span class="math-sym">p &rarr; q</span></p>
+                                <p class="font-mono font-bold text-ink-main text-lg mt-2"><span class="math-sym">q &and; r</span></p>
                             </div>
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col justify-center">
-                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Conclusion</p>
-                                <p class="font-mono font-bold text-nordic-navy text-2xl text-center"><span class="math-sym">r &rarr; p</span></p>
+                            <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm flex flex-col justify-center text-center bg-paper-dark">
+                                <p class="text-[10px] uppercase font-bold text-ink-main tracking-widest mb-3 border-b-2 border-ink-main pb-1">Conclusion</p>
+                                <p class="font-mono font-bold text-ink-main text-2xl"><span class="math-sym">r &rarr; p</span></p>
                             </div>
                         </div>
 
-                        <div class="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
-                            <p class="text-[10px] text-red-700 font-bold uppercase tracking-widest mb-2">Engine Test</p>
-                            <p class="font-mono font-black text-[0.95rem] text-nordic-navy bg-white px-2 py-2 rounded shadow-sm inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap"><span class="math-sym">[(p &rarr; q) <span class="text-nordic-amber">&and;</span> (q &and; r)] <span class="text-nordic-amber">&rarr;</span> (r &rarr; p)</span></p>
-                            <p class="mt-3 text-red-600 font-bold text-sm flex items-center justify-center gap-2">
-                                <i data-lucide="shield-alert" class="w-5 h-5"></i> Failed (Not a Tautology)
+                        <div class="bg-accent-terracotta border-4 border-ink-main p-6 text-center shadow-brutal-sm">
+                            <p class="text-[10px] text-white font-black uppercase tracking-widest mb-3">Engine Test Output</p>
+                            <p class="font-mono font-black text-[0.95rem] text-ink-main bg-white px-2 py-3 border-4 border-ink-main shadow-brutal-sm inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap"><span class="math-sym">[(p &rarr; q) <span class="math-op">&and;</span> (q &and; r)] <span class="math-op">&rarr;</span> (r &rarr; p)</span></p>
+                            <p class="mt-4 text-white font-bold text-sm flex items-center justify-center gap-2 font-mono uppercase tracking-widest">
+                                <i data-lucide="shield-alert" class="w-5 h-5"></i> Failed (Not Tautology)
                             </p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: GENERATORS -->
+        <section id="generators" class="scroll-mt-24 mb-20">
+            <div class="mb-12 border-l-8 border-ink-main pl-6 py-2">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-ink-main tracking-tight uppercase">06. Practice Generators</h2>
+                <p class="text-ink-muted text-lg mt-2 font-mono">Dynamic engines for infinite practice problems.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                
+                <!-- Generator 1: Conditionals -->
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col">
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-6 border-b-4 border-ink-main pb-2">Conditionals Engine</h3>
+                    <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm mb-6 flex-grow">
+                        <p class="text-[10px] uppercase font-bold text-ink-muted tracking-widest mb-2 border-b-2 border-ink-main pb-1">Base Input</p>
+                        <p id="cond-base" class="font-mono text-ink-main font-bold min-h-[48px] text-sm"></p>
+                        <div id="cond-answers" class="hidden mt-4 space-y-4 border-t-2 border-ink-main pt-4">
+                            <div class="bg-paper-dark p-2 border-2 border-ink-main"><span class="text-[10px] font-black tracking-widest text-ink-main uppercase block border-b-2 border-ink-main pb-1 mb-1">Converse:</span> <p id="cond-conv" class="text-xs font-mono font-bold text-ink-main"></p></div>
+                            <div class="bg-paper-dark p-2 border-2 border-ink-main"><span class="text-[10px] font-black tracking-widest text-ink-main uppercase block border-b-2 border-ink-main pb-1 mb-1">Inverse:</span> <p id="cond-inv" class="text-xs font-mono font-bold text-ink-main"></p></div>
+                            <div class="bg-accent-sand p-2 border-2 border-ink-main"><span class="text-[10px] font-black tracking-widest text-ink-main uppercase block border-b-2 border-ink-main pb-1 mb-1">Contrapositive:</span> <p id="cond-contra" class="text-xs font-mono font-bold text-ink-main"></p></div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="generateConditional()" class="flex-1 py-3 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Generate</button>
+                        <button onclick="toggleElement('cond-answers')" class="flex-1 py-3 bg-white text-ink-main font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Answers</button>
+                    </div>
+                </div>
+
+                <!-- Generator 2: Laws Problem Engine -->
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col">
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-6 border-b-4 border-ink-main pb-2">Laws Engine</h3>
+                    <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm mb-6 flex-grow flex flex-col justify-center">
+                        <p class="text-[10px] uppercase font-bold text-ink-muted tracking-widest mb-2 border-b-2 border-ink-main pb-1">Target Law</p>
+                        <p id="law-name" class="font-mono font-bold text-accent-terracotta text-sm uppercase mb-4"></p>
+                        <div class="bg-paper-dark border-4 border-ink-main py-4 px-2 text-center shadow-inner mb-4">
+                            <p id="law-problem" class="font-mono text-2xl text-ink-main font-black min-h-[32px]"></p>
+                        </div>
+                        <div id="law-answer-box" class="hidden mt-auto border-t-2 border-ink-main pt-4">
+                            <p class="text-[10px] font-black tracking-widest text-ink-main uppercase mb-2">Equivalent Form</p>
+                            <p id="law-answer" class="font-mono text-xl text-white font-black bg-accent-matcha py-3 text-center border-4 border-ink-main shadow-brutal-sm"></p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="generateLaw()" class="flex-1 py-3 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Generate</button>
+                        <button onclick="toggleElement('law-answer-box')" class="flex-1 py-3 bg-white text-ink-main font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Answer</button>
+                    </div>
+                </div>
+
+                <!-- Generator 3: Argument Validity Engine -->
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-6 flex flex-col">
+                    <h3 class="font-serif font-bold text-2xl text-ink-main mb-6 border-b-4 border-ink-main pb-2">Validity Engine</h3>
+                    <div class="bg-white p-4 border-4 border-ink-main shadow-brutal-sm mb-6 flex-grow">
+                        <p class="text-[10px] uppercase font-bold text-ink-muted tracking-widest mb-2 border-b-2 border-ink-main pb-1">Analyze Argument</p>
+                        <div id="arg-problem" class="text-sm font-mono text-ink-main bg-paper-dark p-3 border-2 border-ink-main min-h-[80px]"></div>
+                        <div id="arg-answer-box" class="hidden mt-4 border-t-2 border-ink-main pt-4">
+                            <p class="text-[10px] font-black tracking-widest text-ink-main uppercase mb-2">Logical Form Mapping</p>
+                            <p id="arg-form" class="font-mono text-sm text-ink-main bg-white border-2 border-ink-main p-2 font-bold mb-4 shadow-brutal-sm text-center"></p>
+                            <div id="arg-result" class="text-sm font-black tracking-widest py-3 text-center border-4 border-ink-main shadow-brutal-sm font-mono uppercase"></div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="generateArgument()" class="flex-1 py-3 bg-ink-main text-white font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Generate</button>
+                        <button onclick="toggleElement('arg-answer-box')" class="flex-1 py-3 bg-white text-ink-main font-mono text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Answer</button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -645,23 +706,132 @@
         // Reveal Logic for Cards
         document.querySelectorAll('.reveal-btn').forEach(button => {
             button.addEventListener('click', function() {
-                const content = this.nextElementSibling;
-                const icon = this.querySelector('i');
+                const content = this.previousElementSibling;
                 
-                content.classList.toggle('open');
+                content.classList.toggle('closed');
                 
-                if (content.classList.contains('open')) {
-                    this.innerHTML = '<i data-lucide="eye-off" class="w-3 h-3"></i> Hide Translation';
-                    this.classList.replace('bg-nordic-navyLight', 'bg-slate-600');
-                    this.classList.replace('hover:bg-nordic-navy', 'hover:bg-slate-800');
+                if (content.classList.contains('closed')) {
+                    this.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i> Show Translation';
+                    this.classList.replace('bg-ink-main', 'bg-white');
+                    this.classList.replace('text-white', 'text-ink-main');
                 } else {
-                    this.innerHTML = '<i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation';
-                    this.classList.replace('bg-slate-600', 'bg-nordic-navyLight');
-                    this.classList.replace('hover:bg-slate-800', 'hover:bg-nordic-navy');
+                    this.innerHTML = '<i data-lucide="eye-off" class="w-4 h-4"></i> Hide Translation';
+                    this.classList.replace('bg-white', 'bg-ink-main');
+                    this.classList.replace('text-ink-main', 'text-white');
                 }
                 lucide.createIcons();
             });
         });
+
+        // ----------------------------------------------------
+        // GENERATOR ENGINES
+        // ----------------------------------------------------
+
+        const toggleElement = (id) => {
+            document.getElementById(id).classList.toggle('hidden');
+        };
+
+        // Engine 1: Conditionals
+        const subjects = ["it rains", "you study hard", "the code compiles", "Jack plays guitar", "the alarm rings"];
+        const actions = ["I will stay home", "you will pass the exam", "we will deploy the app", "Sara will sing", "I will wake up"];
+        const negSubjects = ["it does not rain", "you do not study hard", "the code does not compile", "Jack does not play guitar", "the alarm does not ring"];
+        const negActions = ["I will not stay home", "you will not pass the exam", "we will not deploy the app", "Sara will not sing", "I will not wake up"];
+
+        function generateConditional() {
+            document.getElementById('cond-answers').classList.add('hidden');
+            const idx = Math.floor(Math.random() * subjects.length);
+            const p = subjects[idx];
+            const q = actions[idx];
+            const not_p = negSubjects[idx];
+            const not_q = negActions[idx];
+
+            document.getElementById('cond-base').innerText = `If ${p}, then ${q}.`;
+            document.getElementById('cond-conv').innerText = `If ${q}, then ${p}.`;
+            document.getElementById('cond-inv').innerText = `If ${not_p}, then ${not_q}.`;
+            document.getElementById('cond-contra').innerText = `If ${not_q}, then ${not_p}.`;
+        }
+
+        // Engine 2: Laws Problem
+        const lawProblems = [
+            { name: "De Morgan's Law", prob: "¬(p ∧ q)", ans: "¬p ∨ ¬q" },
+            { name: "De Morgan's Law", prob: "¬(p ∨ q)", ans: "¬p ∧ ¬q" },
+            { name: "Commutative Law", prob: "p ∧ q", ans: "q ∧ p" },
+            { name: "Distributive Law", prob: "p ∨ (q ∧ r)", ans: "(p ∨ q) ∧ (p ∨ r)" },
+            { name: "Distributive Law", prob: "p ∧ (q ∨ r)", ans: "(p ∧ q) ∨ (p ∧ r)" },
+            { name: "Absorption Law", prob: "p ∨ (p ∧ q)", ans: "p" },
+            { name: "Absorption Law", prob: "p ∧ (p ∨ q)", ans: "p" },
+            { name: "Idempotent Law", prob: "p ∧ p", ans: "p" },
+            { name: "Involution Law", prob: "¬(¬p)", ans: "p" },
+            { name: "Complement Law", prob: "p ∨ ¬p", ans: "t" },
+            { name: "Complement Law", prob: "p ∧ ¬p", ans: "f" }
+        ];
+
+        function generateLaw() {
+            document.getElementById('law-answer-box').classList.add('hidden');
+            const item = lawProblems[Math.floor(Math.random() * lawProblems.length)];
+            document.getElementById('law-name').innerText = item.name;
+            document.getElementById('law-problem').innerText = item.prob;
+            document.getElementById('law-answer').innerText = item.ans;
+        }
+
+        // Engine 3: Arguments
+        const argForms = [
+            { 
+                type: "Modus Ponens", 
+                valid: true, 
+                form: "[(p → q) ∧ p] → q",
+                getEng: (p,q) => `If ${p}, then ${q}. ${p.charAt(0).toUpperCase() + p.slice(1)}. Therefore, ${q}.`
+            },
+            { 
+                type: "Fallacy of the Converse", 
+                valid: false, 
+                form: "[(p → q) ∧ q] → p",
+                getEng: (p,q) => `If ${p}, then ${q}. ${q.charAt(0).toUpperCase() + q.slice(1)}. Therefore, ${p}.`
+            },
+            { 
+                type: "Modus Tollens", 
+                valid: true, 
+                form: "[(p → q) ∧ ¬q] → ¬p",
+                getEng: (p,q,np,nq) => `If ${p}, then ${q}. ${nq.charAt(0).toUpperCase() + nq.slice(1)}. Therefore, ${np}.`
+            },
+            { 
+                type: "Fallacy of the Inverse", 
+                valid: false, 
+                form: "[(p → q) ∧ ¬p] → ¬q",
+                getEng: (p,q,np,nq) => `If ${p}, then ${q}. ${np.charAt(0).toUpperCase() + np.slice(1)}. Therefore, ${nq}.`
+            }
+        ];
+
+        function generateArgument() {
+            document.getElementById('arg-answer-box').classList.add('hidden');
+            const idx = Math.floor(Math.random() * subjects.length);
+            const p = subjects[idx];
+            const q = actions[idx];
+            const np = negSubjects[idx];
+            const nq = negActions[idx];
+            
+            const form = argForms[Math.floor(Math.random() * argForms.length)];
+            
+            document.getElementById('arg-problem').innerText = form.getEng(p, q, np, nq);
+            document.getElementById('arg-form').innerText = form.form;
+            
+            const resEl = document.getElementById('arg-result');
+            if(form.valid) {
+                resEl.className = "text-white font-black tracking-widest py-3 text-center border-4 border-ink-main shadow-brutal-sm font-mono uppercase bg-accent-matcha";
+                resEl.innerHTML = '<i data-lucide="check" class="inline w-5 h-5 mr-2 mb-1"></i> VALID (' + form.type + ')';
+            } else {
+                resEl.className = "text-white font-black tracking-widest py-3 text-center border-4 border-ink-main shadow-brutal-sm font-mono uppercase bg-accent-terracotta";
+                resEl.innerHTML = '<i data-lucide="x" class="inline w-5 h-5 mr-2 mb-1"></i> INVALID (' + form.type + ')';
+            }
+            lucide.createIcons();
+        }
+        
+        // Call generators on load
+        window.onload = () => {
+            generateConditional();
+            generateLaw();
+            generateArgument();
+        };
 
         // Scroll Progress Bar
         window.addEventListener('scroll', () => {
