@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OS Device & File Management | Study Guide</title>
+    <title>Algebra of Propositions | Interactive Recitation Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
@@ -13,19 +13,28 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['Fira Code', 'monospace'],
                     },
                     colors: {
-                        zen: {
-                            bg: '#F9F6F0',
+                        nordic: {
+                            bg: '#F1F5F9',
                             paper: '#FFFFFF',
-                            stone: '#E5D3B3',
-                            forest: '#2C4C3B',
-                            terracotta: '#C05746',
-                            charcoal: '#1A1A1A',
-                            border: '#E8E1D5',
-                            muted: '#8C8C8C'
+                            navy: '#0F172A',
+                            navyLight: '#1E293B',
+                            amber: '#F59E0B',
+                            amberLight: '#FEF3C7',
+                            slate: '#475569',
+                            border: '#E2E8F0'
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
                 }
@@ -33,668 +42,673 @@
         }
     </script>
     <style>
-        body { background-color: #F9F6F0; color: #1A1A1A; scroll-behavior: smooth; }
+        body { 
+            background-color: #F1F5F9; 
+            color: #475569; 
+            background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
         
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #E5D3B3; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #2C4C3B; }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Typography accents */
-        .highlight { position: relative; display: inline-block; z-index: 1; }
-        .highlight::after {
-            content: ''; position: absolute; left: 0; bottom: 2px; width: 100%; height: 8px;
-            background-color: rgba(229, 211, 179, 0.6); z-index: -1;
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+        
+        .math-sym { font-family: 'Fira Code', monospace; font-size: 1.05em; font-weight: 600; letter-spacing: -0.5px;}
+        .math-op { color: #F59E0B; margin: 0 6px;}
+        .overbar { text-decoration: overline; text-decoration-thickness: 2px; }
+        
+        /* Sidebar active state */
+        .nav-link.active {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #F59E0B;
+            border-left-color: #F59E0B;
+            font-weight: 600;
         }
 
-        /* Flip Card Styles */
-        .flip-card {
-            perspective: 1000px;
-            height: 180px;
-        }
-        .flip-card-inner {
-            position: relative; width: 100%; height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-        .flip-card-front, .flip-card-back {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            display: flex; flex-direction: column; justify-content: center;
-        }
-        .flip-card-front {
-            background-color: #FFFFFF; border: 1px solid #E8E1D5;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        .flip-card-back {
-            background-color: #2C4C3B; color: #F9F6F0;
-            transform: rotateY(180deg);
+        /* Hover lift & Glow */
+        .hover-lift { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hover-lift:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border-color: #CBD5E1;
         }
 
-        /* Glass Nav */
-        .glass-nav {
-            background: rgba(249, 246, 240, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(232, 225, 213, 0.5);
+        /* Dynamic Reveal */
+        .reveal-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin-top 0.4s ease-in-out;
+            opacity: 0;
+        }
+        .reveal-content.open {
+            max-height: 150px;
+            opacity: 1;
+            margin-top: 0.75rem;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Scroll Progress */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #F59E0B;
+            z-index: 100;
+            transition: width 0.1s ease;
         }
     </style>
 </head>
-<body class="antialiased pb-24 text-zen-charcoal">
+<body class="antialiased flex flex-col md:flex-row min-h-screen">
 
-    <!-- Sticky Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-nav px-4 py-3 md:py-4">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <div class="font-serif font-bold text-xl text-zen-forest tracking-tight">OS Notes.</div>
-            <div class="flex gap-4 overflow-x-auto hide-scrollbar text-sm font-medium text-zen-muted">
-                <a href="#device" class="hover:text-zen-forest whitespace-nowrap transition-colors">1. Device</a>
-                <a href="#disk" class="hover:text-zen-forest whitespace-nowrap transition-colors">2. Disk Math</a>
-                <a href="#file" class="hover:text-zen-forest whitespace-nowrap transition-colors">3. File Sys</a>
-                <a href="#allocation" class="hover:text-zen-forest whitespace-nowrap transition-colors">4. Allocation</a>
-            </div>
-        </div>
-    </nav>
+    <div id="progress-bar" style="width: 0%;"></div>
 
-    <!-- Hero Section -->
-    <header class="pt-32 pb-16 px-4 md:px-8 max-w-6xl mx-auto text-center md:text-left flex flex-col md:flex-row items-center gap-8 md:gap-16">
-        <div class="flex-1 space-y-6">
-            <h1 class="font-serif text-5xl md:text-7xl font-bold leading-tight text-zen-forest">
-                Mastering <br> <span class="text-zen-charcoal">OS Architecture</span>
-            </h1>
-            <p class="text-lg md:text-xl font-light text-gray-600 max-w-xl mx-auto md:mx-0">
-                A comprehensive breakdown of Device Management, I/O optimizations, and File Management Systems.
-            </p>
-            <div class="inline-flex items-center gap-2 bg-zen-stone/20 text-zen-forest px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
-                <i data-lucide="book-open" class="w-4 h-4"></i> IT2 Review Guide
-            </div>
-        </div>
-        <div class="hidden md:block flex-1">
-            <!-- Decorative Abstract Elements -->
-            <div class="relative w-full aspect-square max-w-md mx-auto">
-                <div class="absolute inset-0 bg-zen-stone rounded-full opacity-20 blur-3xl"></div>
-                <div class="absolute top-10 right-10 w-48 h-48 bg-zen-forest rounded-full opacity-10 blur-2xl"></div>
-                <div class="grid grid-cols-2 gap-4 h-full p-8 relative z-10">
-                    <div class="bg-white rounded-2xl shadow-sm border border-zen-border p-6 flex flex-col justify-end">
-                        <i data-lucide="cpu" class="w-8 h-8 text-zen-terracotta mb-auto"></i>
-                        <h3 class="font-serif font-bold text-lg mt-4">Device Mgt</h3>
-                        <p class="text-xs text-gray-500">I/O & Interrupts</p>
-                    </div>
-                    <div class="bg-zen-forest rounded-2xl shadow-sm p-6 flex flex-col justify-end text-white translate-y-8">
-                        <i data-lucide="folder-tree" class="w-8 h-8 text-zen-stone mb-auto"></i>
-                        <h3 class="font-serif font-bold text-lg mt-4">File Systems</h3>
-                        <p class="text-xs text-zen-stone/80">NTFS & UNIX</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Mobile Header -->
+    <header class="md:hidden glass text-white p-4 sticky top-0 z-50 shadow-md flex justify-between items-center">
+        <h1 class="font-serif font-bold text-lg text-nordic-amber">Keith's Logic Engine</h1>
+        <button id="mobile-menu-btn" class="p-2 hover:bg-white/10 rounded transition-colors"><i data-lucide="menu"></i></button>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 md:px-8 space-y-24">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 glass border-r border-slate-800 fixed h-full z-40 transition-transform duration-300 shadow-2xl">
+        <div class="p-8">
+            <h1 class="font-serif font-black text-2xl mb-1 tracking-tight text-white">IT2 Recitation</h1>
+            <p class="text-xs text-nordic-amber font-mono uppercase tracking-widest">Algebra of Propositions</p>
+        </div>
+        <nav class="flex-grow overflow-y-auto py-2" id="nav-menu">
+            <p class="px-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Engine Modules</p>
+            <a href="#laws" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">1. The 9 Laws</a>
+            <a href="#duality" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">2. Duality & Replacement</a>
+            <a href="#conditionals" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">3. Conditionals</a>
+            <a href="#equivalence" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">4. Equivalence vs Implication</a>
+            <a href="#arguments" class="nav-link block px-8 py-3.5 text-slate-300 hover:bg-white/5 border-l-4 border-transparent transition-all text-sm font-medium">5. Valid Arguments</a>
+        </nav>
+        <div class="p-6 border-t border-slate-800 bg-slate-900/50 text-xs text-slate-400">
+            <p class="flex items-start gap-2 leading-relaxed">
+                <i data-lucide="zap" class="w-4 h-4 text-nordic-amber flex-shrink-0"></i> 
+                <span>Dynamic Mode: Tap "Reveal" on cards to view English translations.</span>
+            </p>
+        </div>
+    </aside>
 
-        <!-- SECTION 1: DEVICE MANAGEMENT -->
-        <section id="device" class="space-y-10 scroll-mt-24">
-            <div class="border-b border-zen-border pb-4">
-                <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 01</span>
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">Device Management & I/O</h2>
+    <!-- Main Content -->
+    <main class="flex-1 md:ml-72 p-4 md:p-10 lg:p-14 max-w-7xl mx-auto w-full">
+        
+        <!-- SECTION 1: THE 9 LAWS -->
+        <section id="laws" class="scroll-mt-20 mb-24 animate-fade-in-up">
+            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
+                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">The 9 Propositional Laws</h2>
+                <p class="text-nordic-slate text-lg">Fundamental rules for manipulating and simplifying logical statements.</p>
             </div>
 
-            <!-- Architecture Tabs -->
-            <div class="bg-white border border-zen-border rounded-2xl shadow-sm overflow-hidden">
-                <div class="flex overflow-x-auto border-b border-zen-border bg-zen-bg hide-scrollbar">
-                    <button onclick="switchTab('arch', 'drivers')" id="btn-arch-drivers" class="px-6 py-4 font-serif font-semibold text-zen-forest border-b-2 border-zen-forest whitespace-nowrap">I/O Architecture</button>
-                    <button onclick="switchTab('arch', 'nt')" id="btn-arch-nt" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">NT Driver Stack</button>
-                    <button onclick="switchTab('arch', 'dma')" id="btn-arch-dma" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">DMA & Overlap</button>
-                    <button onclick="switchTab('arch', 'buffering')" id="btn-arch-buffering" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">Buffering</button>
-                    <button onclick="switchTab('arch', 'concepts')" id="btn-arch-concepts" class="px-6 py-4 font-serif font-medium text-gray-500 border-b-2 border-transparent hover:text-zen-forest transition-colors whitespace-nowrap">I/O Concepts</button>
-                </div>
+            <!-- Staggered Masonry-style Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 
-                <div class="p-6 md:p-8">
-                    <!-- Tab 1: I/O Architecture -->
-                    <div id="tab-arch-drivers" class="arch-tab block space-y-6 animate-[fadeIn_0.3s_ease]">
-                        <p class="text-gray-600">The Device Management Organization follows a strict hierarchy from the application down to the physical hardware.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-sm text-center">
-                            <div class="bg-zen-bg p-4 rounded-xl border border-zen-border"><span class="font-bold block mb-1">App Process</span>User Space</div>
-                            <div class="hidden md:flex items-center justify-center"><i data-lucide="arrow-right" class="text-zen-muted"></i></div>
-                            <div class="bg-zen-bg p-4 rounded-xl border border-zen-border"><span class="font-bold block mb-1">File Manager</span>System Interface</div>
-                            <div class="hidden md:flex items-center justify-center"><i data-lucide="arrow-right" class="text-zen-muted"></i></div>
-                            <div class="bg-zen-forest text-white p-4 rounded-xl shadow-md"><span class="font-bold block mb-1">Device Driver</span>Hardware Interface</div>
-                        </div>
-                        <div class="bg-zen-stone/10 p-5 rounded-xl border border-zen-stone/30 mt-6">
-                            <h4 class="font-serif font-bold text-zen-forest mb-2">System Call Interface (BSD UNIX)</h4>
-                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">open()</code> Prepare dev for operation</li>
-                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">close()</code> No longer using device</li>
-                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">ioctl()</code> Char dev specific info</li>
-                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">strategy()</code> Block dev I/O ops</li>
-                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">read() / write()</code> Char dev I/O ops</li>
-                                <li><code class="font-mono bg-white px-1 rounded text-zen-terracotta">select()</code> Char dev check for data</li>
-                            </ul>
-                        </div>
+                <!-- Idempotent -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="repeat" class="w-16 h-16"></i></div>
+                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Idempotent</h3>
+                    <p class="text-xs text-gray-500 mb-4 relative z-10">Applying same operation repeatedly does not change it.</p>
+                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                        <span class="math-sym">p<span class="math-op">&and;</span>p <span class="math-op">&equiv;</span> p</span><br>
+                        <span class="math-sym mt-2 block">p<span class="math-op">&or;</span>p <span class="math-op">&equiv;</span> p</span>
                     </div>
-
-                    <!-- Tab 2: NT Stack -->
-                    <div id="tab-arch-nt" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
-                        <h3 class="font-serif font-bold text-xl">Windows NT Driver Organization</h3>
-                        <p class="text-gray-600 mb-4">Windows extends device management by adding layered modules (Filter Drivers) to the stream. Drivers are invoked via an <strong>Interrupt Request Packet (IRP)</strong>.</p>
-                        <div class="flex flex-col gap-1 max-w-md mx-auto">
-                            <div class="bg-zen-charcoal text-white text-center py-2 rounded-t-xl font-bold text-sm">I/O Manager (Native API)</div>
-                            <div class="bg-white border border-zen-border text-center py-2 text-sm">File System Driver</div>
-                            <div class="bg-zen-stone/40 text-center py-2 text-sm text-zen-forest font-medium">Filter Driver</div>
-                            <div class="bg-white border border-zen-border text-center py-2 text-sm">Intermediate Driver</div>
-                            <div class="bg-zen-stone/40 text-center py-2 text-sm text-zen-forest font-medium">Filter Driver</div>
-                            <div class="bg-white border border-zen-border text-center py-2 text-sm">Device Driver</div>
-                            <div class="bg-zen-bg border border-zen-border text-center py-2 text-sm text-gray-500">HAL (Hardware Abstraction Layer)</div>
-                            <div class="bg-zen-forest text-white text-center py-2 rounded-b-xl font-bold text-sm">Physical Device</div>
-                        </div>
-                    </div>
-
-                    <!-- Tab 3: DMA -->
-                    <div id="tab-arch-dma" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
-                        <h3 class="font-serif font-bold text-xl">Direct Memory Access (DMA) & Overlap</h3>
-                        <p class="text-gray-600">Optimization relies on preventing the CPU from sitting idle while slow I/O operations occur.</p>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="border border-zen-border p-5 rounded-xl">
-                                <h4 class="font-bold mb-2 flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4 text-zen-terracotta"></i> Polling vs Interrupts</h4>
-                                <p class="text-sm text-gray-600 mb-2"><strong>Polling:</strong> CPU actively checks if device is ready (wastes cycles).</p>
-                                <p class="text-sm text-gray-600"><strong>Interrupts:</strong> CPU works on other tasks. Device controller sends a signal (Interrupt) when I/O is complete.</p>
-                            </div>
-                            <div class="border border-zen-border p-5 rounded-xl">
-                                <h4 class="font-bold mb-2 flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-zen-terracotta"></i> DMA Architecture</h4>
-                                <p class="text-sm text-gray-600">Bypasses the CPU entirely for data transfer. Data flows directly between the <strong>Primary Memory</strong> and the <strong>Device Controller</strong>.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab 4: Buffering -->
-                    <div id="tab-arch-buffering" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
-                        <h3 class="font-serif font-bold text-xl">Hardware & Driver Buffering</h3>
-                        <p class="text-gray-600">Buffers act as temporary storage to smooth out speed differences between data producers and consumers.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div class="bg-zen-bg p-4 rounded-xl text-center">
-                                <h4 class="font-bold text-sm mb-2">Single Buffering</h4>
-                                <p class="text-xs text-gray-500">Controller reads block <i>i</i> while Process reads block <i>i-1</i>.</p>
-                            </div>
-                            <div class="bg-zen-bg p-4 rounded-xl text-center border border-zen-forest/20">
-                                <h4 class="font-bold text-sm mb-2">Double Buffering</h4>
-                                <p class="text-xs text-gray-500">Two buffers (A & B). Swaps back and forth to ensure continuous flow.</p>
-                            </div>
-                            <div class="bg-zen-forest text-white p-4 rounded-xl text-center">
-                                <h4 class="font-bold text-sm mb-2">Ring Buffer</h4>
-                                <p class="text-xs text-zen-stone">Circular array of buffers. Best for rapid, continuous data streams.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab 5: I/O Concepts -->
-                    <div id="tab-arch-concepts" class="arch-tab hidden space-y-6 animate-[fadeIn_0.3s_ease]">
-                        <h3 class="font-serif font-bold text-xl">Addressing & Processing States</h3>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="border border-zen-border p-5 rounded-xl">
-                                <h4 class="font-bold mb-2 flex items-center gap-2"><i data-lucide="memory-stick" class="w-4 h-4 text-zen-terracotta"></i> Memory Mapped I/O</h4>
-                                <p class="text-sm text-gray-600 mb-2">Devices are mapped directly into the primary memory address space rather than having separate, dedicated I/O ports.</p>
-                                <p class="text-xs text-gray-500">The CPU interacts with devices by reading/writing to specific memory addresses just like regular RAM.</p>
-                            </div>
-                            <div class="border border-zen-border p-5 rounded-xl">
-                                <h4 class="font-bold mb-2 flex items-center gap-2"><i data-lucide="activity" class="w-4 h-4 text-zen-terracotta"></i> Compute vs I/O Bound</h4>
-                                <p class="text-sm text-gray-600 mb-2"><strong>Compute-Bound:</strong> Spends most of its time performing CPU calculations (peaks on execution graph).</p>
-                                <p class="text-sm text-gray-600"><strong>I/O-Bound:</strong> Spends most of its time waiting for I/O operations to complete (valleys on execution graph).</p>
-                            </div>
-                        </div>
+                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    </button>
+                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
+                        "It is raining AND it is raining" &rarr; It is raining.
                     </div>
                 </div>
-            </div>
-        </section>
 
-
-        <!-- SECTION 2: DISK MATH -->
-        <section id="disk" class="space-y-10 scroll-mt-24">
-            <div class="border-b border-zen-border pb-4">
-                <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 02</span>
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">Disk Scheduling Algorithms</h2>
-                
-                <div class="bg-white border border-zen-border rounded-lg p-4 mt-4 inline-block shadow-sm">
-                    <p class="text-sm font-bold text-zen-charcoal mb-2">Access Time Components:</p>
-                    <ul class="text-sm text-gray-600 space-y-1">
-                        <li><strong>Seek Time:</strong> Delay while R/W head moves to destination track. (Dominates access time)</li>
-                        <li><strong>Latency Time:</strong> Rotational delay waiting for sector to spin under head.</li>
-                        <li><strong>Transfer Time:</strong> Time to copy bits from disk surface to memory.</li>
-                    </ul>
-                    <p class="mt-3 font-mono text-xs bg-zen-stone/20 inline-block px-2 py-1 rounded text-zen-forest font-bold">Access Time = Seek + Latency + Transfer</p>
-                </div>
-            </div>
-
-            <div class="bg-zen-forest rounded-2xl p-6 md:p-8 text-white shadow-lg">
-                <div class="mb-6 pb-4 border-b border-white/20">
-                    <p class="font-mono text-sm text-zen-stone mb-1">Scenario Parameters</p>
-                    <p class="text-lg">Tracks 0 to 99. Head starts at <strong>75</strong>.</p>
-                    <p class="text-lg">Queue Requests: <strong>23, 87, 36, 93, 66</strong></p>
-                </div>
-
-                <div class="space-y-4">
-                    <!-- FCFS -->
-                    <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden cursor-pointer">
-                        <summary class="p-4 font-serif text-xl font-semibold flex justify-between items-center outline-none">
-                            FCFS (First-Come, First-Served)
-                            <span class="text-sm font-sans bg-white/20 px-3 py-1 rounded-full group-open:bg-zen-terracotta transition-colors">251 steps</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-sm text-zen-stone/90 font-mono border-t border-white/10 mt-2 pt-4">
-                            <p>Path: 75 &rarr; 23 &rarr; 87 &rarr; 36 &rarr; 93 &rarr; 66</p>
-                            <p class="mt-2 text-white">Math: |75-23| + |23-87| + |87-36| + |36-93| + |93-66|</p>
-                            <p>52 + 64 + 51 + 57 + 27 = <strong class="text-white text-base">251</strong></p>
-                        </div>
-                    </details>
-
-                    <!-- SSTF -->
-                    <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden cursor-pointer" open>
-                        <summary class="p-4 font-serif text-xl font-semibold flex justify-between items-center outline-none">
-                            SSTF (Shortest Seek Time First)
-                            <span class="text-sm font-sans bg-zen-terracotta px-3 py-1 rounded-full text-white transition-colors">107 steps</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-sm text-zen-stone/90 font-mono border-t border-white/10 mt-2 pt-4">
-                            <p>Always go to the closest track next.</p>
-                            <p class="mt-2">Path: 75 &rarr; 66 &rarr; 87 &rarr; 93 &rarr; 36 &rarr; 23</p>
-                            <p class="mt-2 text-white">Math: 9 + 21 + 6 + 57 + 13</p>
-                            <p>Total = <strong class="text-white text-base">107</strong></p>
-                        </div>
-                    </details>
-
-                    <!-- SCAN -->
-                    <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden cursor-pointer">
-                        <summary class="p-4 font-serif text-xl font-semibold flex justify-between items-center outline-none">
-                            SCAN (Elevator Algorithm)
-                            <span class="text-sm font-sans bg-white/20 px-3 py-1 rounded-full group-open:bg-zen-terracotta transition-colors">100 steps</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-sm text-zen-stone/90 font-mono border-t border-white/10 mt-2 pt-4">
-                            <p>Move in one direction all the way to the end (99), then reverse.</p>
-                            <p class="mt-2">Path: 75 &rarr; 87 &rarr; 93 &rarr; <strong>99</strong> &rarr; 66 &rarr; 36 &rarr; 23</p>
-                            <p class="mt-2 text-white">Math: 12 + 6 + 6 + 33 + 30 + 13</p>
-                            <p>Total = <strong class="text-white text-base">100</strong></p>
-                        </div>
-                    </details>
-
-                    <!-- LOOK -->
-                    <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden cursor-pointer">
-                        <summary class="p-4 font-serif text-xl font-semibold flex justify-between items-center outline-none">
-                            LOOK
-                            <span class="text-sm font-sans bg-white/20 px-3 py-1 rounded-full group-open:bg-zen-terracotta transition-colors">87 steps</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-sm text-zen-stone/90 font-mono border-t border-white/10 mt-2 pt-4">
-                            <p>Like SCAN, but stops at the last request in that direction (93), doesn't go to 99.</p>
-                            <p class="mt-2">Path: 75 &rarr; 87 &rarr; 93 &rarr; 66 &rarr; 36 &rarr; 23</p>
-                            <p class="mt-2 text-white">Math: 12 + 6 + 27 + 30 + 13</p>
-                            <p>Total = <strong class="text-white text-base">87</strong></p>
-                        </div>
-                    </details>
-
-                    <!-- C-SCAN & C-LOOK -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                        <div class="bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="font-serif font-bold text-lg mb-2">C-SCAN (Circular)</h4>
-                            <p class="text-xs text-zen-stone mb-2">Hits 99, returns to 0 (home), goes up again.</p>
-                            <p class="text-sm font-mono text-white">Path: 75 &rarr; 87 &rarr; 93 &rarr; 99 &rarr; 23 &rarr; 36 &rarr; 66</p>
-                            <p class="text-sm font-mono text-zen-terracotta mt-1">90 + home steps</p>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-xl border border-white/10">
-                            <h4 class="font-serif font-bold text-lg mb-2">C-LOOK</h4>
-                            <p class="text-xs text-zen-stone mb-2">Hits 93, returns to lowest request (23), goes up.</p>
-                            <p class="text-sm font-mono text-white">Path: 75 &rarr; 87 &rarr; 93 &rarr; 23 &rarr; 36 &rarr; 66</p>
-                            <p class="text-sm font-mono text-zen-terracotta mt-1">84 + home steps</p>
-                        </div>
+                <!-- Commutative -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="arrow-left-right" class="w-16 h-16"></i></div>
+                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Commutative</h3>
+                    <p class="text-xs text-gray-500 mb-4 relative z-10">The order of propositions does not change the outcome.</p>
+                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                        <span class="math-sym">p<span class="math-op">&and;</span>q <span class="math-op">&equiv;</span> q<span class="math-op">&and;</span>p</span><br>
+                        <span class="math-sym mt-1 block">p<span class="math-op">&or;</span>q <span class="math-op">&equiv;</span> q<span class="math-op">&or;</span>p</span><br>
+                        <span class="math-sym mt-1 block">p<span class="math-op">&harr;</span>q <span class="math-op">&equiv;</span> q<span class="math-op">&harr;</span>p</span>
+                    </div>
+                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    </button>
+                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
+                        "I have a cat AND a dog" &equiv; "I have a dog AND a cat"
                     </div>
                 </div>
-            </div>
-        </section>
 
-
-        <!-- SECTION 3: FILE SYSTEMS -->
-        <section id="file" class="space-y-10 scroll-mt-24">
-            <div class="border-b border-zen-border pb-4">
-                <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 03</span>
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">File Management Core</h2>
-            </div>
-
-            <!-- 3.1 Properties & Requirements -->
-            <div class="space-y-4">
-                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.1 System Properties & Requirements</h3>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white border border-zen-border p-5 rounded-xl shadow-sm">
-                        <h4 class="font-bold text-sm mb-3">Core File Operations</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Create</span>
-                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Delete</span>
-                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Open</span>
-                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Close</span>
-                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Read</span>
-                            <span class="px-2 py-1 bg-zen-stone/20 text-zen-forest rounded text-xs font-semibold">Write</span>
-                        </div>
-                        <p class="text-xs text-gray-500 mt-4">Files guarantee long-term existence, sharability between processes, and structure.</p>
+                <!-- Associative -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="network" class="w-16 h-16"></i></div>
+                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Associative</h3>
+                    <p class="text-xs text-gray-500 mb-4 relative z-10">Parenthesis grouping doesn't matter for chains of same operators.</p>
+                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                        <span class="math-sym text-[0.9em]">(p<span class="math-op">&and;</span>q)<span class="math-op">&and;</span>r <span class="math-op">&equiv;</span> p<span class="math-op">&and;</span>(q<span class="math-op">&and;</span>r)</span><br>
+                        <span class="math-sym text-[0.9em] mt-2 block">(p<span class="math-op">&or;</span>q)<span class="math-op">&or;</span>r <span class="math-op">&equiv;</span> p<span class="math-op">&or;</span>(q<span class="math-op">&or;</span>r)</span>
                     </div>
-                    <div class="bg-white border border-zen-border p-5 rounded-xl shadow-sm">
-                        <h4 class="font-bold text-sm mb-3">Minimal System Requirements</h4>
-                        <ul class="text-xs text-gray-600 space-y-1 list-disc list-inside ml-4">
-                            <li>Create, delete, read, write, modify files</li>
-                            <li>Controlled access to other users' files</li>
-                            <li>Control types of access allowed</li>
-                            <li>Restructure files / Move data between files</li>
-                            <li>Back up and recover files in case of damage</li>
-                            <li>Access files using symbolic names</li>
-                        </ul>
+                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    </button>
+                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
+                        "Wash car AND mow lawn, AND buy groceries" &equiv; "Wash car, AND mow lawn AND buy groceries"
                     </div>
                 </div>
-            </div>
 
-            <!-- 3.2 Data Hierarchy -->
-            <div class="space-y-4 pt-6">
-                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.2 Data Hierarchy</h3>
-                <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-4 w-full">
-                    <div class="flex-1 bg-white border border-zen-border p-4 rounded-xl text-center shadow-sm">
-                        <span class="font-bold text-zen-terracotta block mb-1">Field</span>
-                        <p class="text-xs text-gray-500">Basic element. Single value (length & type).</p>
+                <!-- Distributive -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="split" class="w-16 h-16"></i></div>
+                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Distributive</h3>
+                    <p class="text-xs text-gray-500 mb-4 relative z-10">Distribute AND over OR, or OR over AND.</p>
+                    <div class="bg-slate-50 p-3 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                        <span class="math-sym text-[0.8em]">p<span class="math-op">&and;</span>(q<span class="math-op">&or;</span>r) <span class="math-op">&equiv;</span> (p<span class="math-op">&and;</span>q)<span class="math-op">&or;</span>(p<span class="math-op">&and;</span>r)</span><br>
+                        <span class="math-sym text-[0.8em] mt-2 block">p<span class="math-op">&or;</span>(q<span class="math-op">&and;</span>r) <span class="math-op">&equiv;</span> (p<span class="math-op">&or;</span>q)<span class="math-op">&and;</span>(p<span class="math-op">&or;</span>r)</span>
                     </div>
-                    <div class="hidden md:block text-zen-stone"><i data-lucide="chevron-right"></i></div>
-                    <div class="flex-1 bg-white border border-zen-border p-4 rounded-xl text-center shadow-sm">
-                        <span class="font-bold text-zen-terracotta block mb-1">Record</span>
-                        <p class="text-xs text-gray-500">Collection of related fields treated as a unit.</p>
-                    </div>
-                    <div class="hidden md:block text-zen-stone"><i data-lucide="chevron-right"></i></div>
-                    <div class="flex-1 bg-white border border-zen-border p-4 rounded-xl text-center shadow-sm">
-                        <span class="font-bold text-zen-terracotta block mb-1">File</span>
-                        <p class="text-xs text-gray-500">Collection of similar records. Single entity.</p>
-                    </div>
-                    <div class="hidden md:block text-zen-stone"><i data-lucide="chevron-right"></i></div>
-                    <div class="flex-1 bg-zen-forest border border-zen-border p-4 rounded-xl text-center shadow-md">
-                        <span class="font-bold text-zen-stone block mb-1">Database</span>
-                        <p class="text-xs text-white/80">Collection of related data with relationships.</p>
+                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    </button>
+                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
+                        "I will order a burger AND (either fries OR salad)"
                     </div>
                 </div>
-            </div>
 
-            <!-- 3.3 File Organization -->
-            <div class="space-y-4 pt-6">
-                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.3 File Organization & Criteria</h3>
-                
-                <div class="bg-zen-stone/10 p-4 rounded-xl border border-zen-stone/30 mb-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-zen-forest font-medium">
-                    <span class="flex items-center gap-1"><i data-lucide="zap" class="w-4 h-4"></i> Short access time</span>
-                    <span class="flex items-center gap-1"><i data-lucide="edit-3" class="w-4 h-4"></i> Ease of update</span>
-                    <span class="flex items-center gap-1"><i data-lucide="save" class="w-4 h-4"></i> Economy of storage</span>
-                    <span class="flex items-center gap-1"><i data-lucide="tool" class="w-4 h-4"></i> Simple maintenance</span>
-                    <span class="flex items-center gap-1"><i data-lucide="shield-check" class="w-4 h-4"></i> Reliability</span>
-                </div>
-
-                <p class="text-sm text-gray-600 mb-4">Click cards to reveal the structure characteristics.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- De Morgan's (Span 2 cols on Desktop) -->
+                <div class="bg-gradient-to-br from-nordic-navy to-slate-800 border-none rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group xl:col-span-2 text-white shadow-lg">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="flip-vertical" class="w-24 h-24 text-nordic-amber"></i></div>
+                    <div class="flex items-center gap-3 mb-2 relative z-10">
+                        <span class="px-2 py-1 bg-nordic-amber text-nordic-navy text-[10px] font-black rounded uppercase tracking-widest">Crucial</span>
+                        <h3 class="font-bold text-2xl">De Morgan's Laws</h3>
+                    </div>
+                    <p class="text-sm text-slate-300 mb-4 relative z-10 max-w-md">Negating a grouped AND turns it into an OR. Negating a grouped OR turns it into an AND.</p>
                     
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                                <i data-lucide="layers" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
-                                <h3 class="font-serif font-bold text-lg">The Pile</h3>
-                                <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto relative z-10">
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
+                            <div class="text-center mb-3">
+                                <span class="math-sym text-nordic-amber"><span class="overbar text-white">p <span class="math-op text-white">&or;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar text-white">p</span> <span class="math-op text-white">&and;</span> <span class="overbar text-white">q</span></span>
                             </div>
-                            <div class="flip-card-back text-center">
-                                <h4 class="font-bold border-b border-white/20 pb-2 mb-2">The Pile</h4>
-                                <p class="text-sm">Data collected in order of arrival. No structure. Exhaustive search required to find records.</p>
+                            <p class="text-xs text-slate-300 text-center">"NOT (pizza OR pasta)" <br>&equiv; "NOT pizza AND NOT pasta"</p>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-xl border border-white/5 backdrop-blur-sm">
+                            <div class="text-center mb-3">
+                                <span class="math-sym text-nordic-amber"><span class="overbar text-white">p <span class="math-op text-white">&and;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar text-white">p</span> <span class="math-op text-white">&or;</span> <span class="overbar text-white">q</span></span>
+                            </div>
+                            <p class="text-xs text-slate-300 text-center">"NOT (A and B)" <br>&equiv; "NOT A or NOT B"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Absorption -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="shrink" class="w-16 h-16"></i></div>
+                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Absorption</h3>
+                    <p class="text-xs text-gray-500 mb-4 relative z-10">Shortcuts! <span class="math-sym text-[0.8em]">p</span> absorbs compounds containing <span class="math-sym text-[0.8em]">p</span>.</p>
+                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner">
+                        <span class="math-sym">p<span class="math-op">&and;</span>(p<span class="math-op">&or;</span>q) <span class="math-op">&equiv;</span> p</span><br>
+                        <span class="math-sym mt-2 block">p<span class="math-op">&or;</span>(p<span class="math-op">&and;</span>q) <span class="math-op">&equiv;</span> p</span>
+                    </div>
+                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    </button>
+                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
+                        "I go to work, OR (I go to work AND drive)" &rarr; I go to work.
+                    </div>
+                </div>
+
+                <!-- Involution -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="undo-2" class="w-16 h-16"></i></div>
+                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Involution</h3>
+                    <p class="text-xs text-gray-500 mb-4 relative z-10">Double negation. Two negatives cancel out.</p>
+                    <div class="bg-slate-50 p-4 rounded-xl mb-auto text-center border border-slate-100 shadow-inner flex items-center justify-center">
+                        <span class="math-sym text-2xl"><span class="overbar"><span class="overbar">p</span></span> <span class="math-op">&equiv;</span> p</span>
+                    </div>
+                    <button class="reveal-btn mt-4 w-full py-2 bg-nordic-navyLight hover:bg-nordic-navy text-white text-xs font-semibold rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation
+                    </button>
+                    <div class="reveal-content text-sm italic text-slate-600 bg-nordic-amberLight/30 border border-nordic-amber/20 p-3 rounded-lg">
+                        "I am NOT NOT hungry" &rarr; I am hungry.
+                    </div>
+                </div>
+
+                <!-- Identity / Domination -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="fingerprint" class="w-16 h-16"></i></div>
+                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Identity & Domination</h3>
+                    <p class="text-xs text-gray-500 mb-4 relative z-10">Combining <span class="math-sym text-[0.8em]">p</span> with True (<span class="math-sym text-[0.8em]">t</span>) or False (<span class="math-sym text-[0.8em]">f</span>).</p>
+                    <div class="bg-slate-50 p-4 rounded-xl mb-auto border border-slate-100 shadow-inner grid grid-cols-2 gap-y-3 gap-x-2 text-center items-center">
+                        <span class="math-sym text-[0.9em]">p<span class="math-op">&or;</span>f <span class="math-op">&equiv;</span> p</span>
+                        <span class="math-sym text-[0.9em]">p<span class="math-op">&and;</span>t <span class="math-op">&equiv;</span> p</span>
+                        <span class="math-sym text-[0.9em]">p<span class="math-op">&or;</span>t <span class="math-op">&equiv;</span> t</span>
+                        <span class="math-sym text-[0.9em]">p<span class="math-op">&and;</span>f <span class="math-op">&equiv;</span> f</span>
+                    </div>
+                </div>
+
+                <!-- Complement -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-6 hover-lift flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><i data-lucide="pie-chart" class="w-16 h-16"></i></div>
+                    <h3 class="font-bold text-xl text-nordic-navy mb-2 relative z-10">Complement</h3>
+                    <p class="text-xs text-gray-500 mb-4 relative z-10">Relationship between proposition and its exact opposite.</p>
+                    <div class="bg-slate-50 p-4 rounded-xl mb-auto border border-slate-100 shadow-inner grid grid-cols-2 gap-y-3 gap-x-2 text-center items-center">
+                        <span class="math-sym text-[0.9em]" title="Excluded Middle">p<span class="math-op">&or;</span><span class="overbar">p</span> <span class="math-op">&equiv;</span> t</span>
+                        <span class="math-sym text-[0.9em]" title="Non-Contradiction">p<span class="math-op">&and;</span><span class="overbar">p</span> <span class="math-op">&equiv;</span> f</span>
+                        <span class="math-sym text-[0.9em]"><span class="overbar">f</span> <span class="math-op">&equiv;</span> t</span>
+                        <span class="math-sym text-[0.9em]"><span class="overbar">t</span> <span class="math-op">&equiv;</span> f</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2: DUALITY & REPLACEMENT -->
+        <section id="duality" class="scroll-mt-24 mb-24">
+            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
+                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">Core Principles</h2>
+                <p class="text-nordic-slate text-lg">The mechanical rules that govern logical equivalence.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Duality Principle -->
+                <div class="bg-gradient-to-br from-nordic-amber to-amber-600 text-white rounded-2xl p-8 shadow-xl relative overflow-hidden">
+                    <div class="absolute -bottom-10 -right-10 opacity-20"><i data-lucide="yin-yang" class="w-64 h-64"></i></div>
+                    <h3 class="font-serif text-3xl font-black mb-4 relative z-10">The Duality Principle</h3>
+                    <p class="text-amber-50 mb-6 relative z-10 leading-relaxed font-medium">To find the dual of a compound proposition, you execute strict mechanical swaps. <br><br><strong>Golden Rule:</strong> If two propositions are logically equivalent, their duals are also logically equivalent.</p>
+                    
+                    <div class="bg-black/20 rounded-xl p-5 mb-6 backdrop-blur-sm relative z-10 border border-white/10">
+                        <h4 class="font-bold text-xs uppercase text-amber-200 tracking-widest mb-4">The Required Swaps:</h4>
+                        <div class="flex justify-around text-center items-center">
+                            <div class="bg-white/10 px-6 py-3 rounded-lg flex items-center gap-3">
+                                <span class="math-sym text-2xl">&and;</span> <i data-lucide="arrow-right-left" class="w-4 h-4 text-amber-200"></i> <span class="math-sym text-2xl">&or;</span>
+                            </div>
+                            <div class="bg-white/10 px-6 py-3 rounded-lg flex items-center gap-3">
+                                <span class="math-sym text-2xl">t</span> <i data-lucide="arrow-right-left" class="w-4 h-4 text-amber-200"></i> <span class="math-sym text-2xl">f</span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                                <i data-lucide="list-ordered" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
-                                <h3 class="font-serif font-bold text-lg">Sequential</h3>
-                                <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
-                            </div>
-                            <div class="flip-card-back text-center">
-                                <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Sequential</h4>
-                                <p class="text-sm">Fixed format records stored in Key sequence. Updates are merged via a batch log/transaction file.</p>
-                            </div>
+                    
+                    <div class="space-y-4 relative z-10">
+                        <div>
+                            <p class="text-[10px] text-amber-200 uppercase tracking-widest mb-1">Example 1</p>
+                            <p class="font-mono text-sm bg-black/10 px-3 py-2 rounded">
+                                (p <span class="text-nordic-navy font-bold">&and;</span> q) <span class="text-nordic-navy font-bold">&or;</span> <span class="overbar">p</span> &nbsp;&rarr;&nbsp; (p <span class="text-white font-bold">&or;</span> q) <span class="text-white font-bold">&and;</span> <span class="overbar">p</span>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-amber-200 uppercase tracking-widest mb-1">Example 2</p>
+                            <p class="font-mono text-sm bg-black/10 px-3 py-2 rounded">
+                                (p <span class="text-nordic-navy font-bold">&or;</span> <span class="text-nordic-navy font-bold">f</span>) <span class="text-nordic-navy font-bold">&and;</span> q &nbsp;&rarr;&nbsp; (p <span class="text-white font-bold">&and;</span> <span class="text-white font-bold">t</span>) <span class="text-white font-bold">&or;</span> q
+                            </p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                                <i data-lucide="book-marked" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
-                                <h3 class="font-serif font-bold text-lg">Indexed Seq.</h3>
-                                <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                <!-- Replacement Rule -->
+                <div class="bg-white border border-nordic-border rounded-2xl p-8 shadow-md flex flex-col">
+                    <h3 class="font-serif text-3xl font-black text-nordic-navy mb-4 flex items-center gap-3"><i data-lucide="replace" class="text-nordic-amber w-8 h-8"></i> Replacement Rule</h3>
+                    <p class="text-slate-600 mb-6 leading-relaxed">Substituting a logically equivalent proposition for another in a compound proposition <strong>does not alter the ultimate truth value</strong>.</p>
+                    
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex-grow shadow-inner">
+                        <p class="text-[10px] font-black text-nordic-navy uppercase tracking-widest mb-3">Live Proof Demonstration</p>
+                        <p class="text-sm font-semibold mb-4 bg-white px-3 py-2 border border-slate-200 rounded inline-block shadow-sm">
+                            Prove: <span class="math-sym">(<span class="overbar">p</span> <span class="math-op">&and;</span> q) <span class="math-op">&or;</span> (<span class="overbar">p <span class="math-op">&or;</span> q</span>) <span class="math-op">&equiv;</span> <span class="overbar">p</span></span>
+                        </p>
+                        
+                        <div class="space-y-3 font-mono text-sm">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded shadow-sm border border-slate-100">
+                                <span><span class="math-sym">(<span class="overbar">p</span> &and; q) &or; (<span class="overbar">p</span> &and; <span class="overbar">q</span>)</span></span>
+                                <span class="text-nordic-amber text-[10px] uppercase font-bold tracking-wider mt-1 sm:mt-0">De Morgan's</span>
                             </div>
-                            <div class="flip-card-back text-center">
-                                <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Indexed Sequential</h4>
-                                <p class="text-sm">Main file + Index file + Overflow file. Drastically reduces average accesses (e.g., 500k vs 1000).</p>
+                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-slate-300"></i></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded shadow-sm border border-slate-100">
+                                <span><span class="math-sym"><span class="overbar">p</span> &and; (q &or; <span class="overbar">q</span>)</span></span>
+                                <span class="text-nordic-amber text-[10px] uppercase font-bold tracking-wider mt-1 sm:mt-0">Distributive</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front text-center">
-                                <i data-lucide="hash" class="w-8 h-8 mx-auto text-zen-terracotta mb-3"></i>
-                                <h3 class="font-serif font-bold text-lg">Direct / Hashed</h3>
-                                <p class="text-xs text-gray-400 mt-2">Tap to reveal</p>
+                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-slate-300"></i></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded shadow-sm border border-slate-100">
+                                <span><span class="math-sym"><span class="overbar">p</span> &and; t</span></span>
+                                <span class="text-nordic-amber text-[10px] uppercase font-bold tracking-wider mt-1 sm:mt-0">Complement</span>
                             </div>
-                            <div class="flip-card-back text-center">
-                                <h4 class="font-bold border-b border-white/20 pb-2 mb-2">Direct File</h4>
-                                <p class="text-sm">Directly access a block at a known address using a required Key field. Fastest single access.</p>
+                            <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-slate-300"></i></div>
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-nordic-navy text-white p-3 rounded shadow-md border border-nordic-navy">
+                                <span class="font-bold text-nordic-amber"><span class="math-sym"><span class="overbar text-white">p</span></span></span>
+                                <span class="text-nordic-amber text-[10px] uppercase font-bold tracking-wider mt-1 sm:mt-0">Identity</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- 3.4 Directories & Info Elements -->
-            <div class="grid md:grid-cols-2 gap-8 pt-6">
-                <div class="space-y-4">
-                    <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.4 Directory Structures</h3>
-                    <div class="space-y-3">
-                        <div class="bg-white p-4 rounded-lg border border-zen-border">
-                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Simple Directory</h4>
-                            <p class="text-xs text-gray-600">Single list. No structure. Forces user to ensure completely unique file names globally.</p>
+        <!-- SECTION 3: CONDITIONALS & TRUTH TABLES -->
+        <section id="conditionals" class="scroll-mt-24 mb-24">
+            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
+                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">Conditionals Matrix</h2>
+                <p class="text-nordic-slate text-lg">Given a base conditional <span class="math-sym">p <span class="math-op text-nordic-amber">&rarr;</span> q</span>, explore its 3 structural variations.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-6">
+                
+                <!-- Diagram Side -->
+                <div class="lg:col-span-3 bg-white rounded-2xl shadow-md border border-nordic-border overflow-hidden flex flex-col">
+                    <div class="p-8 bg-slate-50 border-b border-nordic-border text-center">
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2">Base Proposition</p>
+                        <p class="text-2xl font-serif text-nordic-navy"><span class="math-sym bg-white px-3 py-1 shadow-sm border border-slate-200 rounded text-nordic-amber">p <span class="math-op text-nordic-navy">&rarr;</span> q</span></p>
+                        <p class="mt-4 text-slate-600 italic">"If Jack plays his guitar, then Sara will sing."</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-nordic-border flex-grow bg-white">
+                        <div class="p-6 text-center hover:bg-slate-50 transition-colors">
+                            <h4 class="font-bold text-nordic-navy text-sm uppercase tracking-wider mb-4">Converse</h4>
+                            <div class="text-xl font-mono font-bold bg-white inline-block px-4 py-2 rounded shadow border border-slate-100 mb-4 text-nordic-navy"><span class="math-sym">q <span class="math-op">&rarr;</span> p</span></div>
+                            <p class="text-xs text-slate-500 italic">"If Sara will sing, then Jack plays his guitar."</p>
                         </div>
-                        <div class="bg-white p-4 rounded-lg border border-zen-border">
-                            <h4 class="font-bold text-sm text-zen-terracotta mb-1">Two-Level Scheme</h4>
-                            <p class="text-xs text-gray-600">Master directory points to individual User directories. Resolves basic naming collisions.</p>
+                        <div class="p-6 text-center hover:bg-slate-50 transition-colors">
+                            <h4 class="font-bold text-nordic-navy text-sm uppercase tracking-wider mb-4">Inverse</h4>
+                            <div class="text-xl font-mono font-bold bg-white inline-block px-4 py-2 rounded shadow border border-slate-100 mb-4 text-nordic-navy"><span class="math-sym"><span class="overbar">p</span> <span class="math-op">&rarr;</span> <span class="overbar">q</span></span></div>
+                            <p class="text-xs text-slate-500 italic">"If Jack doesn't play his guitar, then Sara won't sing."</p>
                         </div>
-                        <div class="bg-white p-4 rounded-lg border border-zen-border border-l-4 border-l-zen-forest">
-                            <h4 class="font-bold text-sm text-zen-forest mb-1">Hierarchical / Tree-Structured</h4>
-                            <p class="text-xs text-gray-600">Master directory with subdirectories and files as entries. Files located via <strong>Pathnames</strong>.</p>
+                        <div class="p-6 text-center bg-amber-50/50 hover:bg-amber-50 transition-colors relative">
+                            <div class="absolute top-0 right-0 w-0 h-0 border-t-[30px] border-t-nordic-amber border-l-[30px] border-l-transparent"></div>
+                            <h4 class="font-bold text-nordic-amber text-sm uppercase tracking-wider mb-4">Contrapositive</h4>
+                            <div class="text-xl font-mono font-black bg-white inline-block px-4 py-2 rounded shadow-md border border-amber-200 mb-4 text-nordic-navy"><span class="math-sym"><span class="overbar">q</span> <span class="math-op">&rarr;</span> <span class="overbar">p</span></span></div>
+                            <p class="text-xs text-slate-600 italic font-medium">"If Sara won't sing, then Jack doesn't play his guitar."</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="space-y-4">
-                    <h3 class="font-serif font-bold text-xl text-zen-charcoal">File Directory Elements</h3>
-                    <div class="bg-white border border-zen-border rounded-xl shadow-sm overflow-hidden text-sm">
-                        <table class="w-full text-left">
-                            <thead class="bg-zen-stone/20 text-zen-forest text-xs uppercase">
-                                <tr><th class="p-3">Category</th><th class="p-3">Elements Stored</th></tr>
+                <!-- Truth Table Side -->
+                <div class="lg:col-span-2 bg-nordic-navy rounded-2xl shadow-xl p-6 flex flex-col text-white">
+                    <h3 class="font-serif text-xl font-bold text-nordic-amberLight mb-2 flex items-center gap-2">
+                        <i data-lucide="table-2" class="w-5 h-5 text-nordic-amber"></i> Verification Table
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4">Observe how the Base matches Contrapositive, and Converse matches Inverse.</p>
+                    
+                    <div class="overflow-x-auto border border-slate-700 rounded-lg">
+                        <table class="w-full text-center text-sm font-mono">
+                            <thead class="bg-slate-800 text-slate-300 text-xs">
+                                <tr>
+                                    <th class="py-2 px-1 border-b border-slate-700">p</th>
+                                    <th class="py-2 px-1 border-b border-slate-700 border-r">q</th>
+                                    <th class="py-2 px-2 border-b border-slate-700 bg-slate-800/50" title="Base">p&rarr;q</th>
+                                    <th class="py-2 px-2 border-b border-slate-700" title="Converse">q&rarr;p</th>
+                                    <th class="py-2 px-2 border-b border-slate-700" title="Inverse"><span class="overbar">p</span>&rarr;<span class="overbar">q</span></th>
+                                    <th class="py-2 px-2 border-b border-slate-700 text-nordic-amber bg-slate-800/50" title="Contrapositive"><span class="overbar">q</span>&rarr;<span class="overbar">p</span></th>
+                                </tr>
                             </thead>
-                            <tbody class="divide-y divide-zen-border text-xs text-gray-700">
-                                <tr><td class="p-3 font-bold">Basic</td><td class="p-3">Name, Type, Organization</td></tr>
-                                <tr><td class="p-3 font-bold">Address</td><td class="p-3">Volume, Starting Address, Size Used, Size Allocated</td></tr>
-                                <tr><td class="p-3 font-bold">Access</td><td class="p-3">Owner, Access Control Info, Permitted Actions</td></tr>
-                                <tr><td class="p-3 font-bold">Usage</td><td class="p-3">Date Created/Modified/Read, Creator/Modifier Identity, Current Usage locks</td></tr>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-800 hover:bg-slate-800/50">
+                                    <td class="py-2 px-1">T</td>
+                                    <td class="py-2 px-1 border-r border-slate-700">T</td>
+                                    <td class="py-2 px-2 font-bold text-white bg-slate-800/30">T</td>
+                                    <td class="py-2 px-2">T</td>
+                                    <td class="py-2 px-2">T</td>
+                                    <td class="py-2 px-2 font-bold text-nordic-amber bg-slate-800/30">T</td>
+                                </tr>
+                                <tr class="border-b border-slate-800 hover:bg-slate-800/50">
+                                    <td class="py-2 px-1">T</td>
+                                    <td class="py-2 px-1 border-r border-slate-700">F</td>
+                                    <td class="py-2 px-2 font-bold text-slate-500 bg-slate-800/30">F</td>
+                                    <td class="py-2 px-2 text-white">T</td>
+                                    <td class="py-2 px-2 text-white">T</td>
+                                    <td class="py-2 px-2 font-bold text-slate-500 bg-slate-800/30">F</td>
+                                </tr>
+                                <tr class="border-b border-slate-800 hover:bg-slate-800/50">
+                                    <td class="py-2 px-1">F</td>
+                                    <td class="py-2 px-1 border-r border-slate-700">T</td>
+                                    <td class="py-2 px-2 font-bold text-white bg-slate-800/30">T</td>
+                                    <td class="py-2 px-2 text-slate-500">F</td>
+                                    <td class="py-2 px-2 text-slate-500">F</td>
+                                    <td class="py-2 px-2 font-bold text-nordic-amber bg-slate-800/30">T</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/50">
+                                    <td class="py-2 px-1">F</td>
+                                    <td class="py-2 px-1 border-r border-slate-700">F</td>
+                                    <td class="py-2 px-2 font-bold text-white bg-slate-800/30">T</td>
+                                    <td class="py-2 px-2 text-white">T</td>
+                                    <td class="py-2 px-2 text-white">T</td>
+                                    <td class="py-2 px-2 font-bold text-nordic-amber bg-slate-800/30">T</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
+                    <div class="mt-4 bg-slate-800/80 p-3 rounded border border-slate-700 text-xs text-slate-300 font-medium">
+                        <span class="text-nordic-amber">Conclusion:</span> A conditional and its contrapositive are logically equivalent.
+                    </div>
                 </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 4: EQUIVALENCE VS IMPLICATION -->
+        <section id="equivalence" class="scroll-mt-24 mb-24">
+            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
+                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">Equivalence vs. Implication</h2>
             </div>
 
-            <!-- 3.5 Record Blocking -->
-            <div class="space-y-4 pt-6">
-                <h3 class="font-serif font-bold text-xl text-zen-charcoal">3.5 Record Blocking</h3>
-                <div class="grid md:grid-cols-3 gap-4">
-                    <div class="bg-white p-4 rounded-lg border border-zen-border">
-                        <h4 class="font-bold text-sm text-zen-terracotta mb-1">Fixed Blocking</h4>
-                        <p class="text-xs text-gray-600">Fixed record size. Causes <strong>internal fragmentation</strong> (waste due to fitting records into fixed block sizes).</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border border-zen-border">
-                        <h4 class="font-bold text-sm text-zen-terracotta mb-1">Variable Blocking: Spanned</h4>
-                        <p class="text-xs text-gray-600">Records can span across multiple blocks. No wasted space, but requires complex pointer tracking.</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border border-zen-border">
-                        <h4 class="font-bold text-sm text-zen-terracotta mb-1">Variable Blocking: Unspanned</h4>
-                        <p class="text-xs text-gray-600">Records cannot span blocks. Wastes space if the remaining block space is too small for the next record.</p>
-                    </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Logical Equivalence -->
+                <div class="bg-white border-t-[6px] border-t-nordic-navy rounded-2xl p-8 shadow-md">
+                    <h3 class="font-bold text-2xl text-nordic-navy mb-4 flex items-center justify-between">
+                        Logical Equivalence
+                        <span class="math-sym text-3xl font-black bg-slate-50 px-3 py-1 rounded shadow-sm border border-slate-100">P <span class="math-op">&equiv;</span> Q</span>
+                    </h3>
+                    <ul class="text-sm text-slate-600 space-y-4 mt-6 list-none">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-nordic-navy flex-shrink-0 mt-0.5"></i>
+                            <span>Two propositions have <strong>identical truth values</strong> for every possible set of components.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5 text-nordic-navy flex-shrink-0 mt-0.5"></i>
+                            <span>It means the biconditional statement <span class="math-sym font-mono bg-slate-100 px-2 py-0.5 rounded shadow-sm">P <span class="math-op text-nordic-navy">&harr;</span> Q</span> is a <strong>tautology</strong> (always true).</span>
+                        </li>
+                        <li class="flex items-start gap-3 mt-4 pt-4 border-t border-slate-100">
+                            <i data-lucide="code" class="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5"></i>
+                            <div class="w-full">
+                                <span class="text-xs uppercase font-bold text-slate-400 tracking-widest block mb-1">Example</span>
+                                <span class="math-sym font-mono block bg-slate-50 p-3 rounded border border-slate-200 text-center"><span class="overbar">p <span class="math-op">&and;</span> q</span> <span class="math-op">&equiv;</span> <span class="overbar">p</span> <span class="math-op">&or;</span> <span class="overbar">q</span></span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            </div>
 
-            <!-- 3.6 Access Rights -->
-            <div class="bg-zen-stone/20 p-6 rounded-2xl border border-zen-stone/50 mt-6 grid md:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="font-serif font-bold text-xl text-zen-charcoal mb-4">3.6 Access Rights</h3>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-400">None</span>
-                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-600">Knowledge</span>
-                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-gray-700">Execution</span>
-                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-forest">Reading</span>
-                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-forest">Appending</span>
-                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-terracotta">Updating</span>
-                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-zen-terracotta">Changing Protection</span>
-                        <span class="px-3 py-1.5 bg-white text-xs font-semibold rounded shadow-sm border border-zen-border text-red-600">Deletion</span>
-                    </div>
-                    <p class="text-xs text-gray-600 italic">* <strong>Owners</strong> hold all rights listed above and can grant rights to Specific Users, User Groups, or Publicly.</p>
-                </div>
-                <div>
-                    <h3 class="font-serif font-bold text-xl text-zen-charcoal mb-4">Simultaneous Access</h3>
-                    <ul class="text-sm text-gray-700 space-y-2 list-disc list-inside">
-                        <li>Users may <strong>lock the entire file</strong> when it is to be updated.</li>
-                        <li>Alternatively, users may <strong>lock individual records</strong> during the update for better concurrency.</li>
-                        <li><strong>Mutual exclusion</strong> and <strong>deadlock</strong> are primary issues that must be managed for shared access.</li>
+                <!-- Logical Implication -->
+                <div class="bg-white border-t-[6px] border-t-nordic-amber rounded-2xl p-8 shadow-md relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 opacity-5"><i data-lucide="arrow-right-circle" class="w-48 h-48"></i></div>
+                    <h3 class="font-bold text-2xl text-nordic-navy mb-4 flex items-center justify-between relative z-10">
+                        Logical Implication
+                        <span class="math-sym text-3xl font-black bg-slate-50 px-3 py-1 rounded shadow-sm border border-slate-100">P <span class="math-op text-nordic-amber">&rArr;</span> Q</span>
+                    </h3>
+                    <ul class="text-sm text-slate-600 space-y-4 mt-6 list-none relative z-10">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="arrow-right" class="w-5 h-5 text-nordic-amber flex-shrink-0 mt-0.5"></i>
+                            <span>Whenever <span class="math-sym font-mono">P</span> is true, then <span class="math-sym font-mono">Q</span> is also true. (<span class="math-sym font-mono">Q</span> is <em>never</em> false when <span class="math-sym font-mono">P</span> is true).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="arrow-right" class="w-5 h-5 text-nordic-amber flex-shrink-0 mt-0.5"></i>
+                            <span>It means the conditional statement <span class="math-sym font-mono bg-slate-100 px-2 py-0.5 rounded shadow-sm">P <span class="math-op text-nordic-navy">&rarr;</span> Q</span> is a <strong>tautology</strong>.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
+                            <span class="text-red-600 font-medium">Warning: The converse does not apply. <span class="math-sym font-mono">Q</span> may be true when <span class="math-sym font-mono">P</span> is false.</span>
+                        </li>
+                        <li class="flex items-start gap-3 mt-2 pt-4 border-t border-slate-100">
+                            <i data-lucide="code" class="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5"></i>
+                            <div class="w-full">
+                                <span class="text-xs uppercase font-bold text-slate-400 tracking-widest block mb-1">Example</span>
+                                <span class="math-sym font-mono block bg-slate-50 p-3 rounded border border-slate-200 text-center">q <span class="math-op text-nordic-amber">&rArr;</span> (p <span class="math-op">&or;</span> q)</span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </section>
 
-
-        <!-- SECTION 4: ALLOCATION & UNIX/NTFS -->
-        <section id="allocation" class="space-y-10 scroll-mt-24">
-            <div class="border-b border-zen-border pb-4">
-                <span class="text-zen-terracotta text-sm font-bold tracking-widest uppercase mb-2 block">Module 04</span>
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-zen-forest">Allocation & OS Specifics</h2>
+        <!-- SECTION 5: VALID ARGUMENTS -->
+        <section id="arguments" class="scroll-mt-24 mb-20">
+            <div class="mb-10 border-l-4 border-nordic-amber pl-6">
+                <h2 class="font-serif text-4xl md:text-5xl font-black text-nordic-navy tracking-tight mb-2">Valid Arguments Validation</h2>
             </div>
 
-            <!-- Preallocation note -->
-            <div class="bg-white border-l-4 border-l-zen-terracotta p-4 rounded-r-lg shadow-sm text-sm text-gray-700">
-                <strong>Secondary Storage Preallocation:</strong> Requires knowing the maximum size for the file at the time of creation. It is difficult to reliably estimate, often leading to overestimated file sizes to avoid running out of space.
+            <div class="bg-gradient-to-r from-slate-900 to-nordic-navy p-8 rounded-2xl border border-slate-800 mb-10 shadow-xl text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10"><i data-lucide="cpu" class="w-32 h-32 text-nordic-amber"></i></div>
+                <h3 class="font-bold text-xl text-nordic-amber mb-3 relative z-10 uppercase tracking-widest text-sm">Validation Formula</h3>
+                <p class="text-base text-slate-300 leading-relaxed max-w-3xl relative z-10 mb-6">
+                    An argument is <strong>VALID</strong> if the conjunction (AND) of the premises logically implies the conclusion. If the premises are true, the conclusion <em>cannot</em> be false.
+                </p>
+                <div class="bg-black/40 border border-white/10 p-5 rounded-xl inline-block relative z-10 backdrop-blur-md">
+                    <span class="math-sym font-mono text-xl md:text-2xl text-white">
+                        (P<sub>1</sub> <span class="math-op text-nordic-amber">&and;</span> P<sub>2</sub> <span class="math-op text-nordic-amber">&and;</span> ... P<sub>n</sub>) <span class="math-op text-nordic-amber">&rarr;</span> Q
+                    </span>
+                    <span class="ml-4 text-sm font-bold uppercase tracking-widest text-nordic-amber bg-nordic-amber/10 px-3 py-1 rounded-full border border-nordic-amber/30">Must = Tautology</span>
+                </div>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Contiguous -->
-                <div class="bg-white p-6 rounded-2xl border border-zen-border shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-16 h-16 bg-zen-stone/20 rounded-bl-full"></div>
-                    <h3 class="font-serif font-bold text-xl mb-3">Contiguous</h3>
-                    <p class="text-sm text-gray-600 mb-4">Single set of continuous blocks. Only starting block and length in FAT.</p>
-                    <div class="bg-red-50 text-red-700 text-xs px-3 py-2 rounded-lg font-medium">
-                        Issue: External fragmentation (requires compaction).
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Example 1: Bob (Valid) -->
+                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="bg-green-500 text-white p-4 flex items-center justify-between">
+                        <h4 class="font-bold font-serif text-lg">Example 1</h4>
+                        <span class="text-xs font-black uppercase tracking-widest bg-black/20 px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="check-circle" class="w-3 h-3"></i> Valid</span>
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm italic text-slate-600 mb-6 border-l-4 border-slate-200 pl-4 py-1">"If you insulted Bob, then I'll never speak to you again. You insulted Bob so I'll never speak to you again."</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Premises</p>
+                                <p class="font-mono font-bold text-nordic-navy text-lg"><span class="math-sym">p &rarr; q</span></p>
+                                <p class="font-mono font-bold text-nordic-navy text-lg mt-1"><span class="math-sym">p</span></p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col justify-center">
+                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Conclusion</p>
+                                <p class="font-mono font-bold text-nordic-navy text-2xl text-center"><span class="math-sym">q</span></p>
+                            </div>
+                        </div>
+
+                        <div class="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
+                            <p class="text-[10px] text-green-700 font-bold uppercase tracking-widest mb-2">Engine Test</p>
+                            <p class="font-mono font-black text-lg text-nordic-navy bg-white px-4 py-2 rounded shadow-sm inline-block"><span class="math-sym">[(p &rarr; q) <span class="text-nordic-amber">&and;</span> p] <span class="text-nordic-amber">&rarr;</span> q</span></p>
+                            <p class="mt-3 text-green-600 font-bold text-sm flex items-center justify-center gap-2">
+                                <i data-lucide="shield-check" class="w-5 h-5"></i> Confirmed Tautology
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <!-- Chained -->
-                <div class="bg-white p-6 rounded-2xl border border-zen-border shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-16 h-16 bg-zen-stone/20 rounded-bl-full"></div>
-                    <h3 class="font-serif font-bold text-xl mb-3">Chained</h3>
-                    <p class="text-sm text-gray-600 mb-4">Each block contains a pointer to the next block. No external fragmentation.</p>
-                    <div class="bg-orange-50 text-orange-700 text-xs px-3 py-2 rounded-lg font-medium">
-                        Issue: Cannot accommodate principle of locality.
+
+                <!-- Example 2: Mathematician (Invalid) -->
+                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="bg-red-500 text-white p-4 flex items-center justify-between">
+                        <h4 class="font-bold font-serif text-lg">Example 2</h4>
+                        <span class="text-xs font-black uppercase tracking-widest bg-black/20 px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="x-circle" class="w-3 h-3"></i> Invalid</span>
                     </div>
-                </div>
-                <!-- Indexed -->
-                <div class="bg-white p-6 rounded-2xl border border-zen-border shadow-sm relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-16 h-16 bg-zen-forest/10 rounded-bl-full"></div>
-                    <h3 class="font-serif font-bold text-xl mb-3">Indexed</h3>
-                    <p class="text-sm text-gray-600 mb-4">FAT contains a separate one-level index for each file (entry for every portion).</p>
-                    <div class="bg-green-50 text-green-700 text-xs px-3 py-2 rounded-lg font-medium">
-                        Best of both worlds: Allows random access without fragmentation.
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm italic text-slate-600 mb-6 border-l-4 border-slate-200 pl-4 py-1">"If you are a mathematician then you are clever. You are clever and rich. Therefore if you are rich then you are a mathematician."</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Premises</p>
+                                <p class="font-mono font-bold text-nordic-navy text-lg"><span class="math-sym">p &rarr; q</span></p>
+                                <p class="font-mono font-bold text-nordic-navy text-lg mt-1"><span class="math-sym">q &and; r</span></p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col justify-center">
+                                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Conclusion</p>
+                                <p class="font-mono font-bold text-nordic-navy text-2xl text-center"><span class="math-sym">r &rarr; p</span></p>
+                            </div>
+                        </div>
+
+                        <div class="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
+                            <p class="text-[10px] text-red-700 font-bold uppercase tracking-widest mb-2">Engine Test</p>
+                            <p class="font-mono font-black text-[0.95rem] text-nordic-navy bg-white px-2 py-2 rounded shadow-sm inline-block w-full overflow-hidden text-ellipsis whitespace-nowrap"><span class="math-sym">[(p &rarr; q) <span class="text-nordic-amber">&and;</span> (q &and; r)] <span class="text-nordic-amber">&rarr;</span> (r &rarr; p)</span></p>
+                            <p class="mt-3 text-red-600 font-bold text-sm flex items-center justify-center gap-2">
+                                <i data-lucide="shield-alert" class="w-5 h-5"></i> Failed (Not a Tautology)
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- UNIX vs NTFS -->
-            <div class="grid md:grid-cols-2 gap-8 mt-12 bg-zen-forest p-8 rounded-2xl text-white">
-                <div>
-                    <h3 class="font-serif font-bold text-2xl mb-4 text-zen-stone border-b border-white/20 pb-2">UNIX / Linux VFS</h3>
-                    <ul class="space-y-3 text-sm">
-                        <li><strong class="text-white">Inodes (Index Node):</strong> Control structure with key info. Contains: File Mode (permissions), Link Count, Owner/Group ID, File Size, File Addresses (39 bytes), and Timestamps (Accessed, Modified, Inode Modified).</li>
-                        <li><strong class="text-white">Superblock object:</strong> Represents specific mounted file system.</li>
-                        <li><strong class="text-white">Dentry object:</strong> Represents a specific directory entry.</li>
-                        <li><strong class="text-white">File Types:</strong> Regular, Directory, Special, Named pipes, Links.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-serif font-bold text-2xl mb-4 text-zen-stone border-b border-white/20 pb-2">Windows NTFS</h3>
-                    <ul class="space-y-3 text-sm">
-                        <li><strong class="text-white">Key Features:</strong> Recoverability, Security, Large disks, Multiple data streams, General indexing.</li>
-                        <li><strong class="text-white">Sector:</strong> Smallest physical storage unit on disk.</li>
-                        <li><strong class="text-white">Cluster:</strong> One or more contiguous sectors.</li>
-                        <li><strong class="text-white">Volume:</strong> Logical partition on a disk.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- FOOTER / KNOWLEDGE CHECK -->
-        <section class="pb-16 text-center">
-            <h3 class="font-serif text-2xl font-bold mb-4">Ready to test your knowledge, Keith?</h3>
-            <p class="text-sm text-gray-500 max-w-md mx-auto mb-8">Review the flashcards and disk scheduling math above. The key to OS is understanding how these architectural layers interact.</p>
-            <button onclick="window.scrollTo(0,0)" class="bg-zen-charcoal text-white px-8 py-3 rounded-full hover:bg-zen-forest transition-colors font-medium">
-                Back to Top
-            </button>
         </section>
 
     </main>
 
     <script>
-        // Initialize Lucide Icons
+        // Initialize Icons
         lucide.createIcons();
 
-        // Architecture Tab Logic
-        function switchTab(group, tabId) {
-            // Hide all tabs in group
-            document.querySelectorAll(`.${group}-tab`).forEach(el => el.classList.add('hidden'));
-            
-            // Reset button styles
-            document.querySelectorAll(`[id^="btn-${group}-"]`).forEach(btn => {
-                btn.classList.remove('text-zen-forest', 'border-zen-forest', 'font-semibold');
-                btn.classList.add('text-gray-500', 'border-transparent', 'font-medium');
-            });
-
-            // Show active tab
-            document.getElementById(`tab-${group}-${tabId}`).classList.remove('hidden');
-            
-            // Style active button
-            const activeBtn = document.getElementById(`btn-${group}-${tabId}`);
-            activeBtn.classList.remove('text-gray-500', 'border-transparent', 'font-medium');
-            activeBtn.classList.add('text-zen-forest', 'border-zen-forest', 'font-semibold');
-        }
-
-        // Active state for Sticky Nav based on scroll
-        const sections = document.querySelectorAll("section");
-        const navLinks = document.querySelectorAll("nav div div a");
-
-        window.addEventListener("scroll", () => {
-            let current = "";
-            sections.forEach((section) => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - 100) {
-                    current = section.getAttribute("id");
+        // Reveal Logic for Cards
+        document.querySelectorAll('.reveal-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                content.classList.toggle('open');
+                
+                if (content.classList.contains('open')) {
+                    this.innerHTML = '<i data-lucide="eye-off" class="w-3 h-3"></i> Hide Translation';
+                    this.classList.replace('bg-nordic-navyLight', 'bg-slate-600');
+                    this.classList.replace('hover:bg-nordic-navy', 'hover:bg-slate-800');
+                } else {
+                    this.innerHTML = '<i data-lucide="eye" class="w-3 h-3"></i> Reveal Translation';
+                    this.classList.replace('bg-slate-600', 'bg-nordic-navyLight');
+                    this.classList.replace('hover:bg-slate-800', 'hover:bg-nordic-navy');
                 }
+                lucide.createIcons();
             });
+        });
 
-            navLinks.forEach((link) => {
-                link.classList.remove("text-zen-forest", "font-bold");
-                if (link.getAttribute("href").includes(current)) {
-                    link.classList.add("text-zen-forest", "font-bold");
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        });
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        
+        btn.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+        });
+
+        // Close sidebar on link click (mobile)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth < 768) {
+                    sidebar.classList.add('hidden');
                 }
             });
         });
+
+        // Intersection Observer for Active State scrolling
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach((link) => link.classList.remove("active"));
+                    const activeLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                    if (activeLink) activeLink.classList.add("active");
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach((sec) => observer.observe(sec));
     </script>
 </body>
 </html>
