@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logic & Propositions | Recitation Engine</title>
+    <title>Discrete Math | Recitation Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -117,15 +117,15 @@
 
     <!-- Mobile Header -->
     <header class="md:hidden glass border-b border-japandi-border p-4 sticky top-0 z-50 flex justify-between items-center w-full">
-        <h1 class="font-serif font-bold text-xl text-japandi-ink">Logic<span class="text-japandi-terracotta">.</span></h1>
+        <h1 class="font-serif font-bold text-xl text-japandi-ink">Discrete<span class="text-japandi-terracotta">.</span>Math</h1>
         <button id="mobile-menu-btn" class="p-2 text-japandi-ink hover:text-japandi-terracotta transition-colors"><i data-lucide="menu"></i></button>
     </header>
 
     <!-- Sidebar Navigation -->
     <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-japandi-surface border-r border-japandi-border fixed h-full z-40 transition-transform duration-300 top-[61px] md:top-0 shadow-soft md:shadow-none">
         <div class="p-8 pb-6 hidden md:block">
-            <h1 class="font-serif font-bold text-4xl mb-1 text-japandi-ink tracking-tight">Logic<span class="text-japandi-terracotta">.</span></h1>
-            <p class="text-xs text-japandi-muted font-sans uppercase tracking-widest font-medium mt-2">Keith's Guide</p>
+            <h1 class="font-serif font-bold text-4xl mb-1 text-japandi-ink tracking-tight">Discrete<span class="text-japandi-terracotta">.</span>Math</h1>
+            <p class="text-xs text-japandi-muted font-sans uppercase tracking-widest font-medium mt-2">Keith's Recitation Notes</p>
         </div>
         <nav class="flex-grow overflow-y-auto py-4" id="nav-menu">
             <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-4">Study Modules</p>
@@ -135,7 +135,7 @@
             <a href="#equivalence" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">04. Equivalence</a>
             <a href="#arguments" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">05. Arguments</a>
             <a href="#predicate" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">06. Predicate Logic</a>
-            <a href="#generators" class="nav-link block px-8 py-3 text-japandi-terracotta hover:bg-japandi-bg transition-all text-sm font-sans font-semibold">07. Generators</a>
+            <a href="#practice" class="nav-link block px-8 py-3 text-japandi-terracotta hover:bg-japandi-bg transition-all text-sm font-sans font-semibold">07. Interactive Practice</a>
         </nav>
         <div class="p-6 bg-japandi-bg border-t border-japandi-border text-xs text-japandi-muted font-sans">
             <p class="flex items-start gap-3 leading-relaxed">
@@ -622,7 +622,7 @@
                         </div>
 
                         <div class="bg-japandi-matchaLight/50 border border-japandi-matcha/20 p-5 md:p-6 rounded-xl text-center mt-auto">
-                            <p class="text-[10px] text-japandi-matcha font-bold uppercase tracking-widest mb-3">Engine Test Output</p>
+                            <p class="text-[10px] text-japandi-matcha font-bold uppercase tracking-widest mb-3">Logical Evaluation</p>
                             <p class="font-mono font-semibold text-sm md:text-base text-japandi-ink bg-white px-4 py-3 rounded-lg border border-japandi-border shadow-sm inline-block break-words whitespace-normal w-full md:w-auto"><span class="math-sym">[(p &rarr; q) <span class="math-op">&and;</span> p] <span class="math-op">&rarr;</span> q</span></p>
                             <p class="mt-4 text-japandi-matcha font-bold text-xs md:text-sm flex items-center justify-center gap-2 font-sans uppercase tracking-widest">
                                 <i data-lucide="shield-check" class="w-4 h-4 md:w-5 md:h-5"></i> Confirmed Tautology
@@ -656,7 +656,7 @@
                         </div>
 
                         <div class="bg-japandi-terracottaLight/50 border border-japandi-terracotta/20 p-5 md:p-6 rounded-xl text-center mt-auto">
-                            <p class="text-[10px] text-japandi-terracotta font-bold uppercase tracking-widest mb-3">Engine Test Output</p>
+                            <p class="text-[10px] text-japandi-terracotta font-bold uppercase tracking-widest mb-3">Logical Evaluation</p>
                             <p class="font-mono font-semibold text-xs sm:text-sm md:text-base text-japandi-ink bg-white px-3 py-3 rounded-lg border border-japandi-border shadow-sm inline-block break-words whitespace-normal w-full"><span class="math-sym">[(p &rarr; q) <span class="math-op">&and;</span> (q &and; r)] <span class="math-op">&rarr;</span> (r &rarr; p)</span></p>
                             <p class="mt-4 text-japandi-terracotta font-bold text-xs md:text-sm flex items-center justify-center gap-2 font-sans uppercase tracking-widest">
                                 <i data-lucide="shield-alert" class="w-4 h-4 md:w-5 md:h-5"></i> Failed (Not Tautology)
@@ -764,18 +764,18 @@
             </div>
         </section>
 
-        <!-- SECTION 7: GENERATORS -->
-        <section id="generators" class="scroll-mt-24 mb-24">
+        <!-- SECTION 7: INTERACTIVE PRACTICE -->
+        <section id="practice" class="scroll-mt-24 mb-24">
             <div class="mb-10 md:mb-14">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-terracotta tracking-tight">07. Practice Generators</h2>
-                <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light">Dynamic engines for infinite practice problems.</p>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-terracotta tracking-tight">07. Interactive Practice</h2>
+                <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light">Dynamic study tools for infinite practice problems.</p>
             </div>
             
             <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
                 
-                <!-- Generator 1: Conditionals -->
+                <!-- Generator 1: Conditionals Practice -->
                 <div class="bg-japandi-surface border border-japandi-border rounded-2xl shadow-soft p-6 md:p-8 flex flex-col w-full">
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Conditionals Engine</h3>
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Conditionals Practice</h3>
                     <div class="bg-japandi-bg p-4 md:p-5 rounded-xl border border-japandi-border mb-6 flex-grow flex flex-col">
                         <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Base Input</p>
                         <p id="cond-base" class="font-mono text-japandi-ink font-medium min-h-[40px] md:min-h-[48px] text-xs md:text-sm break-words whitespace-normal leading-relaxed"></p>
@@ -791,9 +791,9 @@
                     </div>
                 </div>
 
-                <!-- Generator 2: Laws Problem Engine -->
+                <!-- Generator 2: Laws Practice -->
                 <div class="bg-japandi-surface border border-japandi-border rounded-2xl shadow-soft p-6 md:p-8 flex flex-col w-full">
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Laws Engine</h3>
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Laws Practice</h3>
                     <div class="bg-japandi-bg p-4 md:p-5 rounded-xl border border-japandi-border mb-6 flex-grow flex flex-col justify-center w-full">
                         <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Target Law</p>
                         <p id="law-name" class="font-sans font-semibold text-japandi-terracotta text-xs md:text-sm uppercase mb-4 break-words"></p>
@@ -813,9 +813,9 @@
                     </div>
                 </div>
 
-                <!-- Generator 3: Argument Validity Engine -->
+                <!-- Generator 3: Argument Validity Practice -->
                 <div class="bg-japandi-surface border border-japandi-border rounded-2xl shadow-soft p-6 md:p-8 flex flex-col w-full">
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Validity Engine</h3>
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Argument Validity Practice</h3>
                     <div class="bg-japandi-bg p-4 md:p-5 rounded-xl border border-japandi-border mb-6 flex-grow flex flex-col w-full">
                         <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Analyze Argument</p>
                         <div id="arg-problem" class="text-xs md:text-sm font-sans font-light italic text-japandi-ink bg-white p-4 rounded-xl border border-japandi-border min-h-[80px] break-words whitespace-normal leading-relaxed shadow-sm"></div>
@@ -833,9 +833,9 @@
                     </div>
                 </div>
 
-                <!-- Generator 4: Multi-Step Proofs Engine -->
+                <!-- Generator 4: Multi-Step Proofs Practice -->
                 <div class="bg-japandi-surface border border-japandi-border rounded-2xl shadow-soft p-6 md:p-8 flex flex-col w-full">
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Multi-Step Proofs Engine</h3>
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Multi-Step Proofs Practice</h3>
                     
                     <div class="flex flex-wrap gap-2 mb-4 bg-japandi-bg p-2 rounded-xl border border-japandi-border w-fit">
                         <button onclick="setDiff('easy')" id="btn-diff-easy" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Easy</button>
