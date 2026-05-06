@@ -662,7 +662,7 @@
                 <p class="text-ink-muted text-base md:text-lg mt-2 font-mono">Dynamic engines for infinite practice problems.</p>
             </div>
             
-            <div class="grid lg:grid-cols-3 gap-6 md:gap-8">
+            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
                 
                 <!-- Generator 1: Conditionals -->
                 <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-5 md:p-6 flex flex-col w-full overflow-hidden">
@@ -721,6 +721,35 @@
                     <div class="flex flex-col sm:flex-row gap-3 md:gap-4 mt-auto">
                         <button onclick="generateArgument()" class="flex-1 py-2 md:py-3 bg-ink-main text-white font-mono text-[10px] md:text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Generate</button>
                         <button onclick="toggleElement('arg-answer-box')" class="flex-1 py-2 md:py-3 bg-white text-ink-main font-mono text-[10px] md:text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Answer</button>
+                    </div>
+                </div>
+
+                <!-- Generator 4: Multi-Step Proofs Engine -->
+                <div class="bg-paper-card border-4 border-ink-main shadow-brutal p-5 md:p-6 flex flex-col w-full overflow-hidden">
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-ink-main mb-4 md:mb-6 border-b-4 border-ink-main pb-2">Multi-Step Proofs Engine</h3>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="setDiff('easy')" id="btn-diff-easy" class="px-3 py-1 bg-white text-ink-main font-mono text-[10px] uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Easy</button>
+                        <button onclick="setDiff('med')" id="btn-diff-med" class="px-3 py-1 bg-white text-ink-main font-mono text-[10px] uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Med</button>
+                        <button onclick="setDiff('hard')" id="btn-diff-hard" class="px-3 py-1 bg-white text-ink-main font-mono text-[10px] uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Hard</button>
+                        <button onclick="setDiff('vhard')" id="btn-diff-vhard" class="px-3 py-1 bg-ink-main text-white font-mono text-[10px] uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">V.Hard</button>
+                    </div>
+
+                    <div class="bg-white p-3 md:p-4 border-4 border-ink-main shadow-brutal-sm mb-4 md:mb-6 flex-grow flex flex-col w-full overflow-hidden">
+                        <p class="text-[10px] uppercase font-bold text-ink-muted tracking-widest mb-2 border-b-2 border-ink-main pb-1">Simplify the Expression</p>
+                        <div class="bg-paper-dark border-4 border-ink-main p-3 md:p-4 text-center shadow-inner mb-4 overflow-x-auto w-full hide-scrollbar">
+                            <p id="proof-problem" class="font-mono text-lg md:text-2xl text-ink-main font-black min-h-[32px] whitespace-nowrap"></p>
+                        </div>
+                        <div id="proof-answer-box" class="hidden mt-auto border-t-2 border-ink-main pt-3 md:pt-4 w-full">
+                            <p class="text-[10px] font-black tracking-widest text-ink-main uppercase mb-2">Step-by-Step Derivation</p>
+                            <div id="proof-answer" class="w-full overflow-x-auto pb-1 hide-scrollbar space-y-2 font-mono text-xs md:text-sm">
+                                <!-- steps injected here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 md:gap-4 mt-auto">
+                        <button onclick="generateProof()" class="flex-1 py-2 md:py-3 bg-ink-main text-white font-mono text-[10px] md:text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Generate</button>
+                        <button onclick="toggleElement('proof-answer-box')" class="flex-1 py-2 md:py-3 bg-white text-ink-main font-mono text-[10px] md:text-xs uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal">Answer</button>
                     </div>
                 </div>
 
@@ -835,12 +864,73 @@
             }
             lucide.createIcons();
         }
-        
+
+        // Engine 4: Multi-Step Proofs
+        let currentDiff = 'vhard';
+
+        const proofProblems = {
+            easy: [
+                { prob: "¬(¬p ∨ q)", steps: [ {exp: "¬(¬p) ∧ ¬q", law: "De Morgan's"}, {exp: "p ∧ ¬q", law: "Involution"} ] },
+                { prob: "p ∨ (p ∧ q)", steps: [ {exp: "p", law: "Absorption"} ] },
+                { prob: "p ∧ (q ∨ ¬q)", steps: [ {exp: "p ∧ t", law: "Complement"}, {exp: "p", law: "Identity"} ] }
+            ],
+            med: [
+                { prob: "(p ∧ q) ∨ (p ∧ ¬q)", steps: [ {exp: "p ∧ (q ∨ ¬q)", law: "Distributive"}, {exp: "p ∧ t", law: "Complement"}, {exp: "p", law: "Identity"} ] },
+                { prob: "p ∨ (¬p ∧ q)", steps: [ {exp: "(p ∨ ¬p) ∧ (p ∨ q)", law: "Distributive"}, {exp: "t ∧ (p ∨ q)", law: "Complement"}, {exp: "p ∨ q", law: "Identity"} ] },
+                { prob: "¬(p ∧ q) ∨ ¬p", steps: [ {exp: "(¬p ∨ ¬q) ∨ ¬p", law: "De Morgan's"}, {exp: "(¬p ∨ ¬p) ∨ ¬q", law: "Commutative & Associative"}, {exp: "¬p ∨ ¬q", law: "Idempotent"} ] }
+            ],
+            hard: [
+                { prob: "¬(p ∨ ¬q) ∨ (¬p ∧ ¬q)", steps: [ {exp: "(¬p ∧ ¬(¬q)) ∨ (¬p ∧ ¬q)", law: "De Morgan's"}, {exp: "(¬p ∧ q) ∨ (¬p ∧ ¬q)", law: "Involution"}, {exp: "¬p ∧ (q ∨ ¬q)", law: "Distributive"}, {exp: "¬p ∧ t", law: "Complement"}, {exp: "¬p", law: "Identity"} ] },
+                { prob: "(p ∧ (¬p ∨ q)) ∨ (q ∧ ¬q)", steps: [ {exp: "(p ∧ (¬p ∨ q)) ∨ f", law: "Complement"}, {exp: "p ∧ (¬p ∨ q)", law: "Identity"}, {exp: "(p ∧ ¬p) ∨ (p ∧ q)", law: "Distributive"}, {exp: "f ∨ (p ∧ q)", law: "Complement"}, {exp: "p ∧ q", law: "Identity / Commutative"} ] }
+            ],
+            vhard: [
+                { prob: "[(p ∨ q) ∧ ¬(¬p ∧ q)] ∨ (p ∧ q)", steps: [ {exp: "[(p ∨ q) ∧ (¬(¬p) ∨ ¬q)] ∨ (p ∧ q)", law: "De Morgan's"}, {exp: "[(p ∨ q) ∧ (p ∨ ¬q)] ∨ (p ∧ q)", law: "Involution"}, {exp: "[p ∨ (q ∧ ¬q)] ∨ (p ∧ q)", law: "Distributive"}, {exp: "[p ∨ f] ∨ (p ∧ q)", law: "Complement"}, {exp: "p ∨ (p ∧ q)", law: "Identity"}, {exp: "p", law: "Absorption"} ] },
+                { prob: "¬( [(p ∧ q) ∨ (p ∧ ¬p)] ∨ ¬(p ∨ q) )", steps: [ {exp: "¬( [(p ∧ q) ∨ f] ∨ ¬(p ∨ q) )", law: "Complement"}, {exp: "¬( (p ∧ q) ∨ ¬(p ∨ q) )", law: "Identity"}, {exp: "¬( (p ∧ q) ∨ (¬p ∧ ¬q) )", law: "De Morgan's"}, {exp: "¬(p ∧ q) ∧ ¬(¬p ∧ ¬q)", law: "De Morgan's"}, {exp: "(¬p ∨ ¬q) ∧ (p ∨ q)", law: "De Morgan's & Involution"} ] },
+                { prob: "[ (p ∨ q) ∧ ¬(p ∨ r) ] ∨ (p ∧ r)", steps: [ {exp: "[ (p ∨ q) ∧ (¬p ∧ ¬r) ] ∨ (p ∧ r)", law: "De Morgan's"}, {exp: "[ (p ∧ ¬p ∧ ¬r) ∨ (q ∧ ¬p ∧ ¬r) ] ∨ (p ∧ r)", law: "Distributive"}, {exp: "[ (f ∧ ¬r) ∨ (q ∧ ¬p ∧ ¬r) ] ∨ (p ∧ r)", law: "Complement"}, {exp: "[ f ∨ (q ∧ ¬p ∧ ¬r) ] ∨ (p ∧ r)", law: "Domination"}, {exp: "(q ∧ ¬p ∧ ¬r) ∨ (p ∧ r)", law: "Identity"} ] }
+            ]
+        };
+
+        function setDiff(diff) {
+            currentDiff = diff;
+            ['easy','med','hard','vhard'].forEach(d => {
+                const btn = document.getElementById(`btn-diff-${d}`);
+                if(d === diff) {
+                    btn.className = `px-3 py-1 bg-ink-main text-white font-mono text-[10px] uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal`;
+                } else {
+                    btn.className = `px-3 py-1 bg-white text-ink-main font-mono text-[10px] uppercase font-bold border-2 border-ink-main shadow-brutal-sm btn-brutal`;
+                }
+            });
+            generateProof();
+        }
+
+        function generateProof() {
+            document.getElementById('proof-answer-box').classList.add('hidden');
+            const list = proofProblems[currentDiff];
+            const item = list[Math.floor(Math.random() * list.length)];
+            
+            let probHTML = item.prob.replace(/∧/g, '<span class="math-op">&and;</span>').replace(/∨/g, '<span class="math-op">&or;</span>').replace(/¬/g, '<span class="text-accent-terracotta">¬</span>');
+            document.getElementById('proof-problem').innerHTML = probHTML;
+
+            let ansHTML = '';
+            item.steps.forEach((step, idx) => {
+                let exp = step.exp.replace(/∧/g, '<span class="math-op">&and;</span>').replace(/∨/g, '<span class="math-op">&or;</span>').replace(/¬/g, '<span class="text-accent-terracotta">¬</span>');
+                ansHTML += `
+                <div class="flex items-center gap-3 bg-white border-2 border-ink-main p-2 shadow-brutal-sm whitespace-nowrap mb-2">
+                    <div class="bg-ink-main text-white px-2 py-1 text-[10px] flex-shrink-0 font-bold">Step ${idx+1}</div>
+                    <div class="math-sym flex-grow">${exp}</div>
+                    <div class="text-[10px] font-bold uppercase text-ink-muted flex-shrink-0 bg-paper-dark px-2 py-1 border border-ink-main">${step.law}</div>
+                </div>
+                `;
+            });
+            document.getElementById('proof-answer').innerHTML = ansHTML;
+        }
+
         // Call generators on load
         window.onload = () => {
             generateConditional();
             generateLaw();
             generateArgument();
+            setDiff('vhard'); // Initializes the proof engine
             
             // Re-initialize icons in case they were generated late
             lucide.createIcons();
