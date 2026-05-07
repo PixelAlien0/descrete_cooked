@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discrete Math | Recitation Guide</title>
+    <title>Discrete Math | Module 5 & 6 Exam Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -142,7 +142,7 @@
     <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-japandi-surface border-r border-japandi-border fixed h-full z-40 transition-transform duration-300 top-[69px] md:top-0 shadow-soft md:shadow-none">
         <div class="p-8 pb-6 hidden md:block">
             <h1 class="font-serif font-bold text-4xl mb-1 text-japandi-ink tracking-tight">Discrete<span class="text-japandi-terracotta">.</span></h1>
-            <p class="text-xs text-japandi-muted font-sans uppercase tracking-widest font-medium mt-2">Keith's Recitation</p>
+            <p class="text-xs text-japandi-muted font-sans uppercase tracking-widest font-medium mt-2">Keith's Exam Guide</p>
         </div>
         
         <div class="px-6 py-2 border-b border-japandi-border mb-2">
@@ -152,23 +152,40 @@
         </div>
 
         <nav class="flex-grow overflow-y-auto py-2" id="nav-menu">
-            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-2">Study Modules</p>
+            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-2">Module 5: Algebra</p>
             <a href="#laws" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">01. The 9 Laws</a>
             <a href="#duality" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">02. Duality & Replacement</a>
             <a href="#conditionals" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">03. Conditionals</a>
             <a href="#equivalence" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">04. Equivalence</a>
             <a href="#arguments" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">05. Arguments</a>
-            <a href="#predicate" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">06. Predicate Logic</a>
-            <a href="#practice" class="nav-link block px-8 py-3 text-japandi-terracotta hover:bg-japandi-bg transition-all text-sm font-sans font-semibold">07. Interactive Practice</a>
+            
+            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Module 6: Predicates</p>
+            <a href="#predicate" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">06. Core Predicates</a>
+            <a href="#quantifiers" class="nav-link block px-8 py-3 text-japandi-ink hover:bg-japandi-bg transition-all text-sm font-sans font-medium">07. Quantifiers</a>
+
+            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Test Prep</p>
+            <a href="#practice" class="nav-link block px-8 py-3 text-japandi-terracotta hover:bg-japandi-bg transition-all text-sm font-sans font-semibold">08. Interactive Practice</a>
         </nav>
+        <div class="p-6 bg-japandi-bg border-t border-japandi-border text-xs text-japandi-muted font-sans hidden md:block mt-auto">
+            <p class="flex items-start gap-3 leading-relaxed">
+                <i data-lucide="book-open" class="w-4 h-4 flex-shrink-0 text-japandi-matcha"></i> 
+                <span>All topics filtered to strictly cover Modules 5 & 6.</span>
+            </p>
+        </div>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 md:ml-72 p-4 sm:p-8 md:p-12 lg:p-16 max-w-[1400px] mx-auto w-full overflow-hidden transition-all duration-300" id="main-content">
         
+        <!-- MODULE 5 HEADER -->
+        <div class="mb-8 md:mb-12 border-b-2 border-japandi-terracotta/30 pb-4">
+            <span class="text-japandi-terracotta font-sans text-xs md:text-sm uppercase tracking-widest font-bold mb-2 block">Exam Coverage</span>
+            <h1 class="font-serif text-4xl md:text-6xl font-bold text-japandi-ink tracking-tight">Module 5:<br>Algebra of Propositions</h1>
+        </div>
+
         <!-- SECTION 1: THE 9 LAWS -->
         <section id="laws" class="scroll-mt-24 mb-24 compact-m">
-            <div class="mb-10 md:mb-14 compact-m">
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">01. The 9 Laws</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Fundamental algebraic manipulation operations.</p>
             </div>
@@ -255,7 +272,7 @@
                 <div class="bg-japandi-matcha border border-japandi-matcha rounded-2xl shadow-float card-hover p-6 md:p-8 flex flex-col relative xl:col-span-2 w-full text-white compact-p" id="demorgan-card">
                     <div class="absolute top-6 right-6 text-white/20 hide-compact"><i data-lucide="flip-vertical" class="w-12 h-12"></i></div>
                     <div class="flex items-center gap-3 mb-1">
-                        <span class="px-2 py-1 bg-white/20 text-white rounded-md text-[10px] font-sans font-bold uppercase tracking-widest backdrop-blur-sm hide-compact">Crucial</span>
+                        <span class="px-2 py-1 bg-white/20 text-white rounded-md text-[10px] font-sans font-bold uppercase tracking-widest backdrop-blur-sm hide-compact">Crucial Exam Topic</span>
                         <h3 class="font-serif font-bold text-2xl md:text-3xl text-white compact-title">De Morgan's</h3>
                     </div>
                     <p class="text-xs text-white/80 mb-6 font-sans uppercase tracking-widest font-medium hide-compact">Invert and flip</p>
@@ -341,7 +358,7 @@
 
         <!-- SECTION 2: DUALITY & REPLACEMENT -->
         <section id="duality" class="scroll-mt-24 mb-24 compact-m">
-            <div class="mb-10 md:mb-14 compact-m">
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">02. Core Principles</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Mechanical operations for substitution and equivalence.</p>
             </div>
@@ -426,7 +443,7 @@
 
         <!-- SECTION 3: CONDITIONALS & TRUTH TABLES -->
         <section id="conditionals" class="scroll-mt-24 mb-24 compact-m">
-            <div class="mb-10 md:mb-14 compact-m">
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">03. Conditionals</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Structural permutations of a basic proposition.</p>
             </div>
@@ -533,7 +550,7 @@
 
         <!-- SECTION 4: EQUIVALENCE VS IMPLICATION -->
         <section id="equivalence" class="scroll-mt-24 mb-24 compact-m">
-            <div class="mb-10 md:mb-14 compact-m">
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">04. Equivalence vs. Implication</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Differentiating strict logic states.</p>
             </div>
@@ -596,7 +613,7 @@
 
         <!-- SECTION 5: VALID ARGUMENTS -->
         <section id="arguments" class="scroll-mt-24 mb-24 compact-m">
-            <div class="mb-10 md:mb-14 compact-m">
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">05. Argument Validity</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Proving argument structures via tautology.</p>
             </div>
@@ -641,7 +658,7 @@
                         </div>
 
                         <div class="bg-japandi-matchaLight/50 border border-japandi-matcha/20 p-5 md:p-6 rounded-xl text-center mt-auto compact-p">
-                            <p class="text-[10px] text-japandi-matcha font-bold uppercase tracking-widest mb-3 compact-m">Engine Test Output</p>
+                            <p class="text-[10px] text-japandi-matcha font-bold uppercase tracking-widest mb-3 compact-m">Logical Evaluation</p>
                             <p class="font-mono font-semibold text-sm md:text-base text-japandi-ink bg-white px-4 py-3 rounded-lg border border-japandi-border shadow-sm inline-block break-words whitespace-normal w-full md:w-auto compact-math compact-p"><span class="math-sym">[(p &rarr; q) <span class="math-op">&and;</span> p] <span class="math-op">&rarr;</span> q</span></p>
                             <p class="mt-4 text-japandi-matcha font-bold text-xs md:text-sm flex items-center justify-center gap-2 font-sans uppercase tracking-widest compact-m hide-compact">
                                 <i data-lucide="shield-check" class="w-4 h-4 md:w-5 md:h-5"></i> Confirmed Tautology
@@ -675,7 +692,7 @@
                         </div>
 
                         <div class="bg-japandi-terracottaLight/50 border border-japandi-terracotta/20 p-5 md:p-6 rounded-xl text-center mt-auto compact-p">
-                            <p class="text-[10px] text-japandi-terracotta font-bold uppercase tracking-widest mb-3 compact-m">Engine Test Output</p>
+                            <p class="text-[10px] text-japandi-terracotta font-bold uppercase tracking-widest mb-3 compact-m">Logical Evaluation</p>
                             <p class="font-mono font-semibold text-xs sm:text-sm md:text-base text-japandi-ink bg-white px-3 py-3 rounded-lg border border-japandi-border shadow-sm inline-block break-words whitespace-normal w-full compact-math compact-p"><span class="math-sym">[(p &rarr; q) <span class="math-op">&and;</span> (q &and; r)] <span class="math-op">&rarr;</span> (r &rarr; p)</span></p>
                             <p class="mt-4 text-japandi-terracotta font-bold text-xs md:text-sm flex items-center justify-center gap-2 font-sans uppercase tracking-widest compact-m hide-compact">
                                 <i data-lucide="shield-alert" class="w-4 h-4 md:w-5 md:h-5"></i> Failed (Not Tautology)
@@ -686,10 +703,16 @@
             </div>
         </section>
 
+        <!-- MODULE 6 HEADER -->
+        <div class="mt-16 md:mt-24 mb-8 md:mb-12 border-b-2 border-japandi-matcha/30 pb-4">
+            <span class="text-japandi-matcha font-sans text-xs md:text-sm uppercase tracking-widest font-bold mb-2 block">Exam Coverage</span>
+            <h1 class="font-serif text-4xl md:text-6xl font-bold text-japandi-ink tracking-tight">Module 6:<br>Predicate Logic</h1>
+        </div>
+
         <!-- SECTION 6: PREDICATE LOGIC -->
         <section id="predicate" class="scroll-mt-24 mb-24 compact-m">
-            <div class="mb-10 md:mb-14 compact-m">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">06. Predicate Logic</h2>
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-matcha pl-4 md:pl-6 py-2">
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">06. Core Predicates</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Extending logic to describe properties and individuals.</p>
             </div>
 
@@ -721,6 +744,10 @@
                         <span class="math-sym text-japandi-terracotta mt-1 block compact-math">b</span> <span class="hide-compact">= Bill</span>
                     </div>
                 </div>
+            </div>
+            
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-matcha pl-4 md:pl-6 py-2" id="quantifiers">
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">07. Quantifiers</h2>
             </div>
 
             <!-- Quantifiers Grid -->
@@ -785,8 +812,8 @@
 
         <!-- SECTION 7: INTERACTIVE PRACTICE -->
         <section id="practice" class="scroll-mt-24 mb-24 compact-m">
-            <div class="mb-10 md:mb-14 compact-m">
-                <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-terracotta tracking-tight compact-section-title">07. Interactive Practice</h2>
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-terracotta tracking-tight compact-section-title">08. Interactive Practice</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Dynamic study tools for infinite practice problems.</p>
             </div>
             
@@ -1041,10 +1068,10 @@
             
             const resEl = document.getElementById('arg-result');
             if(form.valid) {
-                resEl.className = "text-japandi-matcha font-bold tracking-widest py-3 text-center rounded-xl border border-japandi-matcha/20 bg-japandi-matchaLight/50 font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[48px] md:min-h-[56px] text-xs md:text-sm";
+                resEl.className = "text-japandi-matcha font-bold tracking-widest py-3 text-center rounded-xl border border-japandi-matcha/20 bg-japandi-matchaLight/50 font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[56px] text-xs md:text-sm";
                 resEl.innerHTML = '<div class="flex items-center"><i data-lucide="check-circle" class="inline w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0"></i> <span class="break-words leading-tight">VALID (' + form.type + ')</span></div>';
             } else {
-                resEl.className = "text-japandi-terracotta font-bold tracking-widest py-3 text-center rounded-xl border border-japandi-terracotta/20 bg-japandi-terracottaLight/50 font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[48px] md:min-h-[56px] text-xs md:text-sm";
+                resEl.className = "text-japandi-terracotta font-bold tracking-widest py-3 text-center rounded-xl border border-japandi-terracotta/20 bg-japandi-terracottaLight/50 font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[56px] text-xs md:text-sm";
                 resEl.innerHTML = '<div class="flex items-center"><i data-lucide="x-circle" class="inline w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0"></i> <span class="break-words leading-tight">INVALID (' + form.type + ')</span></div>';
             }
             lucide.createIcons();
