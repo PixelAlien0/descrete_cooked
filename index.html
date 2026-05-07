@@ -97,6 +97,13 @@
         /* Flashcard Toggle */
         .reveal-content { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
         .reveal-content.open { max-height: 200px; opacity: 1; margin-top: 1rem; }
+
+        .highlight-pulse { animation: pulse-bg 2s infinite; }
+        @keyframes pulse-bg {
+            0% { background-color: rgba(196, 125, 101, 0.1); }
+            50% { background-color: rgba(196, 125, 101, 0.3); }
+            100% { background-color: rgba(196, 125, 101, 0.1); }
+        }
     </style>
 </head>
 <body class="antialiased flex flex-col md:flex-row min-h-screen">
@@ -557,7 +564,7 @@
                         Implication
                         <span class="math-sym text-xl font-bold bg-japandi-terracottaLight px-4 py-2 rounded-xl text-japandi-ink border border-white shadow-sm">P <span class="text-japandi-terracotta">&rArr;</span> Q</span>
                     </h3>
-                    <ul class="text-sm font-sans font-light text-japandi-ink space-y-4 list-none mb-6">
+                    <ul class="text-sm font-sans font-light text-japandi-ink space-y-4 list-none mb-8">
                         <li class="flex items-start gap-3">
                             <i data-lucide="arrow-right" class="w-4 h-4 text-japandi-terracotta mt-0.5 flex-shrink-0"></i>
                             <span class="leading-relaxed">Whenever <span class="math-sym text-xs">P</span> is true, <span class="math-sym text-xs">Q</span> is also true.</span>
@@ -796,32 +803,97 @@
         <section id="sec-practice" class="module-section w-full">
             <div class="mb-8">
                 <h2 class="font-serif text-3xl font-bold text-japandi-terracotta tracking-tight hidden compact-mode-show mb-2">08. Practice</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">Test your ability to simplify logical statements using multi-step algebraic proofs.</p>
+                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">Test your ability to simplify logical statements and translate complex predicate sentences.</p>
             </div>
             
-            <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-10 w-full max-w-3xl mx-auto">
-                <div class="flex flex-wrap justify-center gap-2 mb-8 bg-japandi-bg p-2 rounded-xl border border-japandi-border w-fit mx-auto">
-                    <button onclick="setDiff('easy')" id="btn-diff-easy" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Easy</button>
-                    <button onclick="setDiff('med')" id="btn-diff-med" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Med</button>
-                    <button onclick="setDiff('hard')" id="btn-diff-hard" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Hard</button>
-                    <button onclick="setDiff('vhard')" id="btn-diff-vhard" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">V.Hard</button>
+            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
+                
+                <!-- Generator 1: Conditionals Practice -->
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full">
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Conditionals Practice</h3>
+                    <div class="bg-japandi-bg p-4 md:p-5 rounded-2xl border border-japandi-border mb-6 flex-grow flex flex-col">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Base Input</p>
+                        <p id="cond-base" class="font-mono text-japandi-ink font-medium min-h-[40px] md:min-h-[48px] text-xs md:text-sm break-words whitespace-normal leading-relaxed"></p>
+                        <div id="cond-answers" class="hidden mt-auto space-y-3 pt-4 border-t border-japandi-border">
+                            <div class="bg-white p-3 rounded-lg border border-japandi-border shadow-sm"><span class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase block mb-1">Converse:</span> <p id="cond-conv" class="text-[10px] md:text-xs font-mono font-medium text-japandi-ink break-words whitespace-normal leading-relaxed"></p></div>
+                            <div class="bg-white p-3 rounded-lg border border-japandi-border shadow-sm"><span class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase block mb-1">Inverse:</span> <p id="cond-inv" class="text-[10px] md:text-xs font-mono font-medium text-japandi-ink break-words whitespace-normal leading-relaxed"></p></div>
+                            <div class="bg-japandi-terracottaLight p-3 rounded-lg border border-japandi-terracotta/20"><span class="text-[10px] font-bold tracking-widest text-japandi-terracotta uppercase block mb-1">Contrapositive:</span> <p id="cond-contra" class="text-[10px] md:text-xs font-mono font-semibold text-japandi-ink break-words whitespace-normal leading-relaxed"></p></div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+                        <button onclick="generateConditional()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
+                        <button onclick="toggleBox('cond-answers', 'btn-cond-ans', 'Show Answers', 'Hide Answers')" id="btn-cond-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Answers</button>
+                    </div>
                 </div>
 
-                <div class="bg-japandi-bg p-4 md:p-8 rounded-2xl border border-japandi-border mb-8 flex flex-col w-full text-center">
-                    <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-4">Simplify Expression</p>
-                    <div class="bg-white border border-japandi-border p-6 rounded-xl shadow-sm w-full mb-6 highlight-pulse" id="problem-container">
-                        <p id="proof-problem" class="font-mono text-xl md:text-2xl text-japandi-ink font-bold break-words whitespace-normal leading-relaxed"></p>
+                <!-- Generator 2: Argument Validity Practice -->
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full">
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Argument Validity Practice</h3>
+                    <div class="bg-japandi-bg p-4 md:p-5 rounded-2xl border border-japandi-border mb-6 flex-grow flex flex-col w-full">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Analyze Argument</p>
+                        <div id="arg-problem" class="text-xs md:text-sm font-sans font-light italic text-japandi-ink bg-white p-4 rounded-xl border border-japandi-border min-h-[80px] break-words whitespace-normal leading-relaxed shadow-sm"></div>
+                        <div id="arg-answer-box" class="hidden mt-auto border-t border-japandi-border pt-4 w-full">
+                            <p class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase mb-2">Logical Form Mapping</p>
+                            <div class="w-full mb-4">
+                                <p id="arg-form" class="font-mono text-xs md:text-sm text-japandi-ink bg-white border border-japandi-border p-3 rounded-lg font-medium shadow-sm text-center break-words whitespace-normal"></p>
+                            </div>
+                            <div id="arg-result" class="text-xs md:text-sm font-bold tracking-widest py-3 text-center rounded-xl border shadow-sm font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[48px] md:min-h-[56px] transition-colors"></div>
+                        </div>
                     </div>
-                    <div id="proof-answer-box" class="hidden border-t border-japandi-border pt-6 w-full text-left">
-                        <p class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase mb-4 text-center">Derivation</p>
-                        <div id="proof-answer" class="w-full space-y-3 font-mono text-xs md:text-sm"></div>
+                    <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+                        <button onclick="generateArgument()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
+                        <button onclick="toggleBox('arg-answer-box', 'btn-arg-ans', 'Show Answer', 'Hide Answer')" id="btn-arg-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Answer</button>
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <button onclick="generateProof()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
-                    <button onclick="toggleElement('proof-answer-box')" id="btn-show-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Proof</button>
+                <!-- Generator 3: Predicate Logic Practice -->
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full lg:col-span-2">
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Predicate Translations Practice</h3>
+                    <div class="bg-japandi-bg p-4 md:p-6 rounded-2xl border border-japandi-border mb-6 flex-grow flex flex-col w-full text-center">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-3">English Statement</p>
+                        <div class="bg-white border border-japandi-border p-4 md:p-6 rounded-xl shadow-sm w-full mb-4">
+                            <p id="pred-problem" class="font-sans text-lg md:text-xl font-light italic text-japandi-ink break-words whitespace-normal leading-relaxed"></p>
+                        </div>
+                        <div id="pred-answer-box" class="hidden border-t border-japandi-border pt-4 w-full text-left">
+                            <p class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase mb-3 text-center">Dictionary & Translation</p>
+                            <p id="pred-dict" class="font-sans text-xs md:text-sm font-medium text-japandi-muted bg-white p-3 rounded-lg border border-japandi-border text-center mb-4 break-words whitespace-normal shadow-sm"></p>
+                            <div id="pred-result" class="w-full font-mono text-base md:text-xl text-japandi-matcha font-bold bg-japandi-matchaLight/50 py-4 px-2 rounded-xl text-center border border-japandi-matcha/20 break-words whitespace-normal shadow-sm"></div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto mt-auto">
+                        <button onclick="generatePredicate()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
+                        <button onclick="toggleBox('pred-answer-box', 'btn-pred-ans', 'Show Translation', 'Hide Translation')" id="btn-pred-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Translation</button>
+                    </div>
                 </div>
+
+                <!-- Generator 4: Multi-Step Proofs Practice -->
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-10 w-full lg:col-span-2">
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Multi-Step Proofs Practice</h3>
+                    
+                    <div class="flex flex-wrap justify-center gap-2 mb-6 bg-japandi-bg p-2 rounded-xl border border-japandi-border w-fit mx-auto">
+                        <button onclick="setDiff('easy')" id="btn-diff-easy" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Easy</button>
+                        <button onclick="setDiff('med')" id="btn-diff-med" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Med</button>
+                        <button onclick="setDiff('hard')" id="btn-diff-hard" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Hard</button>
+                        <button onclick="setDiff('vhard')" id="btn-diff-vhard" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">V.Hard</button>
+                    </div>
+
+                    <div class="bg-japandi-bg p-4 md:p-8 rounded-2xl border border-japandi-border mb-8 flex flex-col w-full text-center">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-4">Simplify Expression</p>
+                        <div class="bg-white border border-japandi-border p-6 rounded-xl shadow-sm w-full mb-6 highlight-pulse" id="problem-container">
+                            <p id="proof-problem" class="font-mono text-xl md:text-2xl text-japandi-ink font-bold break-words whitespace-normal leading-relaxed"></p>
+                        </div>
+                        <div id="proof-answer-box" class="hidden border-t border-japandi-border pt-6 w-full text-left">
+                            <p class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase mb-4 text-center">Derivation</p>
+                            <div id="proof-answer" class="w-full space-y-3 font-mono text-xs md:text-sm"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
+                        <button onclick="generateProof()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
+                        <button onclick="toggleBox('proof-answer-box', 'btn-proof-ans', 'Show Proof', 'Hide Proof')" id="btn-proof-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Proof</button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -974,9 +1046,198 @@
         });
 
         // ----------------------------------------------------
-        // PROOF GENERATOR ENGINE
+        // GENERATOR ENGINES
         // ----------------------------------------------------
-        let currentDiff = 'med';
+
+        // Generalized toggle functionality for answer boxes
+        const toggleBox = (boxId, btnId, showText, hideText) => {
+            const el = document.getElementById(boxId);
+            const btn = document.getElementById(btnId);
+            el.classList.toggle('hidden');
+            
+            if (boxId === 'proof-answer-box') {
+                document.getElementById('problem-container').classList.remove('highlight-pulse');
+            }
+
+            if(btn) {
+                if (el.classList.contains('hidden')) {
+                    btn.innerHTML = showText;
+                    btn.classList.replace('bg-japandi-bg', 'bg-white');
+                } else {
+                    btn.innerHTML = hideText;
+                    btn.classList.replace('bg-white', 'bg-japandi-bg');
+                }
+            }
+            lucide.createIcons();
+        };
+
+        // Engine 1: Conditionals
+        const subjects = ["it rains", "you study hard", "the code compiles", "Jack plays guitar", "the alarm rings"];
+        const actions = ["I will stay home", "you will pass the exam", "we will deploy the app", "Sara will sing", "I will wake up"];
+        const negSubjects = ["it does not rain", "you do not study hard", "the code does not compile", "Jack does not play guitar", "the alarm does not ring"];
+        const negActions = ["I will not stay home", "you will not pass the exam", "we will not deploy the app", "Sara will not sing", "I will not wake up"];
+
+        function generateConditional() {
+            document.getElementById('cond-answers').classList.add('hidden');
+            const btn = document.getElementById('btn-cond-ans');
+            if(btn) { btn.innerHTML = 'Show Answers'; btn.classList.replace('bg-japandi-bg', 'bg-white'); }
+
+            const idx = Math.floor(Math.random() * subjects.length);
+            const p = subjects[idx];
+            const q = actions[idx];
+            const not_p = negSubjects[idx];
+            const not_q = negActions[idx];
+
+            document.getElementById('cond-base').innerText = `If ${p}, then ${q}.`;
+            document.getElementById('cond-conv').innerText = `If ${q}, then ${p}.`;
+            document.getElementById('cond-inv').innerText = `If ${not_p}, then ${not_q}.`;
+            document.getElementById('cond-contra').innerText = `If ${not_q}, then ${not_p}.`;
+        }
+
+        // Engine 2: Arguments
+        const argForms = [
+            { 
+                type: "Modus Ponens", 
+                valid: true, 
+                form: "[(p → q) ∧ p] → q",
+                getEng: (p,q) => `If ${p}, then ${q}. ${p.charAt(0).toUpperCase() + p.slice(1)}. Therefore, ${q}.`
+            },
+            { 
+                type: "Fallacy of the Converse", 
+                valid: false, 
+                form: "[(p → q) ∧ q] → p",
+                getEng: (p,q) => `If ${p}, then ${q}. ${q.charAt(0).toUpperCase() + q.slice(1)}. Therefore, ${p}.`
+            },
+            { 
+                type: "Modus Tollens", 
+                valid: true, 
+                form: "[(p → q) ∧ ¬q] → ¬p",
+                getEng: (p,q,np,nq) => `If ${p}, then ${q}. ${nq.charAt(0).toUpperCase() + nq.slice(1)}. Therefore, ${np}.`
+            },
+            { 
+                type: "Fallacy of the Inverse", 
+                valid: false, 
+                form: "[(p → q) ∧ ¬p] → ¬q",
+                getEng: (p,q,np,nq) => `If ${p}, then ${q}. ${np.charAt(0).toUpperCase() + np.slice(1)}. Therefore, ${nq}.`
+            }
+        ];
+
+        function generateArgument() {
+            document.getElementById('arg-answer-box').classList.add('hidden');
+            const btn = document.getElementById('btn-arg-ans');
+            if(btn) { btn.innerHTML = 'Show Answer'; btn.classList.replace('bg-japandi-bg', 'bg-white'); }
+
+            const idx = Math.floor(Math.random() * subjects.length);
+            const p = subjects[idx];
+            const q = actions[idx];
+            const np = negSubjects[idx];
+            const nq = negActions[idx];
+            
+            const form = argForms[Math.floor(Math.random() * argForms.length)];
+            
+            document.getElementById('arg-problem').innerText = form.getEng(p, q, np, nq);
+            document.getElementById('arg-form').innerText = form.form.replace(/¬/g, '¬');
+            
+            const resEl = document.getElementById('arg-result');
+            if(form.valid) {
+                resEl.className = "text-japandi-matcha font-bold tracking-widest py-3 text-center rounded-xl border border-japandi-matcha/20 bg-japandi-matchaLight/50 font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[56px] text-xs md:text-sm";
+                resEl.innerHTML = '<div class="flex items-center"><i data-lucide="check-circle" class="inline w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0"></i> <span class="break-words leading-tight">VALID (' + form.type + ')</span></div>';
+            } else {
+                resEl.className = "text-japandi-terracotta font-bold tracking-widest py-3 text-center rounded-xl border border-japandi-terracotta/20 bg-japandi-terracottaLight/50 font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[56px] text-xs md:text-sm";
+                resEl.innerHTML = '<div class="flex items-center"><i data-lucide="x-circle" class="inline w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0"></i> <span class="break-words leading-tight">INVALID (' + form.type + ')</span></div>';
+            }
+            lucide.createIcons();
+        }
+
+        // Engine 3: Predicate Logic
+        const predNouns = [ {s: "student", p: "students", l: "S"}, {s: "programmer", p: "programmers", l: "P"}, {s: "cat", p: "cats", l: "C"}, {s: "human", p: "humans", l: "H"}, {s: "rat", p: "rats", l: "R"} ];
+        const predProps = [ {s: "clever", l: "C"}, {s: "mortal", l: "M"}, {s: "fast", l: "F"}, {s: "lazy", l: "L"}, {s: "grey", l: "G"}, {s: "reptiles", l: "E"} ]; 
+        const predVerbs = [ {s: "studies hard", l: "H"}, {s: "has green eyes", l: "G"}, {s: "eats pizza", l: "E"}, {s: "apologized", l: "A"} ];
+        const predActions = [ {s: "will pass", l: "P"}, {s: "will succeed", l: "S"}, {s: "is trusted", l: "T"} ];
+        const predNames = [ {s: "Bill", l: "b"}, {s: "Mary", l: "m"}, {s: "Keith", l: "k"} ];
+
+        function generatePredicate() {
+            document.getElementById('pred-answer-box').classList.add('hidden');
+            const btn = document.getElementById('btn-pred-ans');
+            if(btn) { btn.innerHTML = 'Show Translation'; btn.classList.replace('bg-japandi-bg', 'bg-white'); }
+            
+            const templates = [
+                () => {
+                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
+                    let p = predProps[Math.floor(Math.random()*predProps.length)];
+                    while(p.l === n.l) p = predProps[Math.floor(Math.random()*predProps.length)];
+                    return {
+                        eng: `All ${n.p} are ${p.s}.`,
+                        dict: `${n.l}(x): x is a ${n.s}, ${p.l}(x): x is ${p.s}`,
+                        ans: `&forall;x [${n.l}(x) &rarr; ${p.l}(x)]`
+                    };
+                },
+                () => {
+                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
+                    let p = predProps[Math.floor(Math.random()*predProps.length)];
+                    while(p.l === n.l) p = predProps[Math.floor(Math.random()*predProps.length)];
+                    return {
+                        eng: `Some ${n.p} are ${p.s}.`,
+                        dict: `${n.l}(x): x is a ${n.s}, ${p.l}(x): x is ${p.s}`,
+                        ans: `&exist;x [${n.l}(x) &and; ${p.l}(x)]`
+                    };
+                },
+                () => {
+                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
+                    let p = predProps[Math.floor(Math.random()*predProps.length)];
+                    while(p.l === n.l) p = predProps[Math.floor(Math.random()*predProps.length)];
+                    return {
+                        eng: `No ${n.p} are ${p.s}.`,
+                        dict: `${n.l}(x): x is a ${n.s}, ${p.l}(x): x is ${p.s}`,
+                        ans: `&forall;x [${n.l}(x) &rarr; &not;${p.l}(x)]`
+                    };
+                },
+                () => {
+                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
+                    let v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
+                    let a = predActions[Math.floor(Math.random()*predActions.length)];
+                    while(v.l === n.l) v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
+                    while(a.l === n.l || a.l === v.l) a = predActions[Math.floor(Math.random()*predActions.length)];
+                    return {
+                        eng: `Every ${n.s} who ${v.s} ${a.s}.`,
+                        dict: `${n.l}(x): is a ${n.s}, ${v.l}(x): ${v.s}, ${a.l}(x): ${a.s}`,
+                        ans: `&forall;x [(${n.l}(x) &and; ${v.l}(x)) &rarr; ${a.l}(x)]`
+                    };
+                },
+                () => {
+                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
+                    let v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
+                    while(v.l === n.l) v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
+                    return {
+                        eng: `Some ${n.p} didn't ${v.s.replace('has', 'have').replace('studies', 'study').replace('eats', 'eat').replace('apologized', 'apologize')}.`,
+                        dict: `${n.l}(x): is a ${n.s}, ${v.l}(x): ${v.s}`,
+                        ans: `&exist;x [${n.l}(x) &and; &not;${v.l}(x)]`
+                    };
+                },
+                () => {
+                    const nm = predNames[Math.floor(Math.random()*predNames.length)];
+                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
+                    let v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
+                    while(v.l === n.l) v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
+                    return {
+                        eng: `${nm.s} is a ${n.s} and ${nm.s} does not ${v.s.replace('has', 'have').replace('studies', 'study').replace('eats', 'eat').replace('apologized', 'apologize')}.`,
+                        dict: `${nm.l}: ${nm.s}, ${n.l}(x): is a ${n.s}, ${v.l}(x): ${v.s}`,
+                        ans: `${n.l}(${nm.l}) &and; &not;${v.l}(${nm.l})`
+                    };
+                }
+            ];
+
+            const tpl = templates[Math.floor(Math.random() * templates.length)];
+            const result = tpl();
+
+            document.getElementById('pred-problem').innerText = `"${result.eng}"`;
+            document.getElementById('pred-dict').innerHTML = `<strong>Dict:</strong> ${result.dict}`;
+            document.getElementById('pred-result').innerHTML = `<span class="math-sym tracking-normal normal-case">${result.ans.replace(/&not;/g, '<span class="text-japandi-terracotta font-semibold text-lg md:text-xl">&not;</span>')}</span>`;
+        }
+
+        // Engine 4: Multi-Step Proofs
+        let currentDiff = 'vhard';
+
         const proofProblems = {
             easy: [
                 { prob: "¬(¬p ∨ q)", steps: [ {exp: "¬(¬p) ∧ ¬q", law: "De Morgan's"}, {exp: "p ∧ ¬q", law: "Involution"} ] },
@@ -1011,26 +1272,11 @@
             generateProof();
         }
 
-        const toggleElement = (id) => {
-            const el = document.getElementById(id);
-            const btn = document.getElementById('btn-show-ans');
-            el.classList.toggle('hidden');
-            document.getElementById('problem-container').classList.remove('highlight-pulse');
-
-            if (el.classList.contains('hidden')) {
-                btn.innerHTML = 'Show Proof';
-                btn.classList.replace('bg-japandi-bg', 'bg-white');
-            } else {
-                btn.innerHTML = 'Hide Proof';
-                btn.classList.replace('bg-white', 'bg-japandi-bg');
-            }
-        };
-
         function generateProof() {
             document.getElementById('proof-answer-box').classList.add('hidden');
-            const btnAns = document.getElementById('btn-show-ans');
-            btnAns.innerHTML = 'Show Proof';
-            btnAns.classList.replace('bg-japandi-bg', 'bg-white');
+            const btnAns = document.getElementById('btn-proof-ans');
+            if(btnAns) { btnAns.innerHTML = 'Show Proof'; btnAns.classList.replace('bg-japandi-bg', 'bg-white'); }
+            
             document.getElementById('problem-container').classList.add('highlight-pulse');
 
             const list = proofProblems[currentDiff];
@@ -1055,8 +1301,29 @@
 
         window.onload = () => {
             updateTutorialUI();
+            generateConditional();
+            generateArgument();
+            generatePredicate();
             setDiff('vhard'); 
+            
+            // Fix initial state of reveal buttons
+            document.querySelectorAll('.reveal-btn').forEach(button => {
+                button.innerHTML = '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation';
+                button.classList.replace('bg-japandi-surface', 'bg-japandi-bg');
+            });
+            lucide.createIcons();
         };
+
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            if (isCompactMode) {
+                document.getElementById("progress-bar").style.width = scrolled + "%";
+            }
+        });
+
     </script>
 </body>
 </html>
