@@ -159,7 +159,7 @@
         }
     </style>
 </head>
-<body class="antialiased flex flex-col md:flex-row min-h-screen pb-20">
+<body class="antialiased flex flex-col md:flex-row min-h-screen">
 
     <div id="progress-bar" style="width: 0%;"></div>
 
@@ -213,7 +213,7 @@
         
         <!-- Emergency Intro (Visible in Tutorial Mode) -->
         <div id="emergency-intro" class="w-full mb-8 md:mb-12 hide-compact">
-            <p class="text-japandi-terracotta font-sans text-xs md:text-sm uppercase tracking-widest font-bold mb-2">2-Hour Emergency Protocol Active</p>
+            <p class="text-japandi-terracotta font-sans text-xs md:text-sm uppercase tracking-widest font-bold mb-2">Exam Protocol Active</p>
             <h1 class="font-serif text-4xl md:text-6xl font-bold text-japandi-ink tracking-tight mb-4">Module 5 & 6:<br>Exam Guide</h1>
             <p class="text-japandi-muted text-sm md:text-base font-sans font-light max-w-2xl">Structured tutorial for Algebra and Predicate Logic. Follow the steps sequentially to build comprehension rapidly.</p>
         </div>
@@ -803,13 +803,9 @@
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- SECTION 7: QUANTIFIERS -->
-        <section id="quantifiers" class="step-content scroll-mt-24 mb-24 compact-m">
-            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-matcha pl-4 md:pl-6 py-2">
+            
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-matcha pl-4 md:pl-6 py-2" id="quantifiers">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">07. Quantifiers</h2>
-                <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Scope of variables.</p>
             </div>
 
             <!-- Quantifiers Grid -->
@@ -984,25 +980,6 @@
         </div>
 
     </main>
-
-    <!-- Timer Widget fixed to bottom -->
-    <div class="fixed bottom-0 left-0 w-full bg-japandi-ink text-white p-3 md:p-4 z-50 border-t-2 border-japandi-terracotta/50 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-colors duration-500" id="timer-bar">
-        <div class="max-w-4xl mx-auto w-full flex justify-between items-center px-2 md:px-4">
-            <div class="flex items-center gap-2 md:gap-3">
-                <i data-lucide="clock" class="w-4 h-4 md:w-5 md:h-5 text-japandi-sand opacity-70"></i>
-                <div class="flex flex-col">
-                    <span class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-japandi-sand opacity-70">Time Remaining</span>
-                    <span class="font-mono text-lg md:text-xl font-bold leading-none" id="time-display">02:00:00</span>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                 <button onclick="toggleTimer()" id="play-pause-btn" class="p-1.5 md:p-2 hover:bg-white/10 rounded transition-colors" title="Play/Pause">
-                    <i data-lucide="pause" class="w-4 h-4 md:w-5 md:h-5"></i>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <script>
         // Initialize Icons
@@ -1339,9 +1316,9 @@
             ['easy','med','hard','vhard'].forEach(d => {
                 const btn = document.getElementById(`btn-diff-${d}`);
                 if(d === diff) {
-                    btn.className = `px-4 py-1.5 rounded-lg bg-japandi-ink text-white font-sans text-[10px] uppercase font-bold transition-colors shadow-sm`;
+                    btn.className = `px-3 md:px-4 py-1 md:py-1.5 rounded-lg bg-japandi-ink text-white font-sans text-[10px] uppercase font-bold transition-colors shadow-sm`;
                 } else {
-                    btn.className = `px-4 py-1.5 rounded-lg bg-transparent hover:bg-white text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors border border-transparent hover:border-japandi-border`;
+                    btn.className = `px-3 md:px-4 py-1 md:py-1.5 rounded-lg bg-transparent hover:bg-white text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors border border-transparent hover:border-japandi-border`;
                 }
             });
             generateProof();
@@ -1367,7 +1344,7 @@
             item.steps.forEach((step, idx) => {
                 let exp = step.exp.replace(/∧/g, '<span class="math-op text-xs">&and;</span>').replace(/∨/g, '<span class="math-op text-xs">&or;</span>').replace(/¬/g, '<span class="text-japandi-terracotta font-semibold">¬</span>');
                 ansHTML += `
-                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 bg-white border border-japandi-border p-3 md:p-4 rounded-xl shadow-sm w-full mb-2 overflow-hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 bg-white border border-japandi-border p-3 rounded-xl shadow-sm w-full mb-2 overflow-hidden">
                     <div class="bg-japandi-ink text-white px-2 py-1 rounded-md text-[10px] flex-shrink-0 font-bold uppercase tracking-widest">Step ${idx+1}</div>
                     <div class="w-full overflow-x-auto hide-scrollbar pb-1">
                         <div class="math-sym whitespace-nowrap text-xs md:text-sm text-japandi-ink leading-relaxed">${exp}</div>
@@ -1379,56 +1356,6 @@
             document.getElementById('proof-answer').innerHTML = ansHTML;
         }
 
-        // ----------------------------------------------------
-        // TIMER LOGIC
-        // ----------------------------------------------------
-        let totalSeconds = 2 * 60 * 60; // 2 hours
-        let timerInterval = null;
-        let isRunning = true;
-        const display = document.getElementById('time-display');
-        const playPauseBtn = document.getElementById('play-pause-btn');
-        const timerBar = document.getElementById('timer-bar');
-
-        function updateDisplay() {
-            let h = Math.floor(totalSeconds / 3600);
-            let m = Math.floor((totalSeconds % 3600) / 60);
-            let s = totalSeconds % 60;
-            display.innerText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-            
-            if (totalSeconds <= 0) {
-                timerBar.style.backgroundColor = '#8B0000'; // Dark Red
-                display.innerText = "TIME'S UP";
-            } else if (totalSeconds < 300) { // under 5 mins
-                timerBar.style.backgroundColor = '#C27D65'; // Terracotta
-            } else {
-                timerBar.style.backgroundColor = '#2C2A28'; // Default Ink
-            }
-        }
-
-        function tick() {
-            if (totalSeconds > 0) {
-                totalSeconds--;
-                updateDisplay();
-            } else {
-                clearInterval(timerInterval);
-                isRunning = false;
-            }
-        }
-
-        function toggleTimer() {
-            if (isRunning) {
-                clearInterval(timerInterval);
-                playPauseBtn.innerHTML = '<i data-lucide="play" class="w-4 h-4 md:w-5 md:h-5"></i>';
-            } else {
-                if(totalSeconds > 0) {
-                    timerInterval = setInterval(tick, 1000);
-                    playPauseBtn.innerHTML = '<i data-lucide="pause" class="w-4 h-4 md:w-5 md:h-5"></i>';
-                }
-            }
-            isRunning = !isRunning;
-            lucide.createIcons();
-        }
-
         // Call generators on load
         window.onload = () => {
             generateConditional();
@@ -1436,8 +1363,6 @@
             generateArgument();
             setDiff('vhard'); // Initializes the proof engine
             updateTutorialUI(); // Starts tutorial UI
-            timerInterval = setInterval(tick, 1000); // Start timer
-            updateDisplay();
             
             // Re-initialize icons
             lucide.createIcons();
