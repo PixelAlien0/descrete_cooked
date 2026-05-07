@@ -174,7 +174,7 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- CONTENT SECTIONS (Unified HTML)          -->
+        <!-- CONTENT SECTIONS                         -->
         <!-- ========================================== -->
 
         <!-- 01. The 9 Laws -->
@@ -198,11 +198,11 @@
                         <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
                         <span class="math-sym block text-sm md:text-base">p <span class="math-op">&or;</span> p &equiv; p</span>
                     </div>
-                    <div class="reveal-content text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
+                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
                         <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "It is raining AND it is raining" &rarr; It is raining.
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-bg font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation
+                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
+                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
                     </button>
                 </div>
 
@@ -216,12 +216,14 @@
                         <span class="math-sym block text-sm md:text-base">p <span class="math-op">&or;</span> q &equiv; q <span class="math-op">&or;</span> p</span>
                         <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
                         <span class="math-sym block text-sm md:text-base">p <span class="math-op">&harr;</span> q &equiv; q <span class="math-op">&harr;</span> p</span>
+                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
+                        <span class="math-sym block text-sm md:text-base">p <span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span> q &equiv; q <span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span> p</span>
                     </div>
-                    <div class="reveal-content text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
+                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
                         <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "I have a cat AND a dog" &equiv; "I have a dog AND a cat"
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-bg font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation
+                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
+                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
                     </button>
                 </div>
 
@@ -230,17 +232,19 @@
                     <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Associative</h3>
                     <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Parenthesis shift</p>
                     <div class="bg-japandi-sandLight p-4 rounded-2xl text-center w-full mb-auto border border-white">
-                        <span class="math-sym text-xs md:text-sm block leading-relaxed">(p<span class="math-op">&and;</span>q)<span class="math-op">&and;</span>r &equiv; p<span class="math-op">&and;</span>(q<span class="math-op">&and;</span>r)</span>
+                        <span class="math-sym text-xs block leading-relaxed">(p<span class="math-op">&and;</span>q)<span class="math-op">&and;</span>r &equiv; p<span class="math-op">&and;</span>(q<span class="math-op">&and;</span>r)</span>
                         <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym text-xs md:text-sm block leading-relaxed">(p<span class="math-op">&or;</span>q)<span class="math-op">&or;</span>r &equiv; p<span class="math-op">&or;</span>(q<span class="math-op">&or;</span>r)</span>
+                        <span class="math-sym text-xs block leading-relaxed">(p<span class="math-op">&or;</span>q)<span class="math-op">&or;</span>r &equiv; p<span class="math-op">&or;</span>(q<span class="math-op">&or;</span>r)</span>
                         <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym text-xs md:text-sm block leading-relaxed">(p<span class="math-op">&harr;</span>q)<span class="math-op">&harr;</span>r &equiv; p<span class="math-op">&harr;</span>(q<span class="math-op">&harr;</span>r)</span>
+                        <span class="math-sym text-xs block leading-relaxed">(p<span class="math-op">&harr;</span>q)<span class="math-op">&harr;</span>r &equiv; p<span class="math-op">&harr;</span>(q<span class="math-op">&harr;</span>r)</span>
+                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
+                        <span class="math-sym text-xs block leading-relaxed">(p<span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span>q)<span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span>r &equiv; p<span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span>(q<span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span>r)</span>
                     </div>
-                    <div class="reveal-content text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
+                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
                         <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "Wash car AND mow lawn, AND buy groceries" &equiv; "Wash car, AND mow lawn AND buy groceries"
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-bg font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation
+                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
+                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
                     </button>
                 </div>
 
@@ -253,11 +257,11 @@
                         <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
                         <span class="math-sym text-[11px] md:text-xs block leading-relaxed">p<span class="math-op">&or;</span>(q<span class="math-op">&and;</span>r) &equiv; (p<span class="math-op">&or;</span>q)<span class="math-op">&and;</span>(p<span class="math-op">&or;</span>r)</span>
                     </div>
-                    <div class="reveal-content text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
+                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
                         <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "I will order a burger AND (either fries OR salad)"
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-bg font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation
+                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
+                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
                     </button>
                 </div>
 
@@ -290,11 +294,11 @@
                         <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
                         <span class="math-sym block text-sm md:text-base">p<span class="math-op">&or;</span>(p<span class="math-op">&and;</span>q) &equiv; p</span>
                     </div>
-                    <div class="reveal-content text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
+                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
                         <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "I go to work, OR (I go to work AND drive)" &rarr; I go to work.
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-bg font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation
+                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
+                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
                     </button>
                 </div>
 
@@ -305,11 +309,11 @@
                     <div class="bg-japandi-sandLight p-4 rounded-2xl flex items-center justify-center w-full min-h-[88px] border border-white">
                         <span class="math-sym text-2xl md:text-3xl"><span class="overbar"><span class="overbar">p</span></span> &equiv; p</span>
                     </div>
-                    <div class="reveal-content text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
+                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
                         <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "I am NOT NOT hungry" &rarr; I am hungry.
                     </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-bg font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation
+                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
+                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
                     </button>
                 </div>
 
@@ -553,7 +557,7 @@
                         Implication
                         <span class="math-sym text-xl font-bold bg-japandi-terracottaLight px-4 py-2 rounded-xl text-japandi-ink border border-white shadow-sm">P <span class="text-japandi-terracotta">&rArr;</span> Q</span>
                     </h3>
-                    <ul class="text-sm font-sans font-light text-japandi-ink space-y-4 list-none mb-8">
+                    <ul class="text-sm font-sans font-light text-japandi-ink space-y-4 list-none mb-6">
                         <li class="flex items-start gap-3">
                             <i data-lucide="arrow-right" class="w-4 h-4 text-japandi-terracotta mt-0.5 flex-shrink-0"></i>
                             <span class="leading-relaxed">Whenever <span class="math-sym text-xs">P</span> is true, <span class="math-sym text-xs">Q</span> is also true.</span>
@@ -567,9 +571,28 @@
                             <span class="text-xs font-medium">Converse does not apply. Q may be true when P is false.</span>
                         </li>
                     </ul>
-                    <div class="w-full bg-japandi-terracottaLight/30 p-5 rounded-2xl border border-white text-center">
-                        <span class="text-[10px] uppercase font-bold text-japandi-terracotta/70 tracking-widest block mb-2 tutorial-only">Example Equation</span>
-                        <span class="math-sym text-sm md:text-base break-words">q <span class="text-japandi-terracotta">&rArr;</span> (p &or; q)</span>
+                    
+                    <div class="w-full bg-japandi-terracottaLight/30 p-5 rounded-2xl border border-white">
+                        <p class="text-[10px] uppercase font-bold text-japandi-terracotta/70 tracking-widest block mb-3 text-center tutorial-only">Proof Demonstration: (p &harr; q) &and; q &rArr; p</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center font-mono text-[10px] md:text-xs">
+                                <thead>
+                                    <tr class="border-b border-japandi-terracotta/20 text-japandi-terracotta">
+                                        <th class="py-2 px-1">p</th>
+                                        <th class="py-2 px-1">q</th>
+                                        <th class="py-2 px-1 border-x border-japandi-terracotta/20">p&harr;q</th>
+                                        <th class="py-2 px-1">(p&harr;q)&and;q</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td class="py-1">T</td><td>T</td><td class="border-x border-japandi-terracotta/20">T</td><td class="font-bold text-japandi-ink">T</td></tr>
+                                    <tr><td class="py-1">T</td><td>F</td><td class="border-x border-japandi-terracotta/20">F</td><td class="text-japandi-muted">F</td></tr>
+                                    <tr><td class="py-1">F</td><td>T</td><td class="border-x border-japandi-terracotta/20">F</td><td class="text-japandi-muted">F</td></tr>
+                                    <tr><td class="py-1">F</td><td>F</td><td class="border-x border-japandi-terracotta/20">T</td><td class="text-japandi-muted">F</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-[10px] text-center mt-3 text-japandi-muted italic tutorial-only">Notice 'p' is true whenever the formula is true (Row 1). Thus, it logically implies 'p'.</p>
                     </div>
                 </div>
             </div>
@@ -651,8 +674,10 @@
                 <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight mb-2">06. Predicate Logic</h2>
             </div>
             <div class="mb-8 tutorial-only">
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight mb-2">Module 6: Predicate Logic</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light max-w-3xl leading-relaxed">Extending logic to describe properties and specific individuals.</p>
+                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight mb-2">Module 6: Predicate Logic (First-Order Logic)</h2>
+                <p class="text-japandi-muted text-sm font-sans font-light max-w-3xl leading-relaxed">
+                    Propositional logic cannot express properties of individuals. Consider: <em>"Everyone who has green eyes is not to be trusted. Bill has green eyes. Therefore, Bill is not to be trusted."</em> Propositional logic fails here because we can't link 'Bill' to 'green eyes'. Predicate Logic fixes this.
+                </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
@@ -662,8 +687,8 @@
                     <h3 class="font-serif font-bold text-lg text-japandi-ink mb-2">Predicates</h3>
                     <p class="text-xs text-japandi-muted font-sans font-light mb-6 tutorial-only">Represents a property or relationship. Use <strong>Uppercase Letters</strong>.</p>
                     <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center mt-auto">
-                        <span class="math-sym text-sm block">T(x) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "is tall"</span></span>
-                        <span class="math-sym text-sm block mt-2">L(a,b,o) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "Lent to"</span></span>
+                        <span class="math-sym text-sm block">R(x) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "...is red"</span></span>
+                        <span class="math-sym text-sm block mt-2">L(x,y,z) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "...lent y to z"</span></span>
                     </div>
                 </div>
                 <!-- Variables -->
@@ -733,21 +758,35 @@
                     <span class="px-3 py-1 bg-japandi-sandLight text-japandi-ink rounded-lg text-[10px] font-sans font-bold uppercase tracking-widest tutorial-only">Exam Crucial</span>
                     <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink">Complex Translations</h3>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Compound Conditions</p>
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Compound</p>
                         <p class="text-xs italic text-japandi-ink mb-2">"Every student who studies hard will pass."</p>
-                        <p class="math-sym text-xs md:text-sm bg-white p-2 rounded shadow-sm text-center">&forall;x [(S(x) <span class="math-op text-xs">&and;</span> H(x)) <span class="math-op text-xs">&rarr;</span> P(x)]</p>
+                        <p class="math-sym text-xs bg-white p-2 rounded shadow-sm">&forall;x [(S(x) <span class="math-op text-xs">&and;</span> H(x)) <span class="math-op text-xs">&rarr;</span> P(x)]</p>
                     </div>
                     <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Universal Negation</p>
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Univ. Negation</p>
                         <p class="text-xs italic text-japandi-ink mb-2">"No cats are reptiles."</p>
-                        <p class="math-sym text-xs md:text-sm bg-white p-2 rounded shadow-sm text-center">&forall;x [C(x) <span class="math-op text-xs">&rarr;</span> &not;R(x)]</p>
+                        <p class="math-sym text-xs bg-white p-2 rounded shadow-sm">&forall;x [C(x) <span class="math-op text-xs">&rarr;</span> &not;R(x)]</p>
                     </div>
                     <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Quantifier Equivalence</p>
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Existential Example</p>
+                        <p class="text-xs italic text-japandi-ink mb-2">"Some of the children didn't apologize."</p>
+                        <p class="math-sym text-xs bg-white p-2 rounded shadow-sm">&exist;x [C(x) <span class="math-op text-xs">&and;</span> &not;A(x)]</p>
+                    </div>
+                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Existential Example 2</p>
+                        <p class="text-xs italic text-japandi-ink mb-2">"Some people think of no one but themselves."</p>
+                        <p class="math-sym text-xs bg-white p-2 rounded shadow-sm">&exist;x [P(x) <span class="math-op text-xs">&and;</span> N(x)]</p>
+                    </div>
+                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border lg:col-span-2">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Equivalence</p>
                         <p class="text-xs italic text-japandi-ink mb-2">"Nobody likes cheats."</p>
-                        <p class="math-sym text-xs md:text-sm bg-white p-2 rounded shadow-sm text-center">&not;&exist;x [P(x) <span class="math-op text-xs">&and;</span> C(x)] <br>&equiv; &forall;x [P(x) <span class="math-op text-xs">&rarr;</span> &not;C(x)]</p>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <p class="math-sym text-xs bg-white p-2 rounded shadow-sm flex-1">&not;&exist;x [P(x) <span class="math-op text-xs">&and;</span> C(x)]</p>
+                            <div class="flex items-center justify-center font-bold text-japandi-muted text-xs">OR</div>
+                            <p class="math-sym text-xs bg-white p-2 rounded shadow-sm flex-1">&forall;x [P(x) <span class="math-op text-xs">&rarr;</span> &not;C(x)]</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -909,15 +948,21 @@
         // CARD REVEAL LOGIC
         // ----------------------------------------------------
         document.querySelectorAll('.reveal-btn').forEach(button => {
+            // Set initial state matching CSS (which defaults to hidden text)
+            button.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation';
+            button.classList.add('bg-japandi-surface');
+            button.classList.remove('bg-japandi-bg');
+
             button.addEventListener('click', function() {
                 const content = this.previousElementSibling;
-                content.classList.toggle('closed');
-                if (content.classList.contains('closed')) {
-                    this.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation';
-                    this.classList.replace('bg-japandi-bg', 'bg-japandi-surface');
-                } else {
+                content.classList.toggle('open');
+                
+                if (content.classList.contains('open')) {
                     this.innerHTML = '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation';
                     this.classList.replace('bg-japandi-surface', 'bg-japandi-bg');
+                } else {
+                    this.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation';
+                    this.classList.replace('bg-japandi-bg', 'bg-japandi-surface');
                 }
                 lucide.createIcons();
             });
