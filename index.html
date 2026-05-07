@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discrete Math | Module 5 & 6 Exam Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Shippori+Mincho:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
@@ -112,6 +112,29 @@
         }
 
         /* =========================================
+           TUTORIAL STEP STYLES
+           ========================================= */
+        .step-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .step-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .tutorial-nav-btn {
+            transition: all 0.2s ease;
+        }
+        .tutorial-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* =========================================
            COMPACT MODE OVERRIDES
            ========================================= */
         body.compact-mode .hide-compact { display: none !important; }
@@ -123,9 +146,20 @@
         body.compact-mode .compact-grid-laws { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
         body.compact-mode .compact-h { min-height: auto !important; }
         body.compact-mode .compact-math { font-size: 0.9em !important; }
+        
+        body.compact-mode .step-content {
+            display: block !important;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+        body.compact-mode #tutorial-header,
+        body.compact-mode #tutorial-nav,
+        body.compact-mode #emergency-intro {
+            display: none !important;
+        }
     </style>
 </head>
-<body class="antialiased flex flex-col md:flex-row min-h-screen">
+<body class="antialiased flex flex-col md:flex-row min-h-screen pb-20">
 
     <div id="progress-bar" style="width: 0%;"></div>
 
@@ -139,7 +173,7 @@
     </header>
 
     <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-japandi-surface border-r border-japandi-border fixed h-full z-40 transition-transform duration-300 top-[69px] md:top-0 shadow-soft md:shadow-none">
+    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-japandi-surface border-r border-japandi-border fixed h-full z-40 transition-transform duration-300 top-[69px] md:top-0 shadow-soft md:shadow-none pb-16">
         <div class="p-8 pb-6 hidden md:block">
             <h1 class="font-serif font-bold text-4xl mb-1 text-japandi-ink tracking-tight">Discrete<span class="text-japandi-terracotta">.</span></h1>
             <p class="text-xs text-japandi-muted font-sans uppercase tracking-widest font-medium mt-2">Keith's Exam Guide</p>
@@ -175,19 +209,43 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 md:ml-72 p-4 sm:p-8 md:p-12 lg:p-16 max-w-[1400px] mx-auto w-full overflow-hidden transition-all duration-300" id="main-content">
+    <main class="flex-1 md:ml-72 p-4 sm:p-8 md:p-12 lg:p-16 max-w-[1400px] mx-auto w-full overflow-hidden transition-all duration-300 flex flex-col min-h-screen" id="main-content">
         
-        <!-- MODULE 5 HEADER -->
-        <div class="mb-8 md:mb-12 border-b-2 border-japandi-terracotta/30 pb-4">
+        <!-- Emergency Intro (Visible in Tutorial Mode) -->
+        <div id="emergency-intro" class="w-full mb-8 md:mb-12 hide-compact">
+            <p class="text-japandi-terracotta font-sans text-xs md:text-sm uppercase tracking-widest font-bold mb-2">2-Hour Emergency Protocol Active</p>
+            <h1 class="font-serif text-4xl md:text-6xl font-bold text-japandi-ink tracking-tight mb-4">Module 5 & 6:<br>Exam Guide</h1>
+            <p class="text-japandi-muted text-sm md:text-base font-sans font-light max-w-2xl">Structured tutorial for Algebra and Predicate Logic. Follow the steps sequentially to build comprehension rapidly.</p>
+        </div>
+
+        <!-- Tutorial Header & Progress -->
+        <div id="tutorial-header" class="bg-japandi-surface border border-japandi-border rounded-2xl shadow-soft p-4 md:p-6 flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 md:mb-12 transition-all">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <div class="w-10 h-10 rounded-full bg-japandi-ink text-white flex items-center justify-center font-serif font-bold text-lg flex-shrink-0" id="step-indicator">1</div>
+                <div>
+                    <h2 class="font-sans font-bold text-japandi-ink text-sm md:text-base" id="step-title">Welcome, Keith</h2>
+                    <p class="text-xs text-japandi-muted font-sans" id="step-subtitle">Module 5: The 9 Laws</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-sans font-medium text-japandi-muted w-full sm:w-auto justify-end">
+                <span id="progress-text">Step 1 of 8</span>
+                <div class="w-24 h-2 bg-japandi-bg border border-japandi-border rounded-full overflow-hidden">
+                    <div class="h-full bg-japandi-matcha transition-all duration-300" id="tutorial-progress-bar" style="width: 12.5%;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MODULE 5 HEADER (Visible only in Compact Mode) -->
+        <div class="mb-8 md:mb-12 border-b-2 border-japandi-terracotta/30 pb-4 hidden compact-mode:block">
             <span class="text-japandi-terracotta font-sans text-xs md:text-sm uppercase tracking-widest font-bold mb-2 block">Exam Coverage</span>
             <h1 class="font-serif text-4xl md:text-6xl font-bold text-japandi-ink tracking-tight">Module 5:<br>Algebra of Propositions</h1>
         </div>
 
         <!-- SECTION 1: THE 9 LAWS -->
-        <section id="laws" class="scroll-mt-24 mb-24 compact-m">
+        <section id="laws" class="step-content active scroll-mt-24 mb-24 compact-m">
             <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">01. The 9 Laws</h2>
-                <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Fundamental algebraic manipulation operations.</p>
+                <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Fundamental algebraic manipulation operations. You don't need to memorize the complex formulas right away; you need to understand <strong>what they do conceptually</strong>.</p>
             </div>
 
             <!-- Soft Grid -->
@@ -275,7 +333,7 @@
                         <span class="px-2 py-1 bg-white/20 text-white rounded-md text-[10px] font-sans font-bold uppercase tracking-widest backdrop-blur-sm hide-compact">Crucial Exam Topic</span>
                         <h3 class="font-serif font-bold text-2xl md:text-3xl text-white compact-title">De Morgan's</h3>
                     </div>
-                    <p class="text-xs text-white/80 mb-6 font-sans uppercase tracking-widest font-medium hide-compact">Invert and flip</p>
+                    <p class="text-xs text-white/80 mb-6 font-sans uppercase tracking-widest font-medium hide-compact">Invert and flip. Negating a grouped AND turns it into an OR.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-auto compact-gap">
                         <div class="bg-white/10 p-5 rounded-xl border border-white/20 backdrop-blur-md w-full compact-p">
@@ -357,7 +415,7 @@
         </section>
 
         <!-- SECTION 2: DUALITY & REPLACEMENT -->
-        <section id="duality" class="scroll-mt-24 mb-24 compact-m">
+        <section id="duality" class="step-content scroll-mt-24 mb-24 compact-m">
             <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">02. Core Principles</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Mechanical operations for substitution and equivalence.</p>
@@ -442,7 +500,7 @@
         </section>
 
         <!-- SECTION 3: CONDITIONALS & TRUTH TABLES -->
-        <section id="conditionals" class="scroll-mt-24 mb-24 compact-m">
+        <section id="conditionals" class="step-content scroll-mt-24 mb-24 compact-m">
             <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">03. Conditionals</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Structural permutations of a basic proposition.</p>
@@ -549,7 +607,7 @@
         </section>
 
         <!-- SECTION 4: EQUIVALENCE VS IMPLICATION -->
-        <section id="equivalence" class="scroll-mt-24 mb-24 compact-m">
+        <section id="equivalence" class="step-content scroll-mt-24 mb-24 compact-m">
             <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">04. Equivalence vs. Implication</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Differentiating strict logic states.</p>
@@ -612,7 +670,7 @@
         </section>
 
         <!-- SECTION 5: VALID ARGUMENTS -->
-        <section id="arguments" class="scroll-mt-24 mb-24 compact-m">
+        <section id="arguments" class="step-content scroll-mt-24 mb-24 compact-m">
             <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">05. Argument Validity</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Proving argument structures via tautology.</p>
@@ -703,14 +761,14 @@
             </div>
         </section>
 
-        <!-- MODULE 6 HEADER -->
-        <div class="mt-16 md:mt-24 mb-8 md:mb-12 border-b-2 border-japandi-matcha/30 pb-4">
+        <!-- MODULE 6 HEADER (Visible only in Compact Mode) -->
+        <div class="mt-16 md:mt-24 mb-8 md:mb-12 border-b-2 border-japandi-matcha/30 pb-4 hidden compact-mode:block">
             <span class="text-japandi-matcha font-sans text-xs md:text-sm uppercase tracking-widest font-bold mb-2 block">Exam Coverage</span>
             <h1 class="font-serif text-4xl md:text-6xl font-bold text-japandi-ink tracking-tight">Module 6:<br>Predicate Logic</h1>
         </div>
 
         <!-- SECTION 6: PREDICATE LOGIC -->
-        <section id="predicate" class="scroll-mt-24 mb-24 compact-m">
+        <section id="predicate" class="step-content scroll-mt-24 mb-24 compact-m">
             <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-matcha pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">06. Core Predicates</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Extending logic to describe properties and individuals.</p>
@@ -745,9 +803,13 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-matcha pl-4 md:pl-6 py-2" id="quantifiers">
+        </section>
+
+        <!-- SECTION 7: QUANTIFIERS -->
+        <section id="quantifiers" class="step-content scroll-mt-24 mb-24 compact-m">
+            <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-matcha pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-ink tracking-tight compact-section-title">07. Quantifiers</h2>
+                <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Scope of variables.</p>
             </div>
 
             <!-- Quantifiers Grid -->
@@ -810,8 +872,8 @@
             </div>
         </section>
 
-        <!-- SECTION 7: INTERACTIVE PRACTICE -->
-        <section id="practice" class="scroll-mt-24 mb-24 compact-m">
+        <!-- SECTION 8: INTERACTIVE PRACTICE -->
+        <section id="practice" class="step-content scroll-mt-24 mb-24 compact-m">
             <div class="mb-10 md:mb-14 compact-m border-l-8 border-japandi-terracotta pl-4 md:pl-6 py-2">
                 <h2 class="font-serif text-3xl md:text-4xl font-bold text-japandi-terracotta tracking-tight compact-section-title">08. Interactive Practice</h2>
                 <p class="text-japandi-muted text-sm md:text-base mt-2 font-sans font-light hide-compact">Dynamic study tools for infinite practice problems.</p>
@@ -831,7 +893,7 @@
                             <div class="bg-japandi-terracottaLight p-3 rounded-lg border border-japandi-terracotta/20"><span class="text-[10px] font-bold tracking-widest text-japandi-terracotta uppercase block mb-1">Contrapositive:</span> <p id="cond-contra" class="text-[10px] md:text-xs font-mono font-semibold text-japandi-ink break-words whitespace-normal leading-relaxed"></p></div>
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <div class="flex flex-col sm:flex-row gap-3 mt-auto hide-compact">
                         <button onclick="generateConditional()" class="flex-1 py-3 bg-japandi-ink hover:bg-japandi-ink/80 text-white font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Generate</button>
                         <button onclick="toggleElement('cond-answers')" class="flex-1 py-3 bg-white hover:bg-japandi-bg text-japandi-ink border border-japandi-border font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Answers</button>
                     </div>
@@ -853,7 +915,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <div class="flex flex-col sm:flex-row gap-3 mt-auto hide-compact">
                         <button onclick="generateLaw()" class="flex-1 py-3 bg-japandi-ink hover:bg-japandi-ink/80 text-white font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Generate</button>
                         <button onclick="toggleElement('law-answer-box')" class="flex-1 py-3 bg-white hover:bg-japandi-bg text-japandi-ink border border-japandi-border font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Answer</button>
                     </div>
@@ -873,7 +935,7 @@
                             <div id="arg-result" class="text-xs md:text-sm font-bold tracking-widest py-3 text-center rounded-xl border shadow-sm font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[48px] md:min-h-[56px] transition-colors"></div>
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <div class="flex flex-col sm:flex-row gap-3 mt-auto hide-compact">
                         <button onclick="generateArgument()" class="flex-1 py-3 bg-japandi-ink hover:bg-japandi-ink/80 text-white font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Generate</button>
                         <button onclick="toggleElement('arg-answer-box')" class="flex-1 py-3 bg-white hover:bg-japandi-bg text-japandi-ink border border-japandi-border font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Answer</button>
                     </div>
@@ -883,7 +945,7 @@
                 <div class="bg-japandi-surface border border-japandi-border rounded-2xl shadow-soft p-6 md:p-8 flex flex-col w-full compact-p">
                     <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3 compact-title">Multi-Step Proofs</h3>
                     
-                    <div class="flex flex-wrap gap-2 mb-4 bg-japandi-bg p-2 rounded-xl border border-japandi-border w-fit">
+                    <div class="flex flex-wrap gap-2 mb-4 bg-japandi-bg p-2 rounded-xl border border-japandi-border w-fit hide-compact">
                         <button onclick="setDiff('easy')" id="btn-diff-easy" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Easy</button>
                         <button onclick="setDiff('med')" id="btn-diff-med" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Med</button>
                         <button onclick="setDiff('hard')" id="btn-diff-hard" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Hard</button>
@@ -892,7 +954,7 @@
 
                     <div class="bg-japandi-bg p-4 md:p-5 rounded-xl border border-japandi-border mb-6 flex-grow flex flex-col w-full compact-p">
                         <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Simplify the Expression</p>
-                        <div class="bg-white border border-japandi-border p-4 md:p-6 rounded-xl text-center shadow-sm mb-4 w-full compact-p">
+                        <div class="bg-white border border-japandi-border p-4 md:p-6 rounded-xl text-center shadow-sm mb-4 w-full compact-p highlight-pulse" id="problem-container">
                             <p id="proof-problem" class="font-mono text-lg md:text-xl text-japandi-ink font-bold min-h-[32px] break-words whitespace-normal leading-relaxed"></p>
                         </div>
                         <div id="proof-answer-box" class="hidden mt-auto border-t border-japandi-border pt-4 w-full">
@@ -902,16 +964,45 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <div class="flex flex-col sm:flex-row gap-3 mt-auto hide-compact">
                         <button onclick="generateProof()" class="flex-1 py-3 bg-japandi-ink hover:bg-japandi-ink/80 text-white font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Generate</button>
-                        <button onclick="toggleElement('proof-answer-box')" class="flex-1 py-3 bg-white hover:bg-japandi-bg text-japandi-ink border border-japandi-border font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Answer</button>
+                        <button onclick="toggleElement('proof-answer-box')" id="btn-show-ans" class="flex-1 py-3 bg-white hover:bg-japandi-bg text-japandi-ink border border-japandi-border font-sans text-xs uppercase font-semibold rounded-lg transition-colors shadow-sm">Answer</button>
                     </div>
                 </div>
 
             </div>
         </section>
 
+        <!-- Tutorial Navigation Footer (Visible in Tutorial Mode) -->
+        <div id="tutorial-nav" class="bg-japandi-surface border-t border-japandi-border p-4 md:p-6 flex justify-between items-center mt-auto transition-all">
+            <button id="btn-prev" disabled class="tutorial-nav-btn px-4 md:px-6 py-2 md:py-2.5 rounded-lg font-sans font-semibold text-xs md:text-sm border border-japandi-border text-japandi-ink hover:bg-japandi-bg flex items-center gap-1 md:gap-2 shadow-sm">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Prev
+            </button>
+            <button id="btn-next" class="tutorial-nav-btn px-4 md:px-6 py-2 md:py-2.5 rounded-lg font-sans font-semibold text-xs md:text-sm bg-japandi-terracotta text-white hover:bg-japandi-terracotta/90 shadow-sm flex items-center gap-1 md:gap-2">
+                Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+
     </main>
+
+    <!-- Timer Widget fixed to bottom -->
+    <div class="fixed bottom-0 left-0 w-full bg-japandi-ink text-white p-3 md:p-4 z-50 border-t-2 border-japandi-terracotta/50 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-colors duration-500" id="timer-bar">
+        <div class="max-w-4xl mx-auto w-full flex justify-between items-center px-2 md:px-4">
+            <div class="flex items-center gap-2 md:gap-3">
+                <i data-lucide="clock" class="w-4 h-4 md:w-5 md:h-5 text-japandi-sand opacity-70"></i>
+                <div class="flex flex-col">
+                    <span class="text-[8px] md:text-[10px] uppercase font-bold tracking-widest text-japandi-sand opacity-70">Time Remaining</span>
+                    <span class="font-mono text-lg md:text-xl font-bold leading-none" id="time-display">02:00:00</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                 <button onclick="toggleTimer()" id="play-pause-btn" class="p-1.5 md:p-2 hover:bg-white/10 rounded transition-colors" title="Play/Pause">
+                    <i data-lucide="pause" class="w-4 h-4 md:w-5 md:h-5"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Initialize Icons
@@ -943,12 +1034,11 @@
                 desktopBtn.classList.replace('text-japandi-terracotta', 'text-japandi-ink');
                 mobileBtn.innerHTML = '<i data-lucide="minimize-2"></i>';
                 mobileBtn.classList.remove('text-japandi-terracotta');
+                // Re-apply active step visibility when returning to tutorial mode
+                updateTutorialUI();
             }
             
-            // Re-render icons
             lucide.createIcons();
-            
-            // Force reflow for Masonry/Grid adjustments if necessary
             window.dispatchEvent(new Event('resize'));
         }
 
@@ -975,11 +1065,153 @@
         });
 
         // ----------------------------------------------------
+        // TUTORIAL NAVIGATION LOGIC
+        // ----------------------------------------------------
+        let currentStep = 1;
+        const totalSteps = 8;
+        const stepIds = ['laws', 'duality', 'conditionals', 'equivalence', 'arguments', 'predicate', 'quantifiers', 'practice'];
+        
+        const stepTitles = [
+            "The 9 Laws",
+            "Duality & Replacement",
+            "Conditionals",
+            "Equivalence vs. Implication",
+            "Argument Validity",
+            "Core Predicates",
+            "Quantifiers",
+            "Interactive Practice"
+        ];
+
+        const stepSubtitles = [
+            "Module 5: Algebra of Propositions",
+            "Mechanical swaps and substitution",
+            "Permutations of a basic proposition",
+            "Differentiating strict logic states",
+            "Proving argument structures",
+            "Module 6: Extending logic properties",
+            "Scope of variables",
+            "Test your knowledge"
+        ];
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const stepIndicator = document.getElementById('step-indicator');
+        const stepTitle = document.getElementById('step-title');
+        const stepSubtitle = document.getElementById('step-subtitle');
+        const progressText = document.getElementById('progress-text');
+        const progressBar = document.getElementById('tutorial-progress-bar');
+
+        function updateTutorialUI() {
+            if (isCompactMode) return;
+
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show current step
+            const activeSection = document.getElementById(stepIds[currentStep - 1]);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+
+            // Update Headers
+            stepIndicator.innerText = currentStep;
+            stepTitle.innerText = stepTitles[currentStep - 1];
+            stepSubtitle.innerText = stepSubtitles[currentStep - 1];
+            progressText.innerText = `Step ${currentStep} of ${totalSteps}`;
+            
+            // Update Progress Bar
+            progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
+            document.getElementById('progress-bar').style.width = `${(currentStep / totalSteps) * 100}%`;
+
+            // Update Sidebar Navigation highlighting
+            document.querySelectorAll('.nav-link').forEach((link, index) => {
+                if (index === currentStep - 1) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Update Buttons
+            btnPrev.disabled = currentStep === 1;
+            
+            if (currentStep === totalSteps) {
+                btnNext.innerHTML = 'Finish <i data-lucide="check" class="w-4 h-4"></i>';
+                btnNext.classList.replace('bg-japandi-terracotta', 'bg-japandi-matcha');
+                btnNext.classList.replace('hover:bg-japandi-terracotta/90', 'hover:bg-japandi-matcha/90');
+                
+                // Trigger proof generator on reaching the last step
+                setTimeout(() => {
+                    if(document.getElementById('proof-problem').innerText === "") {
+                        setDiff('med'); 
+                    }
+                }, 100);
+            } else {
+                btnNext.innerHTML = 'Next <i data-lucide="arrow-right" class="w-4 h-4"></i>';
+                if(btnNext.classList.contains('bg-japandi-matcha')) {
+                    btnNext.classList.replace('bg-japandi-matcha', 'bg-japandi-terracotta');
+                    btnNext.classList.replace('hover:bg-japandi-matcha/90', 'hover:bg-japandi-terracotta/90');
+                }
+            }
+            
+            lucide.createIcons();
+            
+            // Scroll to top of container
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        btnNext.addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateTutorialUI();
+            } else {
+                alert("Tutorial complete, Keith! Good luck on the exam.");
+            }
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateTutorialUI();
+            }
+        });
+
+        // Setup Sidebar clicking
+        document.querySelectorAll('.nav-link').forEach((link, index) => {
+            link.addEventListener('click', (e) => {
+                if (!isCompactMode) {
+                    e.preventDefault(); 
+                    currentStep = index + 1;
+                    updateTutorialUI();
+                }
+                if(window.innerWidth < 768) {
+                    document.getElementById('sidebar').classList.add('hidden');
+                }
+            });
+        });
+
+        // ----------------------------------------------------
         // GENERATOR ENGINES
         // ----------------------------------------------------
 
         const toggleElement = (id) => {
-            document.getElementById(id).classList.toggle('hidden');
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+            
+            // Note: If this is the proof answer box, update the specific button text
+            if (id === 'proof-answer-box') {
+                const btn = document.getElementById('btn-show-ans');
+                document.getElementById('problem-container').classList.remove('highlight-pulse');
+                if (el.classList.contains('hidden')) {
+                    btn.innerHTML = 'Answer';
+                    btn.classList.replace('bg-japandi-bg', 'bg-white');
+                } else {
+                    btn.innerHTML = 'Hide Proof';
+                    btn.classList.replace('bg-white', 'bg-japandi-bg');
+                }
+            }
         };
 
         // Engine 1: Conditionals
@@ -1117,24 +1349,84 @@
 
         function generateProof() {
             document.getElementById('proof-answer-box').classList.add('hidden');
+            const btnAns = document.getElementById('btn-show-ans');
+            if(btnAns) {
+                btnAns.innerHTML = 'Answer';
+                btnAns.classList.replace('bg-japandi-bg', 'bg-white');
+            }
+            
+            document.getElementById('problem-container').classList.add('highlight-pulse');
+
             const list = proofProblems[currentDiff];
             const item = list[Math.floor(Math.random() * list.length)];
             
-            let probHTML = item.prob.replace(/∧/g, '<span class="math-op">&and;</span>').replace(/∨/g, '<span class="math-op">&or;</span>').replace(/¬/g, '<span class="text-japandi-terracotta font-semibold">¬</span>');
+            let probHTML = item.prob.replace(/∧/g, '<span class="math-op">&and;</span>').replace(/∨/g, '<span class="math-op">&or;</span>').replace(/¬/g, '<span class="text-japandi-terracotta font-semibold text-xl md:text-3xl">¬</span>');
             document.getElementById('proof-problem').innerHTML = probHTML;
 
             let ansHTML = '';
             item.steps.forEach((step, idx) => {
-                let exp = step.exp.replace(/∧/g, '<span class="math-op">&and;</span>').replace(/∨/g, '<span class="math-op">&or;</span>').replace(/¬/g, '<span class="text-japandi-terracotta font-semibold">¬</span>');
+                let exp = step.exp.replace(/∧/g, '<span class="math-op text-xs">&and;</span>').replace(/∨/g, '<span class="math-op text-xs">&or;</span>').replace(/¬/g, '<span class="text-japandi-terracotta font-semibold">¬</span>');
                 ansHTML += `
-                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 bg-white border border-japandi-border p-3 md:p-4 rounded-xl shadow-sm w-full mb-2">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 bg-white border border-japandi-border p-3 md:p-4 rounded-xl shadow-sm w-full mb-2 overflow-hidden">
                     <div class="bg-japandi-ink text-white px-2 py-1 rounded-md text-[10px] flex-shrink-0 font-bold uppercase tracking-widest">Step ${idx+1}</div>
-                    <div class="math-sym flex-grow break-words whitespace-normal text-sm md:text-base text-japandi-ink leading-relaxed">${exp}</div>
-                    <div class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-japandi-muted flex-shrink-0 bg-japandi-bg px-2 py-1 rounded border border-japandi-border sm:text-right mt-1 sm:mt-0">${step.law}</div>
+                    <div class="w-full overflow-x-auto hide-scrollbar pb-1">
+                        <div class="math-sym whitespace-nowrap text-xs md:text-sm text-japandi-ink leading-relaxed">${exp}</div>
+                    </div>
+                    <div class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-japandi-terracotta flex-shrink-0 bg-japandi-terracottaLight/30 px-2 py-1 rounded border border-japandi-terracotta/20 sm:text-right mt-1 sm:mt-0 w-fit">${step.law}</div>
                 </div>
                 `;
             });
             document.getElementById('proof-answer').innerHTML = ansHTML;
+        }
+
+        // ----------------------------------------------------
+        // TIMER LOGIC
+        // ----------------------------------------------------
+        let totalSeconds = 2 * 60 * 60; // 2 hours
+        let timerInterval = null;
+        let isRunning = true;
+        const display = document.getElementById('time-display');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const timerBar = document.getElementById('timer-bar');
+
+        function updateDisplay() {
+            let h = Math.floor(totalSeconds / 3600);
+            let m = Math.floor((totalSeconds % 3600) / 60);
+            let s = totalSeconds % 60;
+            display.innerText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            
+            if (totalSeconds <= 0) {
+                timerBar.style.backgroundColor = '#8B0000'; // Dark Red
+                display.innerText = "TIME'S UP";
+            } else if (totalSeconds < 300) { // under 5 mins
+                timerBar.style.backgroundColor = '#C27D65'; // Terracotta
+            } else {
+                timerBar.style.backgroundColor = '#2C2A28'; // Default Ink
+            }
+        }
+
+        function tick() {
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                updateDisplay();
+            } else {
+                clearInterval(timerInterval);
+                isRunning = false;
+            }
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                playPauseBtn.innerHTML = '<i data-lucide="play" class="w-4 h-4 md:w-5 md:h-5"></i>';
+            } else {
+                if(totalSeconds > 0) {
+                    timerInterval = setInterval(tick, 1000);
+                    playPauseBtn.innerHTML = '<i data-lucide="pause" class="w-4 h-4 md:w-5 md:h-5"></i>';
+                }
+            }
+            isRunning = !isRunning;
+            lucide.createIcons();
         }
 
         // Call generators on load
@@ -1143,8 +1435,11 @@
             generateLaw();
             generateArgument();
             setDiff('vhard'); // Initializes the proof engine
+            updateTutorialUI(); // Starts tutorial UI
+            timerInterval = setInterval(tick, 1000); // Start timer
+            updateDisplay();
             
-            // Re-initialize icons in case they were generated late
+            // Re-initialize icons
             lucide.createIcons();
         };
 
@@ -1153,7 +1448,9 @@
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
+            if (isCompactMode) {
+                document.getElementById("progress-bar").style.width = scrolled + "%";
+            }
         });
 
         // Mobile Menu Toggle
@@ -1164,16 +1461,7 @@
             sidebar.classList.toggle('hidden');
         });
 
-        // Close sidebar on link click (mobile)
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if(window.innerWidth < 768) {
-                    sidebar.classList.add('hidden');
-                }
-            });
-        });
-
-        // Intersection Observer for Active State scrolling
+        // Intersection Observer for Active State scrolling (Compact Mode only)
         const sections = document.querySelectorAll("section");
         const navLinks = document.querySelectorAll(".nav-link");
 
@@ -1184,6 +1472,7 @@
         };
 
         const observer = new IntersectionObserver((entries) => {
+            if (!isCompactMode) return; // Only process if in compact mode
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     navLinks.forEach((link) => link.classList.remove("active"));
