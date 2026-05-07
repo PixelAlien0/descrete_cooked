@@ -233,6 +233,8 @@
                         <span class="math-sym text-xs md:text-sm block leading-relaxed">(p<span class="math-op">&and;</span>q)<span class="math-op">&and;</span>r &equiv; p<span class="math-op">&and;</span>(q<span class="math-op">&and;</span>r)</span>
                         <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
                         <span class="math-sym text-xs md:text-sm block leading-relaxed">(p<span class="math-op">&or;</span>q)<span class="math-op">&or;</span>r &equiv; p<span class="math-op">&or;</span>(q<span class="math-op">&or;</span>r)</span>
+                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
+                        <span class="math-sym text-xs md:text-sm block leading-relaxed">(p<span class="math-op">&harr;</span>q)<span class="math-op">&harr;</span>r &equiv; p<span class="math-op">&harr;</span>(q<span class="math-op">&harr;</span>r)</span>
                     </div>
                     <div class="reveal-content text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
                         <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "Wash car AND mow lawn, AND buy groceries" &equiv; "Wash car, AND mow lawn AND buy groceries"
@@ -661,7 +663,7 @@
                     <p class="text-xs text-japandi-muted font-sans font-light mb-6 tutorial-only">Represents a property or relationship. Use <strong>Uppercase Letters</strong>.</p>
                     <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center mt-auto">
                         <span class="math-sym text-sm block">T(x) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "is tall"</span></span>
-                        <span class="math-sym text-sm block mt-2">L(x,y) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "Loves"</span></span>
+                        <span class="math-sym text-sm block mt-2">L(a,b,o) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "Lent to"</span></span>
                     </div>
                 </div>
                 <!-- Variables -->
@@ -677,7 +679,7 @@
                 <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 flex flex-col">
                     <div class="w-10 h-10 rounded-xl bg-japandi-sandLight flex items-center justify-center text-japandi-ink font-mono font-medium mb-4">a</div>
                     <h3 class="font-serif font-bold text-lg text-japandi-ink mb-2">Constants</h3>
-                    <p class="text-xs text-japandi-muted font-sans font-light mb-6 tutorial-only">Specific subjects. Lowercase from <strong>start/middle of alphabet</strong>.</p>
+                    <p class="text-xs text-japandi-muted font-sans font-light mb-6 tutorial-only">Specific subjects. Lowercase from <strong>start/mid of alphabet</strong>.</p>
                     <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center mt-auto">
                         <span class="math-sym text-sm block">m <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= Mary</span></span>
                         <span class="math-sym text-sm block mt-2">b <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= Bill</span></span>
@@ -693,7 +695,7 @@
                 <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">Defining the scope of the variable substitution.</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+            <div class="grid lg:grid-cols-2 gap-6 md:gap-8 mb-8">
                 <!-- Universal -->
                 <div class="bg-white border border-japandi-border border-t-4 border-t-japandi-terracotta rounded-3xl p-6 md:p-8 shadow-bento w-full">
                     <div class="flex justify-between items-center mb-6">
@@ -721,6 +723,31 @@
                         <p class="text-[10px] uppercase font-bold text-japandi-matcha tracking-widest mb-2 tutorial-only">Common Pairing</p>
                         <p class="text-xs text-japandi-ink/60 mb-2 tutorial-only">Pairs with AND (&and;)</p>
                         <p class="math-sym text-sm bg-white px-3 py-2 rounded-xl shadow-sm inline-block">&exist;x [R(x) &and; G(x)]</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Translations -->
+            <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="px-3 py-1 bg-japandi-sandLight text-japandi-ink rounded-lg text-[10px] font-sans font-bold uppercase tracking-widest tutorial-only">Exam Crucial</span>
+                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink">Complex Translations</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Compound Conditions</p>
+                        <p class="text-xs italic text-japandi-ink mb-2">"Every student who studies hard will pass."</p>
+                        <p class="math-sym text-xs md:text-sm bg-white p-2 rounded shadow-sm text-center">&forall;x [(S(x) <span class="math-op text-xs">&and;</span> H(x)) <span class="math-op text-xs">&rarr;</span> P(x)]</p>
+                    </div>
+                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Universal Negation</p>
+                        <p class="text-xs italic text-japandi-ink mb-2">"No cats are reptiles."</p>
+                        <p class="math-sym text-xs md:text-sm bg-white p-2 rounded shadow-sm text-center">&forall;x [C(x) <span class="math-op text-xs">&rarr;</span> &not;R(x)]</p>
+                    </div>
+                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Quantifier Equivalence</p>
+                        <p class="text-xs italic text-japandi-ink mb-2">"Nobody likes cheats."</p>
+                        <p class="math-sym text-xs md:text-sm bg-white p-2 rounded shadow-sm text-center">&not;&exist;x [P(x) <span class="math-op text-xs">&and;</span> C(x)] <br>&equiv; &forall;x [P(x) <span class="math-op text-xs">&rarr;</span> &not;C(x)]</p>
                     </div>
                 </div>
             </div>
