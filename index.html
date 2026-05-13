@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discrete Math | Exam Guide</title>
+    <title>Boolean Algebra | Study Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Shippori+Mincho:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
@@ -22,18 +22,18 @@
                             surface: '#FFFFFF',
                             ink: '#2A2826',
                             muted: '#8A8680',
-                            border: '#E8E5DF',
+                            border: '#E5E1D8',
                             matcha: '#8C9A86',
                             matchaLight: '#F0F2EE',
                             terracotta: '#C47D65',
                             terracottaLight: '#F7EFEA',
-                            sand: '#D6C8B5',
-                            sandLight: '#F2EFE9'
+                            sand: '#E3DAC9',
+                            sandLight: '#F4EFE8'
                         }
                     },
                     boxShadow: {
-                        'bento': '0 4px 20px -2px rgba(0, 0, 0, 0.03)',
-                        'bento-hover': '0 12px 30px -4px rgba(0, 0, 0, 0.08)',
+                        'soft': '0 4px 24px -6px rgba(0, 0, 0, 0.04)',
+                        'float': '0 12px 32px -8px rgba(0, 0, 0, 0.08)',
                     }
                 }
             }
@@ -43,47 +43,34 @@
         body { 
             background-color: #F9F8F6; 
             color: #2A2826; 
+            background-image: radial-gradient(#E5E1D8 1px, transparent 1px);
+            background-size: 24px 24px;
         }
         
         /* Minimalist Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D6C8B5; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #E3DAC9; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #8C9A86; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .math-sym { font-family: 'Fira Code', monospace; font-size: 1.05em; font-weight: 500; letter-spacing: -0.5px; word-break: break-word;}
+        .math-sym { font-family: 'Fira Code', monospace; font-weight: 500; word-break: break-word;}
         .math-op { color: #C47D65; margin: 0 4px; font-weight: 600;}
         .overbar { text-decoration: overline; text-decoration-thickness: 1.5px; }
 
         /* Smooth Card Hover */
-        .bento-card {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+        .card-hover {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease, border-color 0.4s ease;
         }
-        .bento-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.08);
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.08);
             border-color: #D6C8B5;
         }
 
-        /* Progress Bar */
-        #progress-bar {
-            position: fixed; top: 0; left: 0; height: 4px; background: #8C9A86; z-index: 100; transition: width 0.2s ease-out;
-        }
-
-        /* Glassmorphism */
-        .glass { background: rgba(249, 248, 246, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-
-        /* Unified Tutorial / Compact Architecture */
-        body:not(.compact-mode) .module-section { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
-        body:not(.compact-mode) .module-section.step-active { display: block; opacity: 1; transform: translateY(0); animation: fadeIn 0.4s ease forwards; }
-        
-        body.compact-mode .module-section { display: block !important; opacity: 1 !important; transform: none !important; margin-bottom: 4rem; scroll-margin-top: 100px; }
-        body.compact-mode .tutorial-only { display: none !important; }
-        body.compact-mode .compact-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Glassmorphism for mobile header */
+        .glass { background: rgba(249, 248, 246, 0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         
         /* Active Sidebar Link */
         .nav-link.active {
@@ -93,339 +80,308 @@
             border-right: 3px solid #C47D65;
             box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
-
-        /* Flashcard Toggle */
-        .reveal-content { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
-        .reveal-content.open { max-height: 200px; opacity: 1; margin-top: 1rem; }
-
-        .highlight-pulse { animation: pulse-bg 2s infinite; }
-        @keyframes pulse-bg {
-            0% { background-color: rgba(196, 125, 101, 0.1); }
-            50% { background-color: rgba(196, 125, 101, 0.3); }
-            100% { background-color: rgba(196, 125, 101, 0.1); }
-        }
     </style>
 </head>
 <body class="antialiased flex flex-col md:flex-row min-h-screen">
 
-    <div id="progress-bar" style="width: 0%;"></div>
-
     <!-- Mobile Header -->
     <header class="md:hidden glass border-b border-japandi-border p-4 sticky top-0 z-50 flex justify-between items-center w-full">
-        <h1 class="font-serif font-bold text-xl text-japandi-ink tracking-tight">Discrete<span class="text-japandi-terracotta">.</span></h1>
-        <div class="flex gap-2">
-            <button onclick="toggleCompactMode()" id="mobile-compact-btn" class="p-2 text-japandi-ink hover:text-japandi-terracotta transition-colors bg-white rounded-lg border border-japandi-border shadow-sm"><i data-lucide="layout-grid" class="w-5 h-5"></i></button>
-            <button id="mobile-menu-btn" class="p-2 text-japandi-ink hover:text-japandi-terracotta transition-colors"><i data-lucide="menu" class="w-6 h-6"></i></button>
-        </div>
+        <h1 class="font-serif font-bold text-xl text-japandi-ink tracking-tight">Boolean<span class="text-japandi-terracotta">.</span></h1>
+        <button id="mobile-menu-btn" class="p-2 text-japandi-ink hover:text-japandi-terracotta transition-colors"><i data-lucide="menu" class="w-6 h-6"></i></button>
     </header>
 
     <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-[280px] lg:w-[320px] bg-japandi-bg border-r border-japandi-border fixed h-full z-40 transition-transform duration-300 top-[65px] md:top-0 shadow-bento md:shadow-none">
+    <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-[280px] lg:w-[320px] bg-japandi-bg border-r border-japandi-border fixed h-full z-40 transition-transform duration-300 top-[65px] md:top-0 shadow-float md:shadow-none">
         <div class="p-8 pb-6 hidden md:block">
-            <h1 class="font-serif font-bold text-3xl lg:text-4xl mb-1 text-japandi-ink tracking-tight">Discrete<span class="text-japandi-terracotta">.</span></h1>
-            <p class="text-[11px] lg:text-xs text-japandi-muted font-sans uppercase tracking-widest font-semibold mt-2">Keith's Exam Guide</p>
-        </div>
-        
-        <div class="px-6 py-2 border-b border-japandi-border mb-2 hidden md:block">
-            <button onclick="toggleCompactMode()" id="desktop-compact-btn" class="w-full flex items-center justify-center gap-2 py-3 bg-white hover:bg-japandi-sandLight text-japandi-ink border border-japandi-border rounded-xl text-xs font-bold uppercase tracking-widest transition-colors shadow-sm">
-                <i data-lucide="layout-grid" class="w-4 h-4"></i> Cheat Sheet Mode
-            </button>
+            <h1 class="font-serif font-bold text-3xl lg:text-4xl mb-1 text-japandi-ink tracking-tight">Boolean<span class="text-japandi-terracotta">.</span></h1>
+            <p class="text-[11px] lg:text-xs text-japandi-muted font-sans uppercase tracking-widest font-semibold mt-2">Keith's Study Guide</p>
         </div>
 
         <nav class="flex-grow overflow-y-auto py-2 hide-scrollbar" id="nav-menu">
-            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-4">Module 5: Algebra</p>
-            <a href="#sec-laws" data-step="1" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">01. The 9 Laws</a>
-            <a href="#sec-duality" data-step="2" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">02. Duality & Replacement</a>
-            <a href="#sec-conditionals" data-step="3" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">03. Conditionals</a>
-            <a href="#sec-equivalence" data-step="4" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">04. Equivalence</a>
-            <a href="#sec-arguments" data-step="5" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">05. Arguments</a>
+            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-4">Core Concepts</p>
+            <a href="#sec-origins" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">01. Origins</a>
+            <a href="#sec-operators" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">02. Logic Operators</a>
+            <a href="#sec-precedence" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">03. Precedence Rules</a>
+            <a href="#sec-functions" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">04. Boolean Functions</a>
+            <a href="#sec-minimization" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">05. Minimization</a>
             
-            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Module 6: Predicates</p>
-            <a href="#sec-predicate" data-step="6" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">06. Core Predicates</a>
-            <a href="#sec-quantifiers" data-step="7" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">07. Quantifiers</a>
-
-            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Test Prep</p>
-            <a href="#sec-practice" data-step="8" class="nav-link block px-8 py-3 text-japandi-terracotta transition-all text-sm font-sans font-semibold hover:bg-white">08. Practice Engines</a>
+            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Practice</p>
+            <a href="#sec-practice" class="nav-link block px-8 py-3 text-japandi-matcha transition-all text-sm font-sans font-semibold hover:bg-white">06. Truth Table Simulator</a>
         </nav>
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 md:ml-[280px] lg:ml-[320px] p-4 sm:p-8 lg:p-12 max-w-[1600px] mx-auto w-full flex flex-col min-h-screen">
+    <main class="flex-1 md:ml-[280px] lg:ml-[320px] p-4 sm:p-8 lg:p-16 max-w-[1200px] mx-auto w-full flex flex-col min-h-screen">
         
-        <!-- Mode Header (Visible Only in Compact Mode) -->
-        <div class="mb-12 border-b border-japandi-border pb-6 hidden" id="compact-header">
-            <span class="text-japandi-terracotta font-sans text-xs uppercase tracking-widest font-bold mb-2 block">Cheat Sheet Active</span>
-            <h1 class="font-serif text-4xl md:text-5xl font-bold text-japandi-ink tracking-tight">Rapid Review Sheet</h1>
+        <!-- Header -->
+        <div class="mb-12 border-b-2 border-japandi-terracotta/20 pb-6 pt-4">
+            <span class="text-japandi-terracotta font-sans text-xs uppercase tracking-widest font-bold mb-3 block">Topic Overview</span>
+            <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-japandi-ink tracking-tight mb-4">Boolean Algebra</h1>
+            <p class="text-japandi-muted text-sm md:text-base font-sans font-light max-w-2xl leading-relaxed">
+                The mathematical foundation of digital circuits and computer logic. It deals entirely with the binary number system, operating strictly on states of true (1) and false (0).
+            </p>
         </div>
 
-        <!-- Tutorial Interface (Visible Only in Tutorial Mode) -->
-        <div class="tutorial-only w-full mb-8">
-            <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 flex flex-col sm:flex-row justify-between items-center gap-6">
-                <div class="flex items-center gap-4 w-full sm:w-auto">
-                    <div class="w-12 h-12 rounded-2xl bg-japandi-matchaLight text-japandi-matcha flex items-center justify-center font-serif font-bold text-xl flex-shrink-0" id="step-indicator">1</div>
-                    <div>
-                        <h2 class="font-serif font-bold text-japandi-ink text-xl md:text-2xl leading-tight" id="step-title">Welcome</h2>
-                        <p class="text-xs md:text-sm text-japandi-muted font-sans font-medium uppercase tracking-widest mt-1" id="step-subtitle">Introduction</p>
-                    </div>
-                </div>
-                <div class="w-full sm:w-48 flex flex-col gap-2">
-                    <div class="flex justify-between text-[10px] font-sans font-bold text-japandi-muted uppercase tracking-widest">
-                        <span>Progress</span>
-                        <span id="progress-text">1 / 8</span>
-                    </div>
-                    <div class="w-full h-2 bg-japandi-sandLight rounded-full overflow-hidden">
-                        <div class="h-full bg-japandi-terracotta transition-all duration-500 ease-out rounded-full" id="tutorial-progress-bar" style="width: 12.5%;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- CONTENT SECTIONS                         -->
-        <!-- ========================================== -->
-
-        <!-- 01. The 9 Laws -->
-        <section id="sec-laws" class="module-section step-active w-full">
+        <!-- 01. Origins -->
+        <section id="sec-origins" class="mb-24 scroll-mt-24">
             <div class="mb-8">
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight hidden compact-mode-show mb-2">01. The 9 Laws</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">
-                    Module 5 focuses on manipulating logical statements. You don't need to memorize complex formulas right away; you need to understand <strong>what they do conceptually</strong>. Click the eye icon to test yourself on translations.
-                </p>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-japandi-ink tracking-tight mb-2">01. Origins & Purpose</h2>
             </div>
 
-            <!-- Bento Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 compact-grid">
-                
-                <!-- Idempotent -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento bento-card p-6 flex flex-col relative overflow-hidden">
-                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Idempotent</h3>
-                    <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Repeated execution</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl text-center w-full mb-auto border border-white">
-                        <span class="math-sym block text-sm md:text-base">p <span class="math-op">&and;</span> p &equiv; p</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym block text-sm md:text-base">p <span class="math-op">&or;</span> p &equiv; p</span>
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-soft card-hover p-6 md:p-8 flex flex-col relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-2xl bg-japandi-sandLight flex items-center justify-center text-japandi-ink mb-6">
+                        <i data-lucide="book-open" class="w-6 h-6"></i>
                     </div>
-                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
-                        <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "It is raining AND it is raining" &rarr; It is raining.
-                    </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
-                    </button>
+                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-2">George Boole <span class="text-sm font-sans font-light text-japandi-muted ml-2">(1815-1864)</span></h3>
+                    <p class="text-sm text-japandi-muted mb-4 font-sans font-light">English mathematician who developed the algebra to:</p>
+                    <ul class="space-y-3 mt-auto">
+                        <li class="flex items-start gap-3 text-sm text-japandi-ink">
+                            <i data-lucide="check" class="w-4 h-4 text-japandi-terracotta flex-shrink-0 mt-0.5"></i>
+                            <span>Simplify logical representation</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-sm text-japandi-ink">
+                            <i data-lucide="check" class="w-4 h-4 text-japandi-terracotta flex-shrink-0 mt-0.5"></i>
+                            <span>Manipulate propositional logic mathematically</span>
+                        </li>
+                    </ul>
                 </div>
 
-                <!-- Commutative -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento bento-card p-6 flex flex-col relative overflow-hidden">
-                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Commutative</h3>
-                    <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Order is irrelevant</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl text-center w-full mb-auto border border-white">
-                        <span class="math-sym block text-sm md:text-base">p <span class="math-op">&and;</span> q &equiv; q <span class="math-op">&and;</span> p</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym block text-sm md:text-base">p <span class="math-op">&or;</span> q &equiv; q <span class="math-op">&or;</span> p</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym block text-sm md:text-base">p <span class="math-op">&harr;</span> q &equiv; q <span class="math-op">&harr;</span> p</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym block text-sm md:text-base">p <span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span> q &equiv; q <span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span> p</span>
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-soft card-hover p-6 md:p-8 flex flex-col relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-2xl bg-japandi-matchaLight flex items-center justify-center text-japandi-matcha mb-6">
+                        <i data-lucide="cpu" class="w-6 h-6"></i>
                     </div>
-                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
-                        <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "I have a cat AND a dog" &equiv; "I have a dog AND a cat"
-                    </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
-                    </button>
+                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-2">Claude E. Shannon <span class="text-sm font-sans font-light text-japandi-muted ml-2">(1938)</span></h3>
+                    <p class="text-sm text-japandi-muted mb-4 font-sans font-light">Proposed using Boolean algebra in the design of relay switching circuits.</p>
+                    <ul class="space-y-3 mt-auto">
+                        <li class="flex items-start gap-3 text-sm text-japandi-ink">
+                            <i data-lucide="check" class="w-4 h-4 text-japandi-matcha flex-shrink-0 mt-0.5"></i>
+                            <span>An economical & straightforward approach</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-sm text-japandi-ink">
+                            <i data-lucide="check" class="w-4 h-4 text-japandi-matcha flex-shrink-0 mt-0.5"></i>
+                            <span>Extensively used in modern electronic computer circuits</span>
+                        </li>
+                    </ul>
                 </div>
-
-                <!-- Associative -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento bento-card p-6 flex flex-col relative overflow-hidden">
-                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Associative</h3>
-                    <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Parenthesis shift</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl text-center w-full mb-auto border border-white">
-                        <span class="math-sym text-xs block leading-relaxed">(p<span class="math-op">&and;</span>q)<span class="math-op">&and;</span>r &equiv; p<span class="math-op">&and;</span>(q<span class="math-op">&and;</span>r)</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym text-xs block leading-relaxed">(p<span class="math-op">&or;</span>q)<span class="math-op">&or;</span>r &equiv; p<span class="math-op">&or;</span>(q<span class="math-op">&or;</span>r)</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym text-xs block leading-relaxed">(p<span class="math-op">&harr;</span>q)<span class="math-op">&harr;</span>r &equiv; p<span class="math-op">&harr;</span>(q<span class="math-op">&harr;</span>r)</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym text-xs block leading-relaxed">(p<span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span>q)<span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span>r &equiv; p<span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span>(q<span class="math-op"><u class="no-underline border-b-2 border-current">&or;</u></span>r)</span>
-                    </div>
-                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
-                        <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "Wash car AND mow lawn, AND buy groceries" &equiv; "Wash car, AND mow lawn AND buy groceries"
-                    </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
-                    </button>
-                </div>
-
-                <!-- Distributive -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento bento-card p-6 flex flex-col relative overflow-hidden">
-                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Distributive</h3>
-                    <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Distribute over</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl text-center w-full mb-auto border border-white">
-                        <span class="math-sym text-[11px] md:text-xs block leading-relaxed">p<span class="math-op">&and;</span>(q<span class="math-op">&or;</span>r) &equiv; (p<span class="math-op">&and;</span>q)<span class="math-op">&or;</span>(p<span class="math-op">&and;</span>r)</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym text-[11px] md:text-xs block leading-relaxed">p<span class="math-op">&or;</span>(q<span class="math-op">&and;</span>r) &equiv; (p<span class="math-op">&or;</span>q)<span class="math-op">&and;</span>(p<span class="math-op">&or;</span>r)</span>
-                    </div>
-                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
-                        <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "I will order a burger AND (either fries OR salad)"
-                    </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
-                    </button>
-                </div>
-
-                <!-- De Morgan's -->
-                <div class="bg-japandi-matcha rounded-3xl shadow-bento bento-card p-6 md:p-8 flex flex-col relative overflow-hidden text-white lg:col-span-2">
-                    <div class="flex items-center gap-3 mb-2">
-                        <span class="px-3 py-1 bg-white/20 rounded-lg text-[10px] font-sans font-bold uppercase tracking-widest backdrop-blur-sm tutorial-only">Crucial Exam Topic</span>
-                        <h3 class="font-serif font-bold text-2xl md:text-3xl">De Morgan's Laws</h3>
-                    </div>
-                    <p class="text-xs text-white/90 mb-6 font-sans font-medium tutorial-only max-w-md leading-relaxed">Negating a grouped AND turns it into an OR. Negating a grouped OR turns it into an AND.</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto w-full">
-                        <div class="bg-white p-5 rounded-2xl shadow-sm text-japandi-ink flex flex-col justify-center items-center">
-                            <span class="math-sym text-sm md:text-base mb-3"><span class="overbar text-japandi-ink">p <span class="math-op text-japandi-ink font-normal">&or;</span> q</span> <span class="math-op text-japandi-muted font-light">&equiv;</span> <span class="overbar text-japandi-ink">p</span> <span class="math-op font-normal">&and;</span> <span class="overbar text-japandi-ink">q</span></span>
-                            <p class="text-[10px] md:text-xs text-japandi-muted text-center font-sans font-light tutorial-only">"NOT (pizza OR pasta)" <br>&equiv; "NOT pizza AND NOT pasta"</p>
-                        </div>
-                        <div class="bg-white p-5 rounded-2xl shadow-sm text-japandi-ink flex flex-col justify-center items-center">
-                            <span class="math-sym text-sm md:text-base mb-3"><span class="overbar text-japandi-ink">p <span class="math-op font-normal">&and;</span> q</span> <span class="math-op text-japandi-muted font-light">&equiv;</span> <span class="overbar text-japandi-ink">p</span> <span class="math-op text-japandi-ink font-normal">&or;</span> <span class="overbar text-japandi-ink">q</span></span>
-                            <p class="text-[10px] md:text-xs text-japandi-muted text-center font-sans font-light tutorial-only">"NOT (A and B)" <br>&equiv; "NOT A or NOT B"</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Absorption -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento bento-card p-6 flex flex-col relative overflow-hidden">
-                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Absorption</h3>
-                    <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Logic shortcut</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl text-center w-full mb-auto border border-white">
-                        <span class="math-sym block text-sm md:text-base">p<span class="math-op">&and;</span>(p<span class="math-op">&or;</span>q) &equiv; p</span>
-                        <div class="h-[1px] w-8 bg-japandi-border mx-auto my-2"></div>
-                        <span class="math-sym block text-sm md:text-base">p<span class="math-op">&or;</span>(p<span class="math-op">&and;</span>q) &equiv; p</span>
-                    </div>
-                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
-                        <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "I go to work, OR (I go to work AND drive)" &rarr; I go to work.
-                    </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
-                    </button>
-                </div>
-
-                <!-- Involution -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento bento-card p-6 flex flex-col relative overflow-hidden">
-                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Involution</h3>
-                    <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Double negation</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl flex items-center justify-center w-full min-h-[88px] border border-white">
-                        <span class="math-sym text-2xl md:text-3xl"><span class="overbar"><span class="overbar">p</span></span> &equiv; p</span>
-                    </div>
-                    <div class="reveal-content open text-xs font-sans text-japandi-muted w-full italic bg-japandi-bg p-3 rounded-xl border border-japandi-border">
-                        <span class="text-japandi-terracotta font-semibold not-italic">Eng:</span> "I am NOT NOT hungry" &rarr; I am hungry.
-                    </div>
-                    <button class="reveal-btn mt-4 w-full py-2.5 bg-japandi-bg border border-japandi-border text-japandi-ink hover:bg-japandi-surface font-sans text-[10px] uppercase font-bold rounded-xl transition-colors flex justify-center items-center gap-2 tutorial-only shadow-sm">
-                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation
-                    </button>
-                </div>
-
-                <!-- Identity -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento bento-card p-6 flex flex-col relative overflow-hidden">
-                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Identity</h3>
-                    <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Absolute states</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl grid grid-cols-2 gap-y-4 gap-x-2 text-center items-center w-full min-h-[88px] border border-white">
-                        <span class="math-sym text-sm">p<span class="math-op">&or;</span>f &equiv; p</span>
-                        <span class="math-sym text-sm">p<span class="math-op">&and;</span>t &equiv; p</span>
-                        <span class="math-sym text-sm border-t border-japandi-border pt-3">p<span class="math-op">&or;</span>t &equiv; t</span>
-                        <span class="math-sym text-sm border-t border-japandi-border pt-3">p<span class="math-op">&and;</span>f &equiv; f</span>
-                    </div>
-                </div>
-
-                <!-- Complement -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento bento-card p-6 flex flex-col relative overflow-hidden">
-                    <h3 class="font-serif font-bold text-xl text-japandi-ink mb-1">Complement</h3>
-                    <p class="text-[10px] text-japandi-muted mb-4 font-sans uppercase tracking-widest font-semibold tutorial-only">Opposite interaction</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl grid grid-cols-2 gap-y-4 gap-x-2 text-center items-center w-full min-h-[88px] border border-white">
-                        <span class="math-sym text-sm" title="Excluded Middle">p<span class="math-op">&or;</span><span class="overbar">p</span> &equiv; t</span>
-                        <span class="math-sym text-sm" title="Non-Contradiction">p<span class="math-op">&and;</span><span class="overbar">p</span> &equiv; f</span>
-                        <span class="math-sym text-sm border-t border-japandi-border pt-3"><span class="overbar">f</span> &equiv; t</span>
-                        <span class="math-sym text-sm border-t border-japandi-border pt-3"><span class="overbar">t</span> &equiv; f</span>
-                    </div>
-                </div>
-
             </div>
         </section>
 
-        <!-- SECTION 2: DUALITY & REPLACEMENT -->
-        <section id="sec-duality" class="module-section w-full">
+        <!-- 02. Operators -->
+        <section id="sec-operators" class="mb-24 scroll-mt-24">
             <div class="mb-8">
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight hidden compact-mode-show mb-2">02. Duality & Replacement</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">
-                    These mechanics justify multi-step proofs. Duality involves strict swaps, while Replacement allows you to substitute logically equivalent formulas inside larger equations.
-                </p>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-japandi-ink tracking-tight mb-2">02. Fundamental Operators</h2>
+                <p class="text-japandi-muted text-sm font-sans font-light">Boolean equations evaluate to either <strong class="font-mono text-japandi-ink">0</strong> or <strong class="font-mono text-japandi-ink">1</strong> (Binary Digits).</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <!-- OR -->
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-soft p-6 md:p-8 text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-japandi-bg border-2 border-japandi-border flex items-center justify-center mb-6 shadow-sm">
+                        <span class="text-3xl font-serif text-japandi-ink">+</span>
+                    </div>
+                    <h4 class="font-bold font-sans text-xs uppercase tracking-widest text-japandi-muted mb-1">The "OR" Operator</h4>
+                    <h3 class="font-serif text-xl font-bold text-japandi-ink mb-4">Logical Addition</h3>
+                    <p class="text-xs text-japandi-muted font-light leading-relaxed mt-auto">Follows the law of binary addition.</p>
+                </div>
+
+                <!-- AND -->
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-soft p-6 md:p-8 text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-japandi-bg border-2 border-japandi-border flex items-center justify-center mb-6 shadow-sm">
+                        <span class="text-4xl font-serif text-japandi-ink pb-2">&middot;</span>
+                    </div>
+                    <h4 class="font-bold font-sans text-xs uppercase tracking-widest text-japandi-muted mb-1">The "AND" Operator</h4>
+                    <h3 class="font-serif text-xl font-bold text-japandi-ink mb-4">Logical Mult.</h3>
+                    <p class="text-xs text-japandi-muted font-light leading-relaxed mt-auto">Follows the law of binary multiplication.</p>
+                </div>
+
+                <!-- NOT -->
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-soft p-6 md:p-8 text-center flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-japandi-bg border-2 border-japandi-border flex items-center justify-center mb-6 shadow-sm">
+                        <span class="text-2xl font-mono text-japandi-ink overbar">x</span>
+                    </div>
+                    <h4 class="font-bold font-sans text-xs uppercase tracking-widest text-japandi-muted mb-1">The "NOT" Operator</h4>
+                    <h3 class="font-serif text-xl font-bold text-japandi-ink mb-4">Complement</h3>
+                    <p class="text-xs text-japandi-muted font-light leading-relaxed mt-auto">Follows the law of binary complement. Symbolized by an overbar.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. Precedence -->
+        <section id="sec-precedence" class="mb-24 scroll-mt-24">
+            <div class="bg-white border border-japandi-border rounded-3xl shadow-soft p-6 md:p-10 flex flex-col w-full relative overflow-hidden">
+                <div class="absolute -right-8 -top-8 text-japandi-sand opacity-30"><i data-lucide="layers" class="w-48 h-48"></i></div>
+                
+                <div class="relative z-10">
+                    <h2 class="font-serif text-2xl md:text-3xl font-bold text-japandi-ink tracking-tight mb-2">03. Operator Precedence</h2>
+                    <p class="text-japandi-muted text-sm font-sans font-light mb-8 max-w-2xl">Each operator has a strict precedence level. Higher precedence is evaluated earlier. Expressions are scanned from left to right.</p>
+
+                    <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+                        <!-- List -->
+                        <div class="flex-1 w-full bg-japandi-bg rounded-2xl border border-japandi-border overflow-hidden">
+                            <div class="flex items-center p-4 border-b border-japandi-border bg-white">
+                                <div class="w-10 font-mono font-bold text-japandi-terracotta text-lg">1</div>
+                                <div class="flex-grow font-sans font-semibold text-sm">Parentheses</div>
+                                <div class="font-mono text-japandi-muted text-lg">()</div>
+                            </div>
+                            <div class="flex items-center p-4 border-b border-japandi-border bg-white">
+                                <div class="w-10 font-mono font-bold text-japandi-terracotta text-lg">2</div>
+                                <div class="flex-grow font-sans font-semibold text-sm">Complement (NOT)</div>
+                                <div class="font-mono text-japandi-muted text-lg"><span class="overbar">X</span></div>
+                            </div>
+                            <div class="flex items-center p-4 border-b border-japandi-border bg-white">
+                                <div class="w-10 font-mono font-bold text-japandi-terracotta text-lg">3</div>
+                                <div class="flex-grow font-sans font-semibold text-sm">AND Operations</div>
+                                <div class="font-mono text-japandi-muted text-2xl leading-none">&middot;</div>
+                            </div>
+                            <div class="flex items-center p-4 bg-white">
+                                <div class="w-10 font-mono font-bold text-japandi-terracotta text-lg">4</div>
+                                <div class="flex-grow font-sans font-semibold text-sm">OR Operations</div>
+                                <div class="font-mono text-japandi-muted text-xl leading-none">+</div>
+                            </div>
+                        </div>
+
+                        <!-- Example -->
+                        <div class="flex-1 w-full flex flex-col justify-center">
+                            <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-3">Evaluation Sequence Example</p>
+                            <div class="bg-japandi-bg border border-japandi-border p-6 md:p-8 rounded-2xl flex flex-col items-center">
+                                <div class="text-3xl md:text-5xl font-mono text-japandi-ink flex items-center gap-3 md:gap-5 mb-8">
+                                    <span>X</span> 
+                                    <span class="text-japandi-muted">+</span> 
+                                    <div class="relative inline-block border-b-2 border-japandi-matcha pb-2">
+                                        <div class="relative inline-block border-b-2 border-japandi-terracotta pb-1 px-1">
+                                            <span class="overbar">Y</span>
+                                        </div>
+                                        <span class="text-japandi-muted mx-1">&middot;</span>
+                                        <span>Z</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between w-full font-mono text-[10px] md:text-xs text-japandi-muted pt-4 border-t border-japandi-border">
+                                    <span class="text-japandi-ink font-semibold">3rd (OR)</span>
+                                    <div class="flex gap-4 md:gap-8">
+                                        <span class="text-japandi-terracotta font-semibold">1st (NOT)</span>
+                                        <span class="text-japandi-matcha font-semibold">2nd (AND)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04. Functions & Truth Tables -->
+        <section id="sec-functions" class="mb-24 scroll-mt-24">
+            <div class="mb-8">
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-japandi-ink tracking-tight mb-2">04. Boolean Functions</h2>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Duality Principle -->
-                <div class="bg-japandi-terracotta text-white rounded-3xl shadow-bento p-8 relative overflow-hidden flex flex-col w-full">
-                    <h3 class="font-serif text-2xl md:text-3xl font-bold mb-2">Duality Principle</h3>
-                    <p class="font-sans text-xs md:text-sm text-white/80 font-light mb-6 tutorial-only">If two propositions are logically equivalent, their duals are also logically equivalent.</p>
+                <!-- Definitions -->
+                <div class="bg-white border border-japandi-border rounded-3xl shadow-soft p-6 md:p-8">
+                    <p class="text-sm text-japandi-ink/80 mb-6 font-light leading-relaxed">A Boolean function is an expression formed with binary variables, operators, parentheses, and an equal sign. Its resolved value yields either 0 or 1.</p>
                     
-                    <div class="bg-white/10 p-5 rounded-2xl mb-6 backdrop-blur-sm border border-white/20 text-center w-full">
-                        <p class="font-sans font-bold text-[10px] uppercase tracking-widest text-japandi-terracottaLight mb-3 tutorial-only">Required Swaps</p>
-                        <div class="flex justify-around items-center">
-                            <div class="flex items-center gap-3">
-                                <span class="math-sym text-xl bg-white/20 px-3 py-1 rounded-lg">&and;</span> 
-                                <i data-lucide="arrow-right-left" class="w-4 h-4 opacity-70"></i> 
-                                <span class="math-sym text-xl bg-white/20 px-3 py-1 rounded-lg">&or;</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="math-sym text-xl bg-white/20 px-3 py-1 rounded-lg">t</span> 
-                                <i data-lucide="arrow-right-left" class="w-4 h-4 opacity-70"></i> 
-                                <span class="math-sym text-xl bg-white/20 px-3 py-1 rounded-lg">f</span>
-                            </div>
-                        </div>
+                    <div class="bg-japandi-sandLight border border-japandi-border rounded-2xl p-5 md:p-6 mb-6 text-center">
+                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-3">Algebraic Expression</p>
+                        <p class="math-sym text-2xl md:text-3xl text-japandi-ink mb-2">W = x + <span class="overbar">y</span> &middot; z</p>
+                        <p class="text-[10px] text-japandi-muted font-mono mt-3">Alt: W = f(x, y, z) = x + <span class="overbar">y</span> &middot; z</p>
                     </div>
-                    
-                    <div class="space-y-3 w-full mt-auto">
-                        <div class="bg-white/5 p-4 rounded-xl border border-white/10 w-full overflow-hidden">
-                            <p class="text-[10px] uppercase font-sans font-bold tracking-widest mb-2 text-japandi-terracottaLight opacity-80 tutorial-only">Example Transformation</p>
-                            <p class="math-sym text-xs md:text-sm break-words">
-                                (p <span class="text-white">&and;</span> q) <span class="text-white">&or;</span> <span class="overbar text-white">p</span> &rarr; (p <span class="text-japandi-terracottaLight">&or;</span> q) <span class="text-japandi-terracottaLight">&and;</span> <span class="overbar text-white">p</span>
-                            </p>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-xl border border-white/10 w-full overflow-hidden">
-                            <p class="math-sym text-xs md:text-sm break-words">
-                                (p <span class="text-white">&or;</span> <span class="text-white">f</span>) <span class="text-white">&and;</span> q &rarr; (p <span class="text-japandi-terracottaLight">&and;</span> <span class="text-japandi-terracottaLight">t</span>) <span class="text-japandi-terracottaLight">&or;</span> q
-                            </p>
-                        </div>
-                    </div>
+
+                    <ul class="space-y-4 text-sm font-sans font-light bg-japandi-bg p-5 rounded-2xl border border-japandi-border">
+                        <li><strong class="font-semibold text-japandi-ink">Expression:</strong> The Right Hand Side (RHS) of the equation.</li>
+                        <li class="border-t border-japandi-border pt-3"><strong class="font-semibold text-japandi-ink">Literals:</strong> The individual symbols representing variables (e.g., <span class="math-sym text-sm">x, y, z</span>).</li>
+                    </ul>
                 </div>
 
-                <!-- Replacement Rule -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-8 flex flex-col w-full">
-                    <h3 class="font-serif text-2xl md:text-3xl font-bold text-japandi-ink mb-2">Replacement Rule</h3>
-                    <p class="text-japandi-muted font-sans text-xs md:text-sm mb-6 leading-relaxed font-light tutorial-only">Substituting a logically equivalent proposition for another <strong>does not alter the truth value</strong>.</p>
+                <!-- Truth Table Details -->
+                <div class="bg-japandi-matcha border border-japandi-matcha rounded-3xl shadow-float p-6 md:p-8 flex flex-col text-white relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 text-white opacity-10">
+                        <i data-lucide="table" class="w-48 h-48"></i>
+                    </div>
                     
-                    <div class="bg-japandi-sandLight p-6 rounded-2xl border border-white flex-grow w-full flex flex-col shadow-inner">
-                        <p class="text-[10px] font-bold font-sans text-japandi-muted uppercase tracking-widest mb-3 tutorial-only">Proof Demonstration</p>
-                        <div class="w-full mb-4">
-                            <p class="text-xs md:text-sm font-medium bg-white border border-japandi-border px-4 py-3 rounded-xl text-center shadow-sm w-fit mx-auto break-words">
-                                <span class="text-japandi-terracotta uppercase text-[10px] font-bold tracking-widest mr-2 tutorial-only">Prove</span> <span class="math-sym">(<span class="overbar">p</span> <span class="math-op">&and;</span> q) <span class="math-op">&or;</span> (<span class="overbar">p <span class="math-op">&or;</span> q</span>) &equiv; <span class="overbar">p</span></span>
-                            </p>
+                    <h3 class="font-serif font-bold text-xl md:text-2xl mb-6 border-b border-white/20 pb-4 relative z-10">Truth Table Architecture</h3>
+                    <p class="text-sm font-sans font-light text-white/90 mb-6 relative z-10 leading-relaxed">A function can be represented by multiple algebraic expressions, but it possesses only <strong>one unique Truth Table</strong>.</p>
+                    
+                    <ul class="space-y-6 text-sm font-sans font-light relative z-10 mt-auto">
+                        <li class="flex items-start gap-4">
+                            <div class="bg-white/20 p-2 rounded-lg text-white border border-white/30 flex-shrink-0">
+                                <i data-lucide="database" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <span class="block font-bold mb-1">Row Calculation</span>
+                                <span class="text-white/80">The number of rows equals <span class="font-mono font-bold bg-white text-japandi-matcha px-1.5 py-0.5 rounded text-xs mx-1">2<sup>n</sup></span>, where <em>n</em> is the number of literals.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="bg-white/20 p-2 rounded-lg text-white border border-white/30 flex-shrink-0">
+                                <i data-lucide="binary" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <span class="block font-bold mb-1">Binary Counting</span>
+                                <span class="text-white/80">The combinations are obtained by counting in binary from <span class="font-mono font-bold bg-white text-japandi-matcha px-1.5 py-0.5 rounded text-xs mx-1">0</span> to <span class="font-mono font-bold bg-white text-japandi-matcha px-1.5 py-0.5 rounded text-xs mx-1">2<sup>n</sup> - 1</span>.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. Minimization -->
+        <section id="sec-minimization" class="mb-24 scroll-mt-24">
+            <div class="bg-white border border-japandi-border rounded-3xl shadow-soft p-6 md:p-10 flex flex-col w-full relative overflow-hidden">
+                <div class="absolute -right-8 -top-8 text-japandi-sand opacity-30"><i data-lucide="scissors" class="w-48 h-48"></i></div>
+                
+                <div class="relative z-10">
+                    <h2 class="font-serif text-2xl md:text-3xl font-bold text-japandi-ink tracking-tight mb-2">05. Minimization of Functions</h2>
+                    <p class="text-japandi-muted text-sm font-sans font-light mb-8 max-w-3xl leading-relaxed">Minimization deals with the reduction in the number of literals and the number of terms within an expression.</p>
+
+                    <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+                        <div class="flex flex-col h-full">
+                            <div class="bg-japandi-terracottaLight/30 border-l-4 border-japandi-terracotta p-4 mb-6 rounded-r-xl">
+                                <p class="text-sm text-japandi-ink font-sans font-light leading-relaxed"><strong>Objective:</strong> Achieve equal but simpler expressions to realize the function with fewer electronic components, resulting in a <span class="text-japandi-terracotta font-semibold">cheaper circuit</span>.</p>
+                            </div>
+                            
+                            <div class="space-y-4 flex-grow flex flex-col justify-center">
+                                <div class="bg-japandi-bg p-5 rounded-2xl border border-japandi-border text-center shadow-sm">
+                                    <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Original Function (3 Terms, 3 Literals)</p>
+                                    <p class="math-sym text-lg md:text-xl text-japandi-ink">F<sub>1</sub> = <span class="overbar">x</span>&middot;<span class="overbar">y</span>&middot;z + <span class="overbar">x</span>&middot;y&middot;z + x&middot;<span class="overbar">y</span></p>
+                                </div>
+                                <div class="flex justify-center"><i data-lucide="arrow-down" class="w-5 h-5 text-japandi-muted"></i></div>
+                                <div class="bg-japandi-terracotta text-white p-5 rounded-2xl shadow-float text-center relative overflow-hidden">
+                                    <div class="absolute top-0 right-0 bg-white/20 px-3 py-1 rounded-bl-xl text-[9px] uppercase tracking-widest font-bold">Optimized</div>
+                                    <p class="text-[10px] uppercase font-bold text-white/80 tracking-widest mb-2 mt-1">Minimized Function</p>
+                                    <p class="math-sym text-2xl md:text-3xl font-bold">F<sub>2</sub> = x&middot;<span class="overbar">y</span> + <span class="overbar">x</span>&middot;z</p>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div class="space-y-2 font-mono text-[11px] md:text-xs w-full mt-auto">
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded-lg border border-japandi-border shadow-sm gap-1">
-                                <span class="math-sym text-japandi-ink break-words">(<span class="overbar">p</span> &and; q) &or; (<span class="overbar">p</span> &and; <span class="overbar">q</span>)</span>
-                                <span class="text-japandi-muted text-[9px] uppercase font-bold tracking-widest sm:text-right">De Morgan's</span>
+
+                        <div class="bg-japandi-bg border border-japandi-border rounded-2xl p-6 md:p-8 flex flex-col h-full shadow-inner">
+                            <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-6 border-b border-japandi-border pb-3">Algebraic Proof (F<sub>1</sub> &equiv; F<sub>2</sub>)</p>
+                            
+                            <div class="space-y-4 font-mono text-xs md:text-sm text-japandi-ink flex-grow flex flex-col justify-center">
+                                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded-lg border border-japandi-border shadow-sm gap-1">
+                                    <span class="math-sym break-words">F<sub>1</sub> = <span class="overbar">x</span>&middot;z&middot;(<span class="overbar">y</span> + y) + x&middot;<span class="overbar">y</span></span>
+                                    <span class="text-japandi-muted text-[9px] uppercase font-bold tracking-widest sm:text-right">Factor out <span class="overbar">x</span>z</span>
+                                </div>
+                                <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-japandi-muted"></i></div>
+                                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded-lg border border-japandi-border shadow-sm gap-1">
+                                    <span class="math-sym break-words">= <span class="overbar">x</span>&middot;z&middot;(1) + x&middot;<span class="overbar">y</span></span>
+                                    <span class="text-japandi-muted text-[9px] uppercase font-bold tracking-widest sm:text-right">Complement Law</span>
+                                </div>
+                                <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-japandi-muted"></i></div>
+                                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded-lg border border-japandi-border shadow-sm gap-1">
+                                    <span class="math-sym break-words">= <span class="overbar">x</span>&middot;z + x&middot;<span class="overbar">y</span></span>
+                                    <span class="text-japandi-muted text-[9px] uppercase font-bold tracking-widest sm:text-right">Identity Law</span>
+                                </div>
+                                <div class="flex justify-center"><i data-lucide="arrow-down" class="w-4 h-4 text-japandi-muted"></i></div>
+                                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-japandi-terracottaLight/50 p-3 rounded-lg border border-japandi-terracotta/20 shadow-sm gap-1">
+                                    <span class="math-sym text-japandi-terracotta font-bold text-sm md:text-base break-words">= x&middot;<span class="overbar">y</span> + <span class="overbar">x</span>&middot;z</span>
+                                    <span class="text-japandi-terracotta text-[9px] uppercase font-bold tracking-widest sm:text-right">Commutative = F<sub>2</sub></span>
+                                </div>
                             </div>
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded-lg border border-japandi-border shadow-sm gap-1">
-                                <span class="math-sym text-japandi-ink break-words"><span class="overbar">p</span> &and; (q &or; <span class="overbar">q</span>)</span>
-                                <span class="text-japandi-muted text-[9px] uppercase font-bold tracking-widest sm:text-right">Distributive</span>
-                            </div>
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white p-3 rounded-lg border border-japandi-border shadow-sm gap-1">
-                                <span class="math-sym text-japandi-ink break-words"><span class="overbar">p</span> &and; t</span>
-                                <span class="text-japandi-muted text-[9px] uppercase font-bold tracking-widest sm:text-right">Complement</span>
-                            </div>
-                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-japandi-matcha text-white p-3 rounded-lg shadow-sm gap-1">
-                                <span class="font-bold text-sm"><span class="math-sym"><span class="overbar text-white">p</span></span></span>
-                                <span class="text-white/80 text-[9px] uppercase font-bold tracking-widest sm:text-right">Identity</span>
+                            
+                            <div class="mt-6 bg-white p-3 rounded-lg border border-japandi-border text-[10px] text-japandi-muted text-center italic shadow-sm">
+                                Both F<sub>1</sub> and F<sub>2</sub> produce identical outputs (0,1,0,1,1,1,0,0) in a truth table.
                             </div>
                         </div>
                     </div>
@@ -433,897 +389,140 @@
             </div>
         </section>
 
-        <!-- SECTION 3: CONDITIONALS -->
-        <section id="sec-conditionals" class="module-section w-full">
+        <!-- 06. Interactive Practice -->
+        <section id="sec-practice" class="mb-16 scroll-mt-24">
             <div class="mb-8">
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight hidden compact-mode-show mb-2">03. Conditionals</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">
-                    A conditional statement has a strict structure: <span class="math-sym text-xs bg-white px-2 py-0.5 rounded border border-japandi-border">p &rarr; q</span>. Memorize its 3 structural permutations. A conditional and its contrapositive share the exact same truth values.
-                </p>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-japandi-matcha tracking-tight mb-2">06. Interactive Simulator</h2>
+                <p class="text-japandi-muted text-sm font-sans font-light">Generate blank truth table permutations for practice.</p>
             </div>
 
-            <div class="grid lg:grid-cols-5 gap-6 md:gap-8">
-                
-                <!-- Definition Cards -->
-                <div class="lg:col-span-3 flex flex-col gap-4">
-                    <div class="bg-white border border-japandi-border rounded-3xl p-6 md:p-8 text-center shadow-bento">
-                        <p class="text-[10px] text-japandi-terracotta font-bold uppercase tracking-widest font-sans mb-3 tutorial-only">Base Proposition</p>
-                        <p class="math-sym text-2xl md:text-3xl text-japandi-ink bg-japandi-sandLight px-6 py-3 rounded-2xl inline-block border border-white">p <span class="math-op font-normal">&rarr;</span> q</p>
-                        <p class="mt-4 font-sans font-light text-sm text-japandi-muted tutorial-only">"If Jack plays his guitar, then Sara will sing."</p>
+            <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-10 w-full overflow-hidden">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
+                    <div>
+                        <h3 class="text-xl md:text-2xl font-bold text-japandi-ink flex items-center gap-3 font-serif">
+                            <i data-lucide="table-2" class="w-6 h-6 md:w-7 md:h-7 text-japandi-matcha"></i> Truth Table Generator
+                        </h3>
+                        <p class="font-sans text-[10px] md:text-xs font-medium text-japandi-muted uppercase tracking-widest mt-2">Generate 2<sup>n</sup> Binary Combinations</p>
                     </div>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 h-full">
-                        <div class="bg-white border border-japandi-border rounded-3xl p-6 text-center shadow-bento flex flex-col justify-center">
-                            <p class="text-[10px] text-japandi-muted font-bold uppercase tracking-widest mb-3">Converse</p>
-                            <p class="math-sym text-lg md:text-xl text-japandi-ink">q <span class="math-op text-sm">&rarr;</span> p</p>
-                        </div>
-                        <div class="bg-white border border-japandi-border rounded-3xl p-6 text-center shadow-bento flex flex-col justify-center">
-                            <p class="text-[10px] text-japandi-muted font-bold uppercase tracking-widest mb-3">Inverse</p>
-                            <p class="math-sym text-lg md:text-xl text-japandi-ink"><span class="overbar">p</span> <span class="math-op text-sm">&rarr;</span> <span class="overbar">q</span></p>
-                        </div>
-                        <div class="bg-japandi-terracottaLight border border-japandi-terracotta/20 rounded-3xl p-6 text-center shadow-bento flex flex-col justify-center">
-                            <p class="text-[10px] text-japandi-terracotta font-bold uppercase tracking-widest mb-3">Contrapositive</p>
-                            <p class="math-sym text-lg md:text-xl font-bold text-japandi-ink"><span class="overbar">q</span> <span class="math-op text-sm text-japandi-terracotta">&rarr;</span> <span class="overbar">p</span></p>
-                        </div>
+                    <div class="flex flex-wrap gap-2 w-full lg:w-auto bg-japandi-bg p-2 rounded-xl border border-japandi-border">
+                        <button onclick="generateTable(2, this)" class="flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-sandLight font-sans text-xs uppercase font-bold transition-colors shadow-sm var-btn">2 Var</button>
+                        <button onclick="generateTable(3, this)" class="flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-matcha text-white font-sans text-xs uppercase font-bold transition-colors shadow-sm var-btn active-btn">3 Var</button>
+                        <button onclick="generateTable(4, this)" class="flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-sandLight font-sans text-xs uppercase font-bold transition-colors shadow-sm var-btn">4 Var</button>
                     </div>
                 </div>
 
-                <!-- Truth Table Side -->
-                <div class="lg:col-span-2 bg-japandi-ink rounded-3xl shadow-bento p-6 md:p-8 flex flex-col text-white w-full">
-                    <h3 class="font-serif text-xl md:text-2xl font-bold mb-2">Verification Matrix</h3>
-                    <p class="text-xs font-sans font-light text-white/60 mb-6 tutorial-only">Observe equivalent truth values.</p>
-                    
-                    <div class="w-full bg-white/5 rounded-2xl border border-white/10 mt-auto overflow-hidden">
-                        <table class="w-full text-center font-mono border-collapse">
-                            <thead class="text-white/50 text-[10px] md:text-xs border-b border-white/10 bg-black/20">
-                                <tr>
-                                    <th class="py-4 px-2 font-medium">p</th>
-                                    <th class="py-4 px-2 font-medium border-r border-white/10">q</th>
-                                    <th class="py-4 px-2 font-medium text-white">p&rarr;q</th>
-                                    <th class="py-4 px-2 font-medium">q&rarr;p</th>
-                                    <th class="py-4 px-2 font-medium"><span class="overbar">p</span>&rarr;<span class="overbar">q</span></th>
-                                    <th class="py-4 px-2 font-bold text-japandi-terracottaLight"><span class="overbar">q</span>&rarr;<span class="overbar">p</span></th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-white/90 text-xs md:text-sm">
-                                <tr class="border-b border-white/5">
-                                    <td class="py-3 px-2">T</td>
-                                    <td class="py-3 px-2 border-r border-white/10">T</td>
-                                    <td class="py-3 px-2 font-bold text-white bg-white/10">T</td>
-                                    <td class="py-3 px-2 text-white/60">T</td>
-                                    <td class="py-3 px-2 text-white/60">T</td>
-                                    <td class="py-3 px-2 font-bold text-japandi-terracottaLight bg-japandi-terracotta/20">T</td>
-                                </tr>
-                                <tr class="border-b border-white/5">
-                                    <td class="py-3 px-2">T</td>
-                                    <td class="py-3 px-2 border-r border-white/10">F</td>
-                                    <td class="py-3 px-2 font-normal text-white/40 bg-white/10">F</td>
-                                    <td class="py-3 px-2 text-white/60">T</td>
-                                    <td class="py-3 px-2 text-white/60">T</td>
-                                    <td class="py-3 px-2 font-normal text-white/40 bg-japandi-terracotta/20">F</td>
-                                </tr>
-                                <tr class="border-b border-white/5">
-                                    <td class="py-3 px-2">F</td>
-                                    <td class="py-3 px-2 border-r border-white/10">T</td>
-                                    <td class="py-3 px-2 font-bold text-white bg-white/10">T</td>
-                                    <td class="py-3 px-2 text-white/40">F</td>
-                                    <td class="py-3 px-2 text-white/40">F</td>
-                                    <td class="py-3 px-2 font-bold text-japandi-terracottaLight bg-japandi-terracotta/20">T</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 px-2">F</td>
-                                    <td class="py-3 px-2 border-r border-white/10">F</td>
-                                    <td class="py-3 px-2 font-bold text-white bg-white/10">T</td>
-                                    <td class="py-3 px-2 text-white/60">T</td>
-                                    <td class="py-3 px-2 text-white/60">T</td>
-                                    <td class="py-3 px-2 font-bold text-japandi-terracottaLight bg-japandi-terracotta/20">T</td>
-                                </tr>
-                            </tbody>
+                <div class="bg-japandi-bg border border-japandi-border rounded-2xl overflow-hidden shadow-inner">
+                    <div class="overflow-x-auto hide-scrollbar">
+                        <table class="w-full text-center font-mono border-collapse min-w-[400px]" id="truth-table">
+                            <!-- Table content generated by JS -->
                         </table>
                     </div>
                 </div>
-
             </div>
         </section>
-
-        <!-- SECTION 4: EQUIVALENCE VS IMPLICATION -->
-        <section id="sec-equivalence" class="module-section w-full">
-            <div class="mb-8">
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight hidden compact-mode-show mb-2">04. Equivalence vs. Implication</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">
-                    Understand the difference between strong equivalence (identical truth values) and logical implication (directional truth).
-                </p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Logical Equivalence -->
-                <div class="bg-white border border-japandi-border rounded-3xl p-6 md:p-10 shadow-bento w-full">
-                    <h3 class="font-bold font-serif text-2xl text-japandi-ink mb-6 pb-4 border-b border-japandi-border flex items-center justify-between">
-                        Equivalence
-                        <span class="math-sym text-xl font-bold bg-japandi-sandLight px-4 py-2 rounded-xl text-japandi-ink border border-white shadow-sm">P &equiv; Q</span>
-                    </h3>
-                    <ul class="text-sm font-sans font-light text-japandi-ink space-y-4 list-none mb-8">
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="check-circle-2" class="w-4 h-4 text-japandi-matcha mt-0.5 flex-shrink-0"></i>
-                            <span class="leading-relaxed">Propositions have <strong class="font-medium">identical truth values</strong> for every component set.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="check-circle-2" class="w-4 h-4 text-japandi-matcha mt-0.5 flex-shrink-0"></i>
-                            <span class="leading-relaxed">The biconditional statement <span class="math-sym text-xs">P &harr; Q</span> is a tautology.</span>
-                        </li>
-                    </ul>
-                    <div class="w-full bg-japandi-sandLight p-5 rounded-2xl border border-white text-center">
-                        <span class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest block mb-2 tutorial-only">Example Equation</span>
-                        <span class="math-sym text-sm md:text-base break-words"><span class="overbar">p &and; q</span> &equiv; <span class="overbar">p</span> &or; <span class="overbar">q</span></span>
-                    </div>
-                </div>
-
-                <!-- Logical Implication -->
-                <div class="bg-white border border-japandi-border rounded-3xl p-6 md:p-10 shadow-bento w-full">
-                    <h3 class="font-bold font-serif text-2xl text-japandi-ink mb-6 pb-4 border-b border-japandi-border flex items-center justify-between">
-                        Implication
-                        <span class="math-sym text-xl font-bold bg-japandi-terracottaLight px-4 py-2 rounded-xl text-japandi-ink border border-white shadow-sm">P <span class="text-japandi-terracotta">&rArr;</span> Q</span>
-                    </h3>
-                    <ul class="text-sm font-sans font-light text-japandi-ink space-y-4 list-none mb-8">
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="arrow-right" class="w-4 h-4 text-japandi-terracotta mt-0.5 flex-shrink-0"></i>
-                            <span class="leading-relaxed">Whenever <span class="math-sym text-xs">P</span> is true, <span class="math-sym text-xs">Q</span> is also true.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="arrow-right" class="w-4 h-4 text-japandi-terracotta mt-0.5 flex-shrink-0"></i>
-                            <span class="leading-relaxed">The conditional statement <span class="math-sym text-xs">P &rarr; Q</span> is a tautology.</span>
-                        </li>
-                        <li class="flex items-start gap-3 text-japandi-terracotta tutorial-only">
-                            <i data-lucide="alert-triangle" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
-                            <span class="text-xs font-medium">Converse does not apply. Q may be true when P is false.</span>
-                        </li>
-                    </ul>
-                    
-                    <div class="w-full bg-japandi-terracottaLight/30 p-5 rounded-2xl border border-white">
-                        <p class="text-[10px] uppercase font-bold text-japandi-terracotta/70 tracking-widest block mb-3 text-center tutorial-only">Proof Demonstration: (p &harr; q) &and; q &rArr; p</p>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-center font-mono text-[10px] md:text-xs">
-                                <thead>
-                                    <tr class="border-b border-japandi-terracotta/20 text-japandi-terracotta">
-                                        <th class="py-2 px-1">p</th>
-                                        <th class="py-2 px-1">q</th>
-                                        <th class="py-2 px-1 border-x border-japandi-terracotta/20">p&harr;q</th>
-                                        <th class="py-2 px-1">(p&harr;q)&and;q</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td class="py-1">T</td><td>T</td><td class="border-x border-japandi-terracotta/20">T</td><td class="font-bold text-japandi-ink">T</td></tr>
-                                    <tr><td class="py-1">T</td><td>F</td><td class="border-x border-japandi-terracotta/20">F</td><td class="text-japandi-muted">F</td></tr>
-                                    <tr><td class="py-1">F</td><td>T</td><td class="border-x border-japandi-terracotta/20">F</td><td class="text-japandi-muted">F</td></tr>
-                                    <tr><td class="py-1">F</td><td>F</td><td class="border-x border-japandi-terracotta/20">T</td><td class="text-japandi-muted">F</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p class="text-[10px] text-center mt-3 text-japandi-muted italic tutorial-only">Notice 'p' is true whenever the formula is true (Row 1). Thus, it logically implies 'p'.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: VALID ARGUMENTS -->
-        <section id="sec-arguments" class="module-section w-full">
-            <div class="mb-8">
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight hidden compact-mode-show mb-2">05. Argument Validity</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">
-                    An argument is valid if the conjunction (AND) of the premises logically implies the conclusion (forms a Tautology).
-                </p>
-            </div>
-
-            <div class="bg-japandi-matcha rounded-3xl p-6 md:p-10 mb-8 shadow-bento text-white flex flex-col md:flex-row items-center justify-between gap-6 w-full">
-                <div>
-                    <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-japandi-matchaLight mb-2">Validation Formula</h3>
-                    <p class="text-sm font-sans font-light text-white/90 max-w-md tutorial-only">If premises are true, conclusion cannot be false.</p>
-                </div>
-                <div class="bg-white/10 border border-white/20 p-4 rounded-2xl flex items-center gap-4 backdrop-blur-sm">
-                    <span class="math-sym text-base md:text-lg whitespace-nowrap">
-                        (P<sub>1</sub> &and; P<sub>2</sub>) <span class="text-japandi-terracottaLight">&rarr;</span> Q
-                    </span>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-japandi-matcha bg-white px-3 py-1.5 rounded-lg shadow-sm whitespace-nowrap">Tautology</span>
-                </div>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                <!-- Example 1 -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full">
-                    <div class="flex items-center justify-between mb-6">
-                        <h4 class="font-bold font-sans text-xs uppercase tracking-widest text-japandi-ink">Modus Ponens</h4>
-                        <span class="text-[10px] font-bold uppercase tracking-widest bg-japandi-matchaLight text-japandi-matcha px-3 py-1 rounded-full flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3"></i> Valid</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center">
-                            <p class="text-[9px] uppercase font-bold text-japandi-muted tracking-widest mb-2 tutorial-only">Premises</p>
-                            <p class="math-sym text-sm">p &rarr; q, p</p>
-                        </div>
-                        <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center">
-                            <p class="text-[9px] uppercase font-bold text-japandi-muted tracking-widest mb-2 tutorial-only">Conclusion</p>
-                            <p class="math-sym text-sm">q</p>
-                        </div>
-                    </div>
-                    <div class="bg-japandi-bg border border-japandi-border p-4 rounded-2xl text-center mt-auto">
-                        <p class="text-[9px] text-japandi-muted font-bold uppercase tracking-widest mb-2 tutorial-only">Logical Formula</p>
-                        <p class="math-sym text-sm text-japandi-ink bg-white px-4 py-2 rounded-xl shadow-sm inline-block">[(p &rarr; q) &and; p] &rarr; q</p>
-                    </div>
-                </div>
-
-                <!-- Example 2 -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full">
-                    <div class="flex items-center justify-between mb-6">
-                        <h4 class="font-bold font-sans text-xs uppercase tracking-widest text-japandi-ink">Fallacy</h4>
-                        <span class="text-[10px] font-bold uppercase tracking-widest bg-japandi-terracottaLight text-japandi-terracotta px-3 py-1 rounded-full flex items-center gap-1.5"><i data-lucide="x" class="w-3 h-3"></i> Invalid</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 mb-6">
-                        <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center">
-                            <p class="text-[9px] uppercase font-bold text-japandi-muted tracking-widest mb-2 tutorial-only">Premises</p>
-                            <p class="math-sym text-sm">p &rarr; q, q &and; r</p>
-                        </div>
-                        <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center">
-                            <p class="text-[9px] uppercase font-bold text-japandi-muted tracking-widest mb-2 tutorial-only">Conclusion</p>
-                            <p class="math-sym text-sm">r &rarr; p</p>
-                        </div>
-                    </div>
-                    <div class="bg-japandi-bg border border-japandi-border p-4 rounded-2xl text-center mt-auto">
-                        <p class="text-[9px] text-japandi-muted font-bold uppercase tracking-widest mb-2 tutorial-only">Logical Formula</p>
-                        <p class="math-sym text-sm text-japandi-ink bg-white px-4 py-2 rounded-xl shadow-sm inline-block break-words whitespace-normal">[(p &rarr; q) &and; (q &and; r)] &rarr; (r &rarr; p)</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 6: PREDICATE LOGIC -->
-        <section id="sec-predicate" class="module-section w-full">
-            <div class="mb-8 hidden compact-mode-show">
-                <span class="text-japandi-matcha font-sans text-xs uppercase tracking-widest font-bold mb-2 block">Module 6</span>
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight mb-2">06. Predicate Logic</h2>
-            </div>
-            <div class="mb-8 tutorial-only">
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight mb-2">Module 6: Predicate Logic (First-Order Logic)</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light max-w-3xl leading-relaxed">
-                    Propositional logic cannot express properties of individuals. Consider: <em>"Everyone who has green eyes is not to be trusted. Bill has green eyes. Therefore, Bill is not to be trusted."</em> Propositional logic fails here because we can't link 'Bill' to 'green eyes'. Predicate Logic fixes this.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Predicates -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 flex flex-col">
-                    <div class="w-10 h-10 rounded-xl bg-japandi-sandLight flex items-center justify-center text-japandi-ink font-serif font-bold text-lg mb-4">P</div>
-                    <h3 class="font-serif font-bold text-lg text-japandi-ink mb-2">Predicates</h3>
-                    <p class="text-xs text-japandi-muted font-sans font-light mb-6 tutorial-only">Represents a property or relationship. Use <strong>Uppercase Letters</strong>.</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center mt-auto">
-                        <span class="math-sym text-sm block">R(x) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "...is red"</span></span>
-                        <span class="math-sym text-sm block mt-2">L(x,y,z) <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= "...lent y to z"</span></span>
-                    </div>
-                </div>
-                <!-- Variables -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 flex flex-col">
-                    <div class="w-10 h-10 rounded-xl bg-japandi-sandLight flex items-center justify-center text-japandi-ink font-mono font-medium mb-4">x</div>
-                    <h3 class="font-serif font-bold text-lg text-japandi-ink mb-2">Variables</h3>
-                    <p class="text-xs text-japandi-muted font-sans font-light mb-6 tutorial-only">Placeholders. Lowercase from <strong>end of alphabet</strong>.</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center mt-auto flex items-center justify-center h-[76px]">
-                        <span class="math-sym text-lg tracking-widest">x,y,z</span>
-                    </div>
-                </div>
-                <!-- Constants -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 flex flex-col">
-                    <div class="w-10 h-10 rounded-xl bg-japandi-sandLight flex items-center justify-center text-japandi-ink font-mono font-medium mb-4">a</div>
-                    <h3 class="font-serif font-bold text-lg text-japandi-ink mb-2">Constants</h3>
-                    <p class="text-xs text-japandi-muted font-sans font-light mb-6 tutorial-only">Specific subjects. Lowercase from <strong>start/mid of alphabet</strong>.</p>
-                    <div class="bg-japandi-sandLight p-4 rounded-2xl border border-white text-center mt-auto">
-                        <span class="math-sym text-sm block">m <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= Mary</span></span>
-                        <span class="math-sym text-sm block mt-2">b <span class="text-japandi-muted text-xs font-sans font-light tutorial-only ml-2">= Bill</span></span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 7: QUANTIFIERS -->
-        <section id="sec-quantifiers" class="module-section w-full">
-            <div class="mb-8">
-                <h2 class="font-serif text-3xl font-bold text-japandi-ink tracking-tight hidden compact-mode-show mb-2">07. Quantifiers</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">Defining the scope of the variable substitution.</p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8 mb-8">
-                <!-- Universal -->
-                <div class="bg-white border border-japandi-border border-t-4 border-t-japandi-terracotta rounded-3xl p-6 md:p-8 shadow-bento w-full">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-serif font-bold text-xl text-japandi-ink">Universal</h3>
-                        <span class="math-sym text-3xl text-japandi-terracotta">&forall;</span>
-                    </div>
-                    <p class="text-sm font-sans font-light text-japandi-muted mb-6 tutorial-only">True for <strong>every</strong> substitution. (All, every, each).</p>
-                    
-                    <div class="bg-japandi-terracottaLight/30 p-5 rounded-2xl border border-white text-center">
-                        <p class="text-[10px] uppercase font-bold text-japandi-terracotta/70 tracking-widest mb-2 tutorial-only">Common Pairing</p>
-                        <p class="text-xs text-japandi-ink/60 mb-2 tutorial-only">Pairs with conditional (&rarr;)</p>
-                        <p class="math-sym text-sm bg-white px-3 py-2 rounded-xl shadow-sm inline-block">&forall;x [H(x) &rarr; M(x)]</p>
-                    </div>
-                </div>
-
-                <!-- Existential -->
-                <div class="bg-white border border-japandi-border border-t-4 border-t-japandi-matcha rounded-3xl p-6 md:p-8 shadow-bento w-full">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-serif font-bold text-xl text-japandi-ink">Existential</h3>
-                        <span class="math-sym text-3xl text-japandi-matcha">&exist;</span>
-                    </div>
-                    <p class="text-sm font-sans font-light text-japandi-muted mb-6 tutorial-only">True for <strong>at least one</strong> substitution. (Some, exists).</p>
-                    
-                    <div class="bg-japandi-matchaLight/30 p-5 rounded-2xl border border-white text-center">
-                        <p class="text-[10px] uppercase font-bold text-japandi-matcha tracking-widest mb-2 tutorial-only">Common Pairing</p>
-                        <p class="text-xs text-japandi-ink/60 mb-2 tutorial-only">Pairs with AND (&and;)</p>
-                        <p class="math-sym text-sm bg-white px-3 py-2 rounded-xl shadow-sm inline-block">&exist;x [R(x) &and; G(x)]</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Advanced Translations -->
-            <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="px-3 py-1 bg-japandi-sandLight text-japandi-ink rounded-lg text-[10px] font-sans font-bold uppercase tracking-widest tutorial-only">Exam Crucial</span>
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink">Complex Translations</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Compound</p>
-                        <p class="text-xs italic text-japandi-ink mb-2">"Every student who studies hard will pass."</p>
-                        <p class="math-sym text-xs bg-white p-2 rounded shadow-sm">&forall;x [(S(x) <span class="math-op text-xs">&and;</span> H(x)) <span class="math-op text-xs">&rarr;</span> P(x)]</p>
-                    </div>
-                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Univ. Negation</p>
-                        <p class="text-xs italic text-japandi-ink mb-2">"No cats are reptiles."</p>
-                        <p class="math-sym text-xs bg-white p-2 rounded shadow-sm">&forall;x [C(x) <span class="math-op text-xs">&rarr;</span> &not;R(x)]</p>
-                    </div>
-                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Existential Example</p>
-                        <p class="text-xs italic text-japandi-ink mb-2">"Some of the children didn't apologize."</p>
-                        <p class="math-sym text-xs bg-white p-2 rounded shadow-sm">&exist;x [C(x) <span class="math-op text-xs">&and;</span> &not;A(x)]</p>
-                    </div>
-                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Existential Example 2</p>
-                        <p class="text-xs italic text-japandi-ink mb-2">"Some people think of no one but themselves."</p>
-                        <p class="math-sym text-xs bg-white p-2 rounded shadow-sm">&exist;x [P(x) <span class="math-op text-xs">&and;</span> N(x)]</p>
-                    </div>
-                    <div class="bg-japandi-bg p-4 rounded-2xl border border-japandi-border lg:col-span-2">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Equivalence</p>
-                        <p class="text-xs italic text-japandi-ink mb-2">"Nobody likes cheats."</p>
-                        <div class="flex flex-col sm:flex-row gap-2">
-                            <p class="math-sym text-xs bg-white p-2 rounded shadow-sm flex-1">&not;&exist;x [P(x) <span class="math-op text-xs">&and;</span> C(x)]</p>
-                            <div class="flex items-center justify-center font-bold text-japandi-muted text-xs">OR</div>
-                            <p class="math-sym text-xs bg-white p-2 rounded shadow-sm flex-1">&forall;x [P(x) <span class="math-op text-xs">&rarr;</span> &not;C(x)]</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 8: INTERACTIVE PRACTICE -->
-        <section id="sec-practice" class="module-section w-full">
-            <div class="mb-8">
-                <h2 class="font-serif text-3xl font-bold text-japandi-terracotta tracking-tight hidden compact-mode-show mb-2">08. Practice</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light tutorial-only max-w-3xl leading-relaxed">Test your ability to simplify logical statements and translate complex predicate sentences.</p>
-            </div>
-            
-            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
-                
-                <!-- Generator 1: Conditionals Practice -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full">
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Conditionals Practice</h3>
-                    <div class="bg-japandi-bg p-4 md:p-5 rounded-2xl border border-japandi-border mb-6 flex-grow flex flex-col">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Base Input</p>
-                        <p id="cond-base" class="font-mono text-japandi-ink font-medium min-h-[40px] md:min-h-[48px] text-xs md:text-sm break-words whitespace-normal leading-relaxed"></p>
-                        <div id="cond-answers" class="hidden mt-auto space-y-3 pt-4 border-t border-japandi-border">
-                            <div class="bg-white p-3 rounded-lg border border-japandi-border shadow-sm"><span class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase block mb-1">Converse:</span> <p id="cond-conv" class="text-[10px] md:text-xs font-mono font-medium text-japandi-ink break-words whitespace-normal leading-relaxed"></p></div>
-                            <div class="bg-white p-3 rounded-lg border border-japandi-border shadow-sm"><span class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase block mb-1">Inverse:</span> <p id="cond-inv" class="text-[10px] md:text-xs font-mono font-medium text-japandi-ink break-words whitespace-normal leading-relaxed"></p></div>
-                            <div class="bg-japandi-terracottaLight p-3 rounded-lg border border-japandi-terracotta/20"><span class="text-[10px] font-bold tracking-widest text-japandi-terracotta uppercase block mb-1">Contrapositive:</span> <p id="cond-contra" class="text-[10px] md:text-xs font-mono font-semibold text-japandi-ink break-words whitespace-normal leading-relaxed"></p></div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-3 mt-auto">
-                        <button onclick="generateConditional()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
-                        <button onclick="toggleBox('cond-answers', 'btn-cond-ans', 'Show Answers', 'Hide Answers')" id="btn-cond-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Answers</button>
-                    </div>
-                </div>
-
-                <!-- Generator 2: Argument Validity Practice -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full">
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Argument Validity Practice</h3>
-                    <div class="bg-japandi-bg p-4 md:p-5 rounded-2xl border border-japandi-border mb-6 flex-grow flex flex-col w-full">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-2">Analyze Argument</p>
-                        <div id="arg-problem" class="text-xs md:text-sm font-sans font-light italic text-japandi-ink bg-white p-4 rounded-xl border border-japandi-border min-h-[80px] break-words whitespace-normal leading-relaxed shadow-sm"></div>
-                        <div id="arg-answer-box" class="hidden mt-auto border-t border-japandi-border pt-4 w-full">
-                            <p class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase mb-2">Logical Form Mapping</p>
-                            <div class="w-full mb-4">
-                                <p id="arg-form" class="font-mono text-xs md:text-sm text-japandi-ink bg-white border border-japandi-border p-3 rounded-lg font-medium shadow-sm text-center break-words whitespace-normal"></p>
-                            </div>
-                            <div id="arg-result" class="text-xs md:text-sm font-bold tracking-widest py-3 text-center rounded-xl border shadow-sm font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[48px] md:min-h-[56px] transition-colors"></div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-3 mt-auto">
-                        <button onclick="generateArgument()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
-                        <button onclick="toggleBox('arg-answer-box', 'btn-arg-ans', 'Show Answer', 'Hide Answer')" id="btn-arg-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Answer</button>
-                    </div>
-                </div>
-
-                <!-- Generator 3: Predicate Logic Practice -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-8 flex flex-col w-full lg:col-span-2">
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Predicate Translations Practice</h3>
-                    <div class="bg-japandi-bg p-4 md:p-6 rounded-2xl border border-japandi-border mb-6 flex-grow flex flex-col w-full text-center">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-3">English Statement</p>
-                        <div class="bg-white border border-japandi-border p-4 md:p-6 rounded-xl shadow-sm w-full mb-4">
-                            <p id="pred-problem" class="font-sans text-lg md:text-xl font-light italic text-japandi-ink break-words whitespace-normal leading-relaxed"></p>
-                        </div>
-                        <div id="pred-answer-box" class="hidden border-t border-japandi-border pt-4 w-full text-left">
-                            <p class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase mb-3 text-center">Dictionary & Translation</p>
-                            <p id="pred-dict" class="font-sans text-xs md:text-sm font-medium text-japandi-muted bg-white p-3 rounded-lg border border-japandi-border text-center mb-4 break-words whitespace-normal shadow-sm"></p>
-                            <div id="pred-result" class="w-full font-mono text-base md:text-xl text-japandi-matcha font-bold bg-japandi-matchaLight/50 py-4 px-2 rounded-xl text-center border border-japandi-matcha/20 break-words whitespace-normal shadow-sm"></div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto mt-auto">
-                        <button onclick="generatePredicate()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
-                        <button onclick="toggleBox('pred-answer-box', 'btn-pred-ans', 'Show Translation', 'Hide Translation')" id="btn-pred-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Translation</button>
-                    </div>
-                </div>
-
-                <!-- Generator 4: Multi-Step Proofs Practice -->
-                <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-10 w-full lg:col-span-2">
-                    <h3 class="font-serif font-bold text-xl md:text-2xl text-japandi-ink mb-4 md:mb-6 border-b border-japandi-border pb-3">Multi-Step Proofs Practice</h3>
-                    
-                    <div class="flex flex-wrap justify-center gap-2 mb-6 bg-japandi-bg p-2 rounded-xl border border-japandi-border w-fit mx-auto">
-                        <button onclick="setDiff('easy')" id="btn-diff-easy" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Easy</button>
-                        <button onclick="setDiff('med')" id="btn-diff-med" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Med</button>
-                        <button onclick="setDiff('hard')" id="btn-diff-hard" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">Hard</button>
-                        <button onclick="setDiff('vhard')" id="btn-diff-vhard" class="px-4 py-1.5 rounded-lg text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors">V.Hard</button>
-                    </div>
-
-                    <div class="bg-japandi-bg p-4 md:p-8 rounded-2xl border border-japandi-border mb-8 flex flex-col w-full text-center">
-                        <p class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-4">Simplify Expression</p>
-                        <div class="bg-white border border-japandi-border p-6 rounded-xl shadow-sm w-full mb-6 highlight-pulse" id="problem-container">
-                            <p id="proof-problem" class="font-mono text-xl md:text-2xl text-japandi-ink font-bold break-words whitespace-normal leading-relaxed"></p>
-                        </div>
-                        <div id="proof-answer-box" class="hidden border-t border-japandi-border pt-6 w-full text-left">
-                            <p class="text-[10px] font-bold tracking-widest text-japandi-muted uppercase mb-4 text-center">Derivation</p>
-                            <div id="proof-answer" class="w-full space-y-3 font-mono text-xs md:text-sm"></div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
-                        <button onclick="generateProof()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">New Problem</button>
-                        <button onclick="toggleBox('proof-answer-box', 'btn-proof-ans', 'Show Proof', 'Hide Proof')" id="btn-proof-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs uppercase font-bold rounded-xl transition-colors shadow-sm">Show Proof</button>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Tutorial Navigation Footer (Visible in Tutorial Mode) -->
-        <div id="tutorial-nav" class="tutorial-only bg-transparent p-4 mt-8 flex justify-between items-center w-full max-w-4xl mx-auto">
-            <button id="btn-prev" disabled class="tutorial-nav-btn px-6 py-3 rounded-xl font-sans font-semibold text-xs md:text-sm border border-japandi-border bg-white text-japandi-ink hover:bg-japandi-bg flex items-center gap-2 shadow-sm">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Prev
-            </button>
-            <button id="btn-next" class="tutorial-nav-btn px-6 py-3 rounded-xl font-sans font-semibold text-xs md:text-sm bg-japandi-terracotta text-white hover:bg-japandi-terracotta/90 shadow-soft flex items-center gap-2">
-                Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-        </div>
 
     </main>
 
     <script>
         lucide.createIcons();
 
-        // ----------------------------------------------------
-        // COMPACT MODE LOGIC
-        // ----------------------------------------------------
-        let isCompactMode = false;
-        
-        function toggleCompactMode() {
-            isCompactMode = !isCompactMode;
-            const body = document.body;
-            const desktopBtn = document.getElementById('desktop-compact-btn');
-            const mobileBtn = document.getElementById('mobile-compact-btn');
-            const compactHeader = document.getElementById('compact-header');
-            
-            if (isCompactMode) {
-                body.classList.add('compact-mode');
-                desktopBtn.innerHTML = '<i data-lucide="book-open" class="w-4 h-4"></i> Tutorial Mode';
-                mobileBtn.innerHTML = '<i data-lucide="book-open" class="w-5 h-5"></i>';
-                compactHeader.classList.remove('hidden');
-                document.getElementById('progress-bar').style.width = '100%';
-            } else {
-                body.classList.remove('compact-mode');
-                desktopBtn.innerHTML = '<i data-lucide="layout-grid" class="w-4 h-4"></i> Cheat Sheet Mode';
-                mobileBtn.innerHTML = '<i data-lucide="layout-grid" class="w-5 h-5"></i>';
-                compactHeader.classList.add('hidden');
-                updateTutorialUI(); 
-            }
-            lucide.createIcons();
-        }
+        // Navigation Highlight Script
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-link");
 
-        // ----------------------------------------------------
-        // TUTORIAL NAVIGATION LOGIC
-        // ----------------------------------------------------
-        let currentStep = 1;
-        const totalSteps = 8;
-        const stepIds = ['sec-laws', 'sec-duality', 'sec-conditionals', 'sec-equivalence', 'sec-arguments', 'sec-predicate', 'sec-quantifiers', 'sec-practice'];
-        
-        const stepTitles = [
-            "The 9 Laws", "Duality & Replacement", "Conditionals", "Equivalence vs. Implication",
-            "Argument Validity", "Core Predicates", "Quantifiers", "Interactive Practice"
-        ];
-        const stepSubtitles = [
-            "Module 5: Algebra of Propositions", "Mechanical swaps and substitution", "Permutations of a basic proposition",
-            "Differentiating strict logic states", "Proving argument structures", "Module 6: Extending logic properties",
-            "Scope of variables", "Test your knowledge"
-        ];
-
-        function updateTutorialUI() {
-            if (isCompactMode) return;
-            document.querySelectorAll('.module-section').forEach(el => el.classList.remove('step-active'));
-            
-            const activeSection = document.getElementById(stepIds[currentStep - 1]);
-            if (activeSection) activeSection.classList.add('step-active');
-
-            document.getElementById('step-indicator').innerText = currentStep;
-            document.getElementById('step-title').innerText = stepTitles[currentStep - 1];
-            document.getElementById('step-subtitle').innerText = stepSubtitles[currentStep - 1];
-            document.getElementById('progress-text').innerText = `${currentStep} / ${totalSteps}`;
-            
-            const pct = (currentStep / totalSteps) * 100;
-            document.getElementById('tutorial-progress-bar').style.width = `${pct}%`;
-            document.getElementById('progress-bar').style.width = `${pct}%`;
-
-            document.querySelectorAll('.nav-link').forEach((link, index) => {
-                if (index === currentStep - 1) link.classList.add('active');
-                else link.classList.remove('active');
-            });
-
-            const btnPrev = document.getElementById('btn-prev');
-            const btnNext = document.getElementById('btn-next');
-            btnPrev.disabled = currentStep === 1;
-            
-            if (currentStep === totalSteps) {
-                btnNext.innerHTML = 'Finish <i data-lucide="check" class="w-4 h-4"></i>';
-                btnNext.classList.replace('bg-japandi-terracotta', 'bg-japandi-matcha');
-                btnNext.classList.replace('hover:bg-japandi-terracotta/90', 'hover:bg-japandi-matcha/90');
-                if(document.getElementById('proof-problem').innerText === "") setDiff('med');
-            } else {
-                btnNext.innerHTML = 'Next <i data-lucide="arrow-right" class="w-4 h-4"></i>';
-                btnNext.classList.replace('bg-japandi-matcha', 'bg-japandi-terracotta');
-                btnNext.classList.replace('hover:bg-japandi-matcha/90', 'hover:bg-japandi-terracotta/90');
-            }
-            lucide.createIcons();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        document.getElementById('btn-next').addEventListener('click', () => {
-            if (currentStep < totalSteps) { currentStep++; updateTutorialUI(); } 
-            else alert("Tutorial complete, Keith! Switch to Cheat Sheet Mode for rapid exam review.");
-        });
-
-        document.getElementById('btn-prev').addEventListener('click', () => {
-            if (currentStep > 1) { currentStep--; updateTutorialUI(); }
-        });
-
-        document.querySelectorAll('.nav-link').forEach((link) => {
-            link.addEventListener('click', (e) => {
-                if (!isCompactMode) {
-                    e.preventDefault(); 
-                    currentStep = parseInt(link.getAttribute('data-step'));
-                    updateTutorialUI();
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute("id");
                 }
-                if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
             });
-        });
 
-        // ----------------------------------------------------
-        // CARD REVEAL LOGIC
-        // ----------------------------------------------------
-        document.querySelectorAll('.reveal-btn').forEach(button => {
-            // Set initial state matching CSS (which defaults to hidden text)
-            button.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation';
-            button.classList.add('bg-japandi-surface');
-            button.classList.remove('bg-japandi-bg');
-
-            button.addEventListener('click', function() {
-                const content = this.previousElementSibling;
-                content.classList.toggle('open');
-                
-                if (content.classList.contains('open')) {
-                    this.innerHTML = '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation';
-                    this.classList.replace('bg-japandi-surface', 'bg-japandi-bg');
-                } else {
-                    this.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation';
-                    this.classList.replace('bg-japandi-bg', 'bg-japandi-surface');
+            navLinks.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") && link.getAttribute("href").includes(current)) {
+                    link.classList.add("active");
                 }
-                lucide.createIcons();
             });
+
+            // Update Progress Bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+            const progressBar = document.getElementById("progress-bar");
+            if(progressBar) {
+                progressBar.style.width = scrolled + "%";
+            }
         });
 
         // Mobile sidebar toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.toggle('hidden');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        if(mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const sidebar = document.getElementById('sidebar');
+                if(sidebar) sidebar.classList.toggle('hidden');
+            });
+        }
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth < 768) {
+                    const sidebar = document.getElementById('sidebar');
+                    if(sidebar) sidebar.classList.add('hidden');
+                }
+            });
         });
 
-        // ----------------------------------------------------
-        // GENERATOR ENGINES
-        // ----------------------------------------------------
-
-        // Generalized toggle functionality for answer boxes
-        const toggleBox = (boxId, btnId, showText, hideText) => {
-            const el = document.getElementById(boxId);
-            const btn = document.getElementById(btnId);
-            el.classList.toggle('hidden');
-            
-            if (boxId === 'proof-answer-box') {
-                document.getElementById('problem-container').classList.remove('highlight-pulse');
+        // Truth Table Generator
+        function generateTable(vars, clickedBtn) {
+            // Update button styles
+            if(clickedBtn) {
+                document.querySelectorAll('.var-btn').forEach(btn => {
+                    btn.classList.remove('bg-japandi-matcha', 'text-white', 'active-btn');
+                    btn.classList.add('bg-japandi-surface', 'border-japandi-border', 'text-japandi-ink');
+                });
+                clickedBtn.classList.remove('bg-japandi-surface', 'border-japandi-border', 'text-japandi-ink');
+                clickedBtn.classList.add('bg-japandi-matcha', 'text-white', 'active-btn');
             }
 
-            if(btn) {
-                if (el.classList.contains('hidden')) {
-                    btn.innerHTML = showText;
-                    btn.classList.replace('bg-japandi-bg', 'bg-white');
-                } else {
-                    btn.innerHTML = hideText;
-                    btn.classList.replace('bg-white', 'bg-japandi-bg');
-                }
-            }
-            lucide.createIcons();
-        };
+            const table = document.getElementById('truth-table');
+            if(!table) return;
 
-        // Engine 1: Conditionals
-        const subjects = ["it rains", "you study hard", "the code compiles", "Jack plays guitar", "the alarm rings"];
-        const actions = ["I will stay home", "you will pass the exam", "we will deploy the app", "Sara will sing", "I will wake up"];
-        const negSubjects = ["it does not rain", "you do not study hard", "the code does not compile", "Jack does not play guitar", "the alarm does not ring"];
-        const negActions = ["I will not stay home", "you will not pass the exam", "we will not deploy the app", "Sara will not sing", "I will not wake up"];
-
-        function generateConditional() {
-            document.getElementById('cond-answers').classList.add('hidden');
-            const btn = document.getElementById('btn-cond-ans');
-            if(btn) { btn.innerHTML = 'Show Answers'; btn.classList.replace('bg-japandi-bg', 'bg-white'); }
-
-            const idx = Math.floor(Math.random() * subjects.length);
-            const p = subjects[idx];
-            const q = actions[idx];
-            const not_p = negSubjects[idx];
-            const not_q = negActions[idx];
-
-            document.getElementById('cond-base').innerText = `If ${p}, then ${q}.`;
-            document.getElementById('cond-conv').innerText = `If ${q}, then ${p}.`;
-            document.getElementById('cond-inv').innerText = `If ${not_p}, then ${not_q}.`;
-            document.getElementById('cond-contra').innerText = `If ${not_q}, then ${not_p}.`;
-        }
-
-        // Engine 2: Arguments
-        const argForms = [
-            { 
-                type: "Modus Ponens", 
-                valid: true, 
-                form: "[(p → q) ∧ p] → q",
-                getEng: (p,q) => `If ${p}, then ${q}. ${p.charAt(0).toUpperCase() + p.slice(1)}. Therefore, ${q}.`
-            },
-            { 
-                type: "Fallacy of the Converse", 
-                valid: false, 
-                form: "[(p → q) ∧ q] → p",
-                getEng: (p,q) => `If ${p}, then ${q}. ${q.charAt(0).toUpperCase() + q.slice(1)}. Therefore, ${p}.`
-            },
-            { 
-                type: "Modus Tollens", 
-                valid: true, 
-                form: "[(p → q) ∧ ¬q] → ¬p",
-                getEng: (p,q,np,nq) => `If ${p}, then ${q}. ${nq.charAt(0).toUpperCase() + nq.slice(1)}. Therefore, ${np}.`
-            },
-            { 
-                type: "Fallacy of the Inverse", 
-                valid: false, 
-                form: "[(p → q) ∧ ¬p] → ¬q",
-                getEng: (p,q,np,nq) => `If ${p}, then ${q}. ${np.charAt(0).toUpperCase() + np.slice(1)}. Therefore, ${nq}.`
-            }
-        ];
-
-        function generateArgument() {
-            document.getElementById('arg-answer-box').classList.add('hidden');
-            const btn = document.getElementById('btn-arg-ans');
-            if(btn) { btn.innerHTML = 'Show Answer'; btn.classList.replace('bg-japandi-bg', 'bg-white'); }
-
-            const idx = Math.floor(Math.random() * subjects.length);
-            const p = subjects[idx];
-            const q = actions[idx];
-            const np = negSubjects[idx];
-            const nq = negActions[idx];
+            let rows = Math.pow(2, vars);
+            let variables = ['X', 'Y', 'Z', 'W'].slice(0, vars);
             
-            const form = argForms[Math.floor(Math.random() * argForms.length)];
-            
-            document.getElementById('arg-problem').innerText = form.getEng(p, q, np, nq);
-            document.getElementById('arg-form').innerText = form.form.replace(/¬/g, '¬');
-            
-            const resEl = document.getElementById('arg-result');
-            if(form.valid) {
-                resEl.className = "text-japandi-matcha font-bold tracking-widest py-3 text-center rounded-xl border border-japandi-matcha/20 bg-japandi-matchaLight/50 font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[56px] text-xs md:text-sm";
-                resEl.innerHTML = '<div class="flex items-center"><i data-lucide="check-circle" class="inline w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0"></i> <span class="break-words leading-tight">VALID (' + form.type + ')</span></div>';
-            } else {
-                resEl.className = "text-japandi-terracotta font-bold tracking-widest py-3 text-center rounded-xl border border-japandi-terracotta/20 bg-japandi-terracottaLight/50 font-sans uppercase break-words w-full px-2 flex items-center justify-center min-h-[56px] text-xs md:text-sm";
-                resEl.innerHTML = '<div class="flex items-center"><i data-lucide="x-circle" class="inline w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0"></i> <span class="break-words leading-tight">INVALID (' + form.type + ')</span></div>';
-            }
-            lucide.createIcons();
-        }
-
-        // Engine 3: Predicate Logic
-        const predNouns = [ {s: "student", p: "students", l: "S"}, {s: "programmer", p: "programmers", l: "P"}, {s: "cat", p: "cats", l: "C"}, {s: "human", p: "humans", l: "H"}, {s: "rat", p: "rats", l: "R"} ];
-        const predProps = [ {s: "clever", l: "C"}, {s: "mortal", l: "M"}, {s: "fast", l: "F"}, {s: "lazy", l: "L"}, {s: "grey", l: "G"}, {s: "reptiles", l: "E"} ]; 
-        const predVerbs = [ {s: "studies hard", l: "H"}, {s: "has green eyes", l: "G"}, {s: "eats pizza", l: "E"}, {s: "apologized", l: "A"} ];
-        const predActions = [ {s: "will pass", l: "P"}, {s: "will succeed", l: "S"}, {s: "is trusted", l: "T"} ];
-        const predNames = [ {s: "Bill", l: "b"}, {s: "Mary", l: "m"}, {s: "Keith", l: "k"} ];
-
-        function generatePredicate() {
-            document.getElementById('pred-answer-box').classList.add('hidden');
-            const btn = document.getElementById('btn-pred-ans');
-            if(btn) { btn.innerHTML = 'Show Translation'; btn.classList.replace('bg-japandi-bg', 'bg-white'); }
-            
-            const templates = [
-                () => {
-                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
-                    let p = predProps[Math.floor(Math.random()*predProps.length)];
-                    while(p.l === n.l) p = predProps[Math.floor(Math.random()*predProps.length)];
-                    return {
-                        eng: `All ${n.p} are ${p.s}.`,
-                        dict: `${n.l}(x): x is a ${n.s}, ${p.l}(x): x is ${p.s}`,
-                        ans: `&forall;x [${n.l}(x) &rarr; ${p.l}(x)]`
-                    };
-                },
-                () => {
-                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
-                    let p = predProps[Math.floor(Math.random()*predProps.length)];
-                    while(p.l === n.l) p = predProps[Math.floor(Math.random()*predProps.length)];
-                    return {
-                        eng: `Some ${n.p} are ${p.s}.`,
-                        dict: `${n.l}(x): x is a ${n.s}, ${p.l}(x): x is ${p.s}`,
-                        ans: `&exist;x [${n.l}(x) &and; ${p.l}(x)]`
-                    };
-                },
-                () => {
-                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
-                    let p = predProps[Math.floor(Math.random()*predProps.length)];
-                    while(p.l === n.l) p = predProps[Math.floor(Math.random()*predProps.length)];
-                    return {
-                        eng: `No ${n.p} are ${p.s}.`,
-                        dict: `${n.l}(x): x is a ${n.s}, ${p.l}(x): x is ${p.s}`,
-                        ans: `&forall;x [${n.l}(x) &rarr; &not;${p.l}(x)]`
-                    };
-                },
-                () => {
-                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
-                    let v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
-                    let a = predActions[Math.floor(Math.random()*predActions.length)];
-                    while(v.l === n.l) v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
-                    while(a.l === n.l || a.l === v.l) a = predActions[Math.floor(Math.random()*predActions.length)];
-                    return {
-                        eng: `Every ${n.s} who ${v.s} ${a.s}.`,
-                        dict: `${n.l}(x): is a ${n.s}, ${v.l}(x): ${v.s}, ${a.l}(x): ${a.s}`,
-                        ans: `&forall;x [(${n.l}(x) &and; ${v.l}(x)) &rarr; ${a.l}(x)]`
-                    };
-                },
-                () => {
-                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
-                    let v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
-                    while(v.l === n.l) v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
-                    return {
-                        eng: `Some ${n.p} didn't ${v.s.replace('has', 'have').replace('studies', 'study').replace('eats', 'eat').replace('apologized', 'apologize')}.`,
-                        dict: `${n.l}(x): is a ${n.s}, ${v.l}(x): ${v.s}`,
-                        ans: `&exist;x [${n.l}(x) &and; &not;${v.l}(x)]`
-                    };
-                },
-                () => {
-                    const nm = predNames[Math.floor(Math.random()*predNames.length)];
-                    const n = predNouns[Math.floor(Math.random()*predNouns.length)];
-                    let v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
-                    while(v.l === n.l) v = predVerbs[Math.floor(Math.random()*predVerbs.length)];
-                    return {
-                        eng: `${nm.s} is a ${n.s} and ${nm.s} does not ${v.s.replace('has', 'have').replace('studies', 'study').replace('eats', 'eat').replace('apologized', 'apologize')}.`,
-                        dict: `${nm.l}: ${nm.s}, ${n.l}(x): is a ${n.s}, ${v.l}(x): ${v.s}`,
-                        ans: `${n.l}(${nm.l}) &and; &not;${v.l}(${nm.l})`
-                    };
-                }
-            ];
-
-            const tpl = templates[Math.floor(Math.random() * templates.length)];
-            const result = tpl();
-
-            document.getElementById('pred-problem').innerText = `"${result.eng}"`;
-            document.getElementById('pred-dict').innerHTML = `<strong>Dict:</strong> ${result.dict}`;
-            document.getElementById('pred-result').innerHTML = `<span class="math-sym tracking-normal normal-case">${result.ans.replace(/&not;/g, '<span class="text-japandi-terracotta font-semibold text-lg md:text-xl">&not;</span>')}</span>`;
-        }
-
-        // Engine 4: Multi-Step Proofs
-        let currentDiff = 'vhard';
-
-        const proofProblems = {
-            easy: [
-                { prob: "¬(¬p ∨ q)", steps: [ {exp: "¬(¬p) ∧ ¬q", law: "De Morgan's"}, {exp: "p ∧ ¬q", law: "Involution"} ] },
-                { prob: "p ∨ (p ∧ q)", steps: [ {exp: "p", law: "Absorption"} ] },
-                { prob: "p ∧ (q ∨ ¬q)", steps: [ {exp: "p ∧ t", law: "Complement"}, {exp: "p", law: "Identity"} ] }
-            ],
-            med: [
-                { prob: "(p ∧ q) ∨ (p ∧ ¬q)", steps: [ {exp: "p ∧ (q ∨ ¬q)", law: "Distributive"}, {exp: "p ∧ t", law: "Complement"}, {exp: "p", law: "Identity"} ] },
-                { prob: "p ∨ (¬p ∧ q)", steps: [ {exp: "(p ∨ ¬p) ∧ (p ∨ q)", law: "Distributive"}, {exp: "t ∧ (p ∨ q)", law: "Complement"}, {exp: "p ∨ q", law: "Identity"} ] },
-                { prob: "¬(p ∧ q) ∨ ¬p", steps: [ {exp: "(¬p ∨ ¬q) ∨ ¬p", law: "De Morgan's"}, {exp: "(¬p ∨ ¬p) ∨ ¬q", law: "Commutative & Associative"}, {exp: "¬p ∨ ¬q", law: "Idempotent"} ] }
-            ],
-            hard: [
-                { prob: "¬(p ∨ ¬q) ∨ (¬p ∧ ¬q)", steps: [ {exp: "(¬p ∧ ¬(¬q)) ∨ (¬p ∧ ¬q)", law: "De Morgan's"}, {exp: "(¬p ∧ q) ∨ (¬p ∧ ¬q)", law: "Involution"}, {exp: "¬p ∧ (q ∨ ¬q)", law: "Distributive"}, {exp: "¬p ∧ t", law: "Complement"}, {exp: "¬p", law: "Identity"} ] },
-                { prob: "(p ∧ (¬p ∨ q)) ∨ (q ∧ ¬q)", steps: [ {exp: "(p ∧ (¬p ∨ q)) ∨ f", law: "Complement"}, {exp: "p ∧ (¬p ∨ q)", law: "Identity"}, {exp: "(p ∧ ¬p) ∨ (p ∧ q)", law: "Distributive"}, {exp: "f ∨ (p ∧ q)", law: "Complement"}, {exp: "p ∧ q", law: "Identity / Commutative"} ] }
-            ],
-            vhard: [
-                { prob: "[(p ∨ q) ∧ ¬(¬p ∧ q)] ∨ (p ∧ q)", steps: [ {exp: "[(p ∨ q) ∧ (¬(¬p) ∨ ¬q)] ∨ (p ∧ q)", law: "De Morgan's"}, {exp: "[(p ∨ q) ∧ (p ∨ ¬q)] ∨ (p ∧ q)", law: "Involution"}, {exp: "[p ∨ (q ∧ ¬q)] ∨ (p ∧ q)", law: "Distributive"}, {exp: "[p ∨ f] ∨ (p ∧ q)", law: "Complement"}, {exp: "p ∨ (p ∧ q)", law: "Identity"}, {exp: "p", law: "Absorption"} ] },
-                { prob: "¬( [(p ∧ q) ∨ (p ∧ ¬p)] ∨ ¬(p ∨ q) )", steps: [ {exp: "¬( [(p ∧ q) ∨ f] ∨ ¬(p ∨ q) )", law: "Complement"}, {exp: "¬( (p ∧ q) ∨ ¬(p ∨ q) )", law: "Identity"}, {exp: "¬( (p ∧ q) ∨ (¬p ∧ ¬q) )", law: "De Morgan's"}, {exp: "¬(p ∧ q) ∧ ¬(¬p ∧ ¬q)", law: "De Morgan's"}, {exp: "(¬p ∨ ¬q) ∧ (p ∨ q)", law: "De Morgan's & Involution"} ] }
-            ]
-        };
-
-        function setDiff(diff) {
-            currentDiff = diff;
-            ['easy','med','hard','vhard'].forEach(d => {
-                const btn = document.getElementById(`btn-diff-${d}`);
-                if(d === diff) {
-                    btn.className = `px-4 py-1.5 rounded-lg bg-japandi-ink text-white font-sans text-[10px] uppercase font-bold transition-colors shadow-sm`;
-                } else {
-                    btn.className = `px-4 py-1.5 rounded-lg bg-transparent hover:bg-white text-japandi-ink font-sans text-[10px] uppercase font-bold transition-colors border border-transparent hover:border-japandi-border`;
-                }
+            // Header
+            let thead = '<thead class="bg-white text-japandi-ink text-[10px] md:text-xs uppercase tracking-widest border-b border-japandi-border shadow-sm"><tr>';
+            variables.forEach(v => {
+                thead += `<th class="py-4 px-4 font-bold border-r border-japandi-border/50">${v}</th>`;
             });
-            generateProof();
+            thead += `<th class="py-4 px-4 text-japandi-terracotta border-l border-japandi-border w-32 md:w-48">F (Output)</th></tr></thead>`;
+            
+            // Body
+            let tbody = '<tbody class="text-japandi-ink text-sm md:text-base divide-y divide-japandi-border">';
+            for (let i = 0; i < rows; i++) {
+                let binaryStr = i.toString(2).padStart(vars, '0');
+                
+                tbody += '<tr class="hover:bg-white transition-colors bg-japandi-bg/50">';
+                for (let j = 0; j < vars; j++) {
+                    let bit = binaryStr[j];
+                    let cssClass = bit === '1' ? 'text-japandi-ink font-bold' : 'text-japandi-muted font-light';
+                    tbody += `<td class="py-3 md:py-4 px-4 border-r border-japandi-border/50 ${cssClass}">${bit}</td>`;
+                }
+                // Blank output for practice
+                tbody += `<td class="py-3 md:py-4 px-4 border-l border-japandi-border bg-white/50"><div class="w-full h-8 border-b-2 border-dashed border-japandi-muted/30"></div></td></tr>`;
+            }
+            tbody += '</tbody>';
+            
+            table.innerHTML = thead + tbody;
         }
 
-        function generateProof() {
-            document.getElementById('proof-answer-box').classList.add('hidden');
-            const btnAns = document.getElementById('btn-proof-ans');
-            if(btnAns) { btnAns.innerHTML = 'Show Proof'; btnAns.classList.replace('bg-japandi-bg', 'bg-white'); }
-            
-            document.getElementById('problem-container').classList.add('highlight-pulse');
-
-            const list = proofProblems[currentDiff];
-            const item = list[Math.floor(Math.random() * list.length)];
-            
-            let probHTML = item.prob.replace(/∧/g, '<span class="math-op">&and;</span>').replace(/∨/g, '<span class="math-op">&or;</span>').replace(/¬/g, '<span class="text-japandi-terracotta font-semibold text-2xl">¬</span>');
-            document.getElementById('proof-problem').innerHTML = probHTML;
-
-            let ansHTML = '';
-            item.steps.forEach((step, idx) => {
-                let exp = step.exp.replace(/∧/g, '<span class="math-op text-sm">&and;</span>').replace(/∨/g, '<span class="math-op text-sm">&or;</span>').replace(/¬/g, '<span class="text-japandi-terracotta font-semibold">¬</span>');
-                ansHTML += `
-                <div class="flex flex-col md:flex-row items-start md:items-center gap-3 bg-white border border-japandi-border p-4 rounded-xl shadow-sm w-full">
-                    <div class="bg-japandi-ink text-white px-2 py-1 rounded text-[10px] flex-shrink-0 font-bold uppercase tracking-widest">Step ${idx+1}</div>
-                    <div class="math-sym flex-grow break-words whitespace-normal text-sm text-japandi-ink leading-relaxed">${exp}</div>
-                    <div class="text-[10px] font-bold uppercase tracking-widest text-japandi-terracotta flex-shrink-0 bg-japandi-terracottaLight/50 px-2 py-1 rounded border border-japandi-terracotta/20 w-fit">${step.law}</div>
-                </div>
-                `;
-            });
-            document.getElementById('proof-answer').innerHTML = ansHTML;
-        }
-
+        // Initialize default 3-var table on load
         window.onload = () => {
-            updateTutorialUI();
-            generateConditional();
-            generateArgument();
-            generatePredicate();
-            setDiff('vhard'); 
-            
-            // Fix initial state of reveal buttons
-            document.querySelectorAll('.reveal-btn').forEach(button => {
-                button.innerHTML = '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Translation';
-                button.classList.replace('bg-japandi-surface', 'bg-japandi-bg');
-            });
-            lucide.createIcons();
+            const activeBtn = document.querySelector('.active-btn');
+            if(activeBtn) generateTable(3, activeBtn);
         };
-
-        // Scroll Progress Bar
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            if (isCompactMode) {
-                document.getElementById("progress-bar").style.width = scrolled + "%";
-            }
-        });
-
     </script>
 </body>
 </html>
