@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boolean Algebra | Study Guide</title>
+    <title>Discrete Math | Exam Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         tailwind.config = {
@@ -28,7 +28,9 @@
                             terracotta: '#C47D65',
                             terracottaLight: '#F7EFEA',
                             sand: '#E3DAC9',
-                            sandLight: '#F4EFE8'
+                            sandLight: '#F4EFE8',
+                            blue: '#4A6FA5',
+                            blueLight: '#E8EFF5'
                         }
                     },
                     boxShadow: {
@@ -138,6 +140,25 @@
         body.compact-mode #emergency-intro {
             display: none !important;
         }
+
+        /* Custom Styles for Problem Generator */
+        .diff-btn {
+            transition: all 0.2s ease;
+        }
+        .diff-btn.active {
+            background-color: #2A2826;
+            color: #FFFFFF;
+            border-color: #2A2826;
+        }
+        .topic-btn {
+            transition: all 0.2s ease;
+        }
+        .topic-btn.active {
+            background-color: #8C9A86;
+            color: #FFFFFF;
+            border-color: #8C9A86;
+            box-shadow: 0 4px 12px rgba(140, 154, 134, 0.3);
+        }
     </style>
 </head>
 <body class="antialiased flex flex-col md:flex-row min-h-screen">
@@ -146,7 +167,7 @@
 
     <!-- Mobile Header -->
     <header class="md:hidden glass border-b border-japandi-border p-4 sticky top-0 z-50 flex justify-between items-center w-full">
-        <h1 class="font-serif font-bold text-xl text-japandi-ink tracking-tight">Boolean<span class="text-japandi-terracotta">.</span></h1>
+        <h1 class="font-serif font-bold text-xl text-japandi-ink tracking-tight">Discrete<span class="text-japandi-terracotta">.</span></h1>
         <div class="flex gap-2">
             <button onclick="toggleCompactMode()" id="mobile-compact-btn" class="p-2 text-japandi-ink hover:text-japandi-terracotta transition-colors bg-white rounded-lg border border-japandi-border shadow-sm"><i data-lucide="layout-grid" class="w-5 h-5"></i></button>
             <button id="mobile-menu-btn" class="p-2 text-japandi-ink hover:text-japandi-terracotta transition-colors"><i data-lucide="menu" class="w-6 h-6"></i></button>
@@ -156,7 +177,7 @@
     <!-- Sidebar Navigation -->
     <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-[280px] lg:w-[320px] bg-japandi-bg border-r border-japandi-border fixed h-full z-40 transition-transform duration-300 top-[65px] md:top-0 shadow-float md:shadow-none pb-16">
         <div class="p-8 pb-6 hidden md:block">
-            <h1 class="font-serif font-bold text-3xl lg:text-4xl mb-1 text-japandi-ink tracking-tight">Boolean<span class="text-japandi-terracotta">.</span></h1>
+            <h1 class="font-serif font-bold text-3xl lg:text-4xl mb-1 text-japandi-ink tracking-tight">Discrete<span class="text-japandi-terracotta">.</span></h1>
             <p class="text-[11px] lg:text-xs text-japandi-muted font-sans uppercase tracking-widest font-semibold mt-2">Keith's Study Guide</p>
         </div>
 
@@ -167,19 +188,19 @@
         </div>
 
         <nav class="flex-grow overflow-y-auto py-2 hide-scrollbar" id="nav-menu">
-            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-4">Core Concepts</p>
+            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-4">Module 5: Algebra</p>
             <a href="#sec-origins" data-step="1" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">01. Origins</a>
             <a href="#sec-operators" data-step="2" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">02. Logic Operators</a>
             <a href="#sec-precedence" data-step="3" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">03. Precedence Rules</a>
             <a href="#sec-functions" data-step="4" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">04. Boolean Functions</a>
             <a href="#sec-minimization" data-step="5" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">05. Minimization</a>
             
-            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Advanced Applications</p>
+            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Module 6: Gates & Forms</p>
             <a href="#sec-gates" data-step="6" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">06. Logic Gates</a>
             <a href="#sec-forms" data-step="7" class="nav-link block px-8 py-3 text-japandi-ink transition-all text-sm font-sans font-medium hover:text-japandi-terracotta">07. Standard Forms</a>
             
-            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Practice</p>
-            <a href="#sec-practice" data-step="8" class="nav-link block px-8 py-3 text-japandi-matcha transition-all text-sm font-sans font-semibold hover:bg-white">08. Truth Table Simulator</a>
+            <p class="px-8 text-[10px] font-bold text-japandi-muted uppercase tracking-widest mb-3 mt-6">Exam Prep</p>
+            <a href="#sec-generator" data-step="8" class="nav-link block px-8 py-3 text-japandi-matcha transition-all text-sm font-sans font-semibold hover:bg-white">08. Problem Generator</a>
         </nav>
 
         <div class="p-6 bg-japandi-bg border-t border-japandi-border text-xs text-japandi-muted font-sans hidden md:block mt-auto">
@@ -612,35 +633,55 @@
             </div>
         </section>
 
-        <!-- 08. Interactive Practice -->
+        <!-- 08. Problem Generator -->
         <section id="sec-practice" class="step-content mb-16 scroll-mt-24">
             <div class="mb-8">
-                <h2 class="font-serif text-2xl md:text-3xl font-bold text-japandi-matcha tracking-tight mb-2">08. Interactive Simulator</h2>
-                <p class="text-japandi-muted text-sm font-sans font-light hide-compact">Generate blank truth table permutations for practice.</p>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-japandi-matcha tracking-tight mb-2">08. Problem Generator</h2>
+                <p class="text-japandi-muted text-sm font-sans font-light hide-compact">Test your understanding across multiple topics and difficulties.</p>
             </div>
 
             <div class="bg-white border border-japandi-border rounded-3xl shadow-bento p-6 md:p-10 w-full overflow-hidden compact-p">
+                
+                <!-- Generator Controls -->
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8 compact-m">
-                    <div class="hide-compact">
-                        <h3 class="text-xl md:text-2xl font-bold text-japandi-ink flex items-center gap-3 font-serif">
-                            <i data-lucide="table-2" class="w-6 h-6 md:w-7 md:h-7 text-japandi-matcha"></i> Truth Table Generator
-                        </h3>
-                        <p class="font-sans text-[10px] md:text-xs font-medium text-japandi-muted uppercase tracking-widest mt-2">Generate 2<sup>n</sup> Binary Combinations</p>
+                    <div class="w-full lg:w-auto">
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <button onclick="setGenTopic('laws')" id="topic-laws" class="topic-btn active px-4 py-2 rounded-lg bg-japandi-matcha border border-japandi-matcha text-white font-sans text-xs uppercase font-bold shadow-sm">Laws</button>
+                            <button onclick="setGenTopic('truth')" id="topic-truth" class="topic-btn px-4 py-2 rounded-lg bg-japandi-surface border border-japandi-border text-japandi-ink font-sans text-xs uppercase font-bold hover:bg-japandi-bg">Truth Table</button>
+                            <button onclick="setGenTopic('minimization')" id="topic-minimization" class="topic-btn px-4 py-2 rounded-lg bg-japandi-surface border border-japandi-border text-japandi-ink font-sans text-xs uppercase font-bold hover:bg-japandi-bg">Minimization</button>
+                        </div>
                     </div>
-                    <div class="flex flex-wrap gap-2 w-full lg:w-auto bg-japandi-bg p-2 rounded-xl border border-japandi-border">
-                        <button onclick="generateTable(2, this)" class="flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-sandLight font-sans text-xs uppercase font-bold transition-colors shadow-sm var-btn">2 Var</button>
-                        <button onclick="generateTable(3, this)" class="flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-matcha text-white font-sans text-xs uppercase font-bold transition-colors shadow-sm var-btn active-btn">3 Var</button>
-                        <button onclick="generateTable(4, this)" class="flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-surface border border-japandi-border text-japandi-ink hover:bg-japandi-sandLight font-sans text-xs uppercase font-bold transition-colors shadow-sm var-btn">4 Var</button>
+                    <div class="flex gap-2 w-full lg:w-auto bg-japandi-bg p-2 rounded-xl border border-japandi-border">
+                        <button onclick="setGenDiff('easy')" id="diff-easy" class="diff-btn flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-ink text-white border border-japandi-ink font-sans text-xs uppercase font-bold transition-colors shadow-sm active">Easy</button>
+                        <button onclick="setGenDiff('med')" id="diff-med" class="diff-btn flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-surface text-japandi-ink border border-japandi-border font-sans text-xs uppercase font-bold hover:bg-japandi-sandLight transition-colors">Med</button>
+                        <button onclick="setGenDiff('hard')" id="diff-hard" class="diff-btn flex-1 lg:flex-none px-4 py-2 rounded-lg bg-japandi-surface text-japandi-ink border border-japandi-border font-sans text-xs uppercase font-bold hover:bg-japandi-sandLight transition-colors">Hard</button>
                     </div>
                 </div>
 
-                <div class="bg-japandi-bg border border-japandi-border rounded-2xl overflow-hidden shadow-inner">
-                    <div class="overflow-x-auto hide-scrollbar">
-                        <table class="w-full text-center font-mono border-collapse min-w-[400px]" id="truth-table">
-                            <!-- Table content generated by JS -->
-                        </table>
+                <!-- Problem Display Area -->
+                <div class="bg-japandi-bg border border-japandi-border rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center min-h-[200px] mb-6 shadow-inner text-center relative">
+                    <p id="prob-type-label" class="text-[10px] uppercase font-bold text-japandi-muted tracking-widest mb-4">Identify the Law</p>
+                    <div id="prob-content" class="math-sym text-xl md:text-3xl text-japandi-ink font-bold break-words whitespace-normal px-4 w-full">
+                        <!-- Problem injected here -->
                     </div>
                 </div>
+
+                <!-- Answer Area (Hidden initially) -->
+                <div id="ans-area" class="hidden mb-6">
+                    <div class="bg-japandi-sandLight border border-japandi-border rounded-2xl p-6">
+                        <p class="text-[10px] uppercase font-bold text-japandi-terracotta tracking-widest mb-3 border-b border-japandi-terracotta/20 pb-2">Solution</p>
+                        <div id="ans-content" class="text-sm text-japandi-ink font-mono space-y-2">
+                            <!-- Answer injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="generateProblem()" class="flex-1 py-3 bg-japandi-ink text-white hover:bg-japandi-ink/80 font-sans text-xs md:text-sm uppercase font-bold rounded-xl transition-colors shadow-sm">Generate New</button>
+                    <button onclick="toggleAnswer()" id="btn-toggle-ans" class="flex-1 py-3 bg-white text-japandi-ink border border-japandi-border hover:bg-japandi-bg font-sans text-xs md:text-sm uppercase font-bold rounded-xl transition-colors shadow-sm">Show Answer</button>
+                </div>
+
             </div>
         </section>
 
@@ -697,12 +738,12 @@
         
         const stepTitles = [
             "Origins & Purpose", "Fundamental Operators", "Operator Precedence", "Boolean Functions",
-            "Minimization", "Logic Gates", "Standard Forms", "Interactive Simulator"
+            "Minimization", "Logic Gates", "Standard Forms", "Problem Generator"
         ];
         const stepSubtitles = [
             "01. Boolean Algebra History", "02. Logic Operators", "03. Precedence Rules",
             "04. Boolean Functions", "05. Minimization Proofs", "06. Hardware Implementation",
-            "07. SOP & POS", "08. Truth Tables"
+            "07. SOP & POS", "08. Test your knowledge"
         ];
 
         function updateTutorialUI() {
@@ -768,7 +809,6 @@
                 if (!isCompactMode) {
                     e.preventDefault(); 
                     
-                    // Match href id with step index
                     const hrefId = link.getAttribute('href').substring(1);
                     const idx = stepIds.indexOf(hrefId);
                     if(idx !== -1) {
@@ -787,7 +827,6 @@
         // CARD REVEAL LOGIC
         // ----------------------------------------------------
         document.querySelectorAll('.reveal-btn').forEach(button => {
-            // Set initial state matching CSS
             button.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Translation';
             button.classList.add('bg-japandi-surface');
             button.classList.remove('bg-japandi-bg');
@@ -816,50 +855,140 @@
             });
         }
 
-        // Truth Table Generator
-        function generateTable(vars, clickedBtn) {
-            if(clickedBtn) {
-                document.querySelectorAll('.var-btn').forEach(btn => {
-                    btn.classList.remove('bg-japandi-matcha', 'text-white', 'active-btn');
-                    btn.classList.add('bg-japandi-surface', 'border-japandi-border', 'text-japandi-ink');
-                });
-                clickedBtn.classList.remove('bg-japandi-surface', 'border-japandi-border', 'text-japandi-ink');
-                clickedBtn.classList.add('bg-japandi-matcha', 'text-white', 'active-btn');
-            }
-
-            const table = document.getElementById('truth-table');
-            if(!table) return;
-
-            let rows = Math.pow(2, vars);
-            let variables = ['X', 'Y', 'Z', 'W'].slice(0, vars);
-            
-            let thead = '<thead class="bg-white text-japandi-ink text-[10px] md:text-xs uppercase tracking-widest border-b border-japandi-border shadow-sm"><tr>';
-            variables.forEach(v => {
-                thead += `<th class="py-4 px-4 font-bold border-r border-japandi-border/50">${v}</th>`;
+        // ----------------------------------------------------
+        // MULTI-LEVEL PROBLEM GENERATOR
+        // ----------------------------------------------------
+        let genTopic = 'laws';
+        let genDiff = 'easy';
+        
+        function setGenTopic(topic) {
+            genTopic = topic;
+            document.querySelectorAll('.topic-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-japandi-matcha', 'text-white', 'border-japandi-matcha', 'shadow-[0_4px_12px_rgba(140,154,134,0.3)]');
+                btn.classList.add('bg-japandi-surface', 'text-japandi-ink', 'border-japandi-border');
             });
-            thead += `<th class="py-4 px-4 text-japandi-terracotta border-l border-japandi-border w-32 md:w-48">F (Output)</th></tr></thead>`;
+            const activeBtn = document.getElementById(`topic-${topic}`);
+            activeBtn.classList.remove('bg-japandi-surface', 'text-japandi-ink', 'border-japandi-border');
+            activeBtn.classList.add('active', 'bg-japandi-matcha', 'text-white', 'border-japandi-matcha', 'shadow-[0_4px_12px_rgba(140,154,134,0.3)]');
+            generateProblem();
+        }
+
+        function setGenDiff(diff) {
+            genDiff = diff;
+            document.querySelectorAll('.diff-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-japandi-ink', 'text-white', 'border-japandi-ink');
+                btn.classList.add('bg-japandi-surface', 'text-japandi-ink', 'border-japandi-border');
+            });
+            const activeBtn = document.getElementById(`diff-${diff}`);
+            activeBtn.classList.remove('bg-japandi-surface', 'text-japandi-ink', 'border-japandi-border');
+            activeBtn.classList.add('active', 'bg-japandi-ink', 'text-white', 'border-japandi-ink');
+            generateProblem();
+        }
+
+        function toggleAnswer() {
+            const ansArea = document.getElementById('ans-area');
+            const btn = document.getElementById('btn-toggle-ans');
             
-            let tbody = '<tbody class="text-japandi-ink text-sm md:text-base divide-y divide-japandi-border">';
-            for (let i = 0; i < rows; i++) {
-                let binaryStr = i.toString(2).padStart(vars, '0');
-                
-                tbody += '<tr class="hover:bg-white transition-colors bg-japandi-bg/50">';
-                for (let j = 0; j < vars; j++) {
-                    let bit = binaryStr[j];
-                    let cssClass = bit === '1' ? 'text-japandi-ink font-bold' : 'text-japandi-muted font-light';
-                    tbody += `<td class="py-3 md:py-4 px-4 border-r border-japandi-border/50 ${cssClass}">${bit}</td>`;
-                }
-                tbody += `<td class="py-3 md:py-4 px-4 border-l border-japandi-border bg-white/50"><div class="w-full h-8 border-b-2 border-dashed border-japandi-muted/30"></div></td></tr>`;
+            ansArea.classList.toggle('hidden');
+            if(ansArea.classList.contains('hidden')) {
+                btn.innerHTML = 'Show Answer';
+                btn.classList.replace('bg-japandi-bg', 'bg-white');
+            } else {
+                btn.innerHTML = 'Hide Answer';
+                btn.classList.replace('bg-white', 'bg-japandi-bg');
             }
-            tbody += '</tbody>';
+        }
+
+        // Database of problems
+        const db = {
+            laws: {
+                easy: [
+                    { q: "x + x", a: "x", exp: "Idempotent Law: Adding a variable to itself results in the variable." },
+                    { q: "y &middot; y", a: "y", exp: "Idempotent Law: Multiplying a variable by itself results in the variable." },
+                    { q: "x + 0", a: "x", exp: "Identity Law: Adding 0 has no effect." },
+                    { q: "y &middot; 1", a: "y", exp: "Identity Law: Multiplying by 1 has no effect." },
+                    { q: "<span class='overbar'><span class='overbar'>z</span></span>", a: "z", exp: "Involution Law: Double negation cancels out." }
+                ],
+                med: [
+                    { q: "x + <span class='overbar'>x</span>", a: "1", exp: "Complement Law: A variable OR its complement covers all possibilities (True)." },
+                    { q: "y &middot; <span class='overbar'>y</span>", a: "0", exp: "Complement Law: A variable AND its complement is a contradiction (False)." },
+                    { q: "x + (x &middot; y)", a: "x", exp: "Absorption Law: The larger term 'x' absorbs the smaller compound term 'x&middot;y'." },
+                    { q: "y &middot; (y + z)", a: "y", exp: "Absorption Law: The standalone term 'y' absorbs the compound addition." }
+                ],
+                hard: [
+                    { q: "<span class='overbar'>A + B</span>", a: "<span class='overbar'>A</span> &middot; <span class='overbar'>B</span>", exp: "De Morgan's Law: Negating an OR statement flips it to an AND statement with individual negations." },
+                    { q: "<span class='overbar'>X &middot; Y</span>", a: "<span class='overbar'>X</span> + <span class='overbar'>Y</span>", exp: "De Morgan's Law: Negating an AND statement flips it to an OR statement with individual negations." },
+                    { q: "A + (<span class='overbar'>A</span> &middot; B)", a: "A + B", exp: "Distributive & Complement: (A + <span class='overbar'>A</span>) &middot; (A + B) &rarr; 1 &middot; (A + B) &rarr; A + B" }
+                ]
+            },
+            truth: {
+                easy: [
+                    { q: "How many rows are in a truth table for F(x, y)?", a: "4 rows", exp: "Formula: 2<sup>n</sup>. Since there are 2 variables (x,y), 2<sup>2</sup> = 4." },
+                    { q: "What is the binary counting sequence for a 2-variable truth table?", a: "00, 01, 10, 11", exp: "Counting from 0 to 3 in binary." }
+                ],
+                med: [
+                    { q: "How many rows are in a truth table for F(w, x, y, z)?", a: "16 rows", exp: "Formula: 2<sup>n</sup>. With 4 variables, 2<sup>4</sup> = 16." },
+                    { q: "If F(x,y) = x &middot; y, what is the output row for x=1, y=0?", a: "0", exp: "The AND operator (&middot;) requires both inputs to be 1 to output 1. 1 &middot; 0 = 0." }
+                ],
+                hard: [
+                    { q: "If F(x,y,z) = x + (<span class='overbar'>y</span> &middot; z), evaluate for x=0, y=1, z=1", a: "0", exp: "1. Find <span class='overbar'>y</span>: NOT 1 = 0.<br>2. Evaluate AND: 0 &middot; 1 = 0.<br>3. Evaluate OR: 0 + 0 = 0." },
+                    { q: "If F(A,B) = <span class='overbar'>A + B</span>, what is the output for A=0, B=0?", a: "1", exp: "1. Inside parenthesis: 0 + 0 = 0.<br>2. Apply NOT (overbar): NOT 0 = 1.<br>(NOR Gate behavior)" }
+                ]
+            },
+            minimization: {
+                easy: [
+                    { q: "Minimize: (x &middot; y) + (x &middot; y)", a: "x &middot; y", exp: "Idempotent Law: A + A = A. The duplicate term is redundant." },
+                    { q: "Minimize: A&middot;B&middot;C + 0", a: "A&middot;B&middot;C", exp: "Identity Law: Adding 0 changes nothing." }
+                ],
+                med: [
+                    { q: "Minimize: x&middot;y + x&middot;<span class='overbar'>y</span>", a: "x", exp: "1. Factor out x: x &middot; (y + <span class='overbar'>y</span>)<br>2. Complement Law: y + <span class='overbar'>y</span> = 1<br>3. Identity Law: x &middot; 1 = x" },
+                    { q: "Minimize: (A+B) &middot; (A+<span class='overbar'>B</span>)", a: "A", exp: "1. Factor out A (Distributive reverse): A + (B &middot; <span class='overbar'>B</span>)<br>2. Complement Law: B &middot; <span class='overbar'>B</span> = 0<br>3. Identity: A + 0 = A" }
+                ],
+                hard: [
+                    { q: "Minimize: x&middot;y&middot;z + x&middot;y&middot;<span class='overbar'>z</span> + x&middot;<span class='overbar'>y</span>", a: "x", exp: "1. Group first two: x&middot;y&middot;(z + <span class='overbar'>z</span>) + x&middot;<span class='overbar'>y</span><br>2. Complement: x&middot;y&middot;(1) + x&middot;<span class='overbar'>y</span><br>3. Factor x: x &middot; (y + <span class='overbar'>y</span>)<br>4. Result: x" },
+                    { q: "Minimize: <span class='overbar'>A</span>&middot;<span class='overbar'>B</span> + <span class='overbar'>A</span>&middot;B + A&middot;<span class='overbar'>B</span>", a: "<span class='overbar'>A</span> + <span class='overbar'>B</span>", exp: "1. Factor <span class='overbar'>A</span> from first two: <span class='overbar'>A</span>(<span class='overbar'>B</span>+B) + A<span class='overbar'>B</span><br>2. Simplify: <span class='overbar'>A</span> + A<span class='overbar'>B</span><br>3. Distributive shortcut: (<span class='overbar'>A</span>+A)(<span class='overbar'>A</span>+<span class='overbar'>B</span>) &rarr; <span class='overbar'>A</span>+<span class='overbar'>B</span>" }
+                ]
+            }
+        };
+
+        function generateProblem() {
+            const list = db[genTopic][genDiff];
+            const item = list[Math.floor(Math.random() * list.length)];
             
-            table.innerHTML = thead + tbody;
+            // Set Labels
+            const typeLabel = {
+                'laws': 'Identify the Law / Simplify',
+                'truth': 'Truth Table Calculation',
+                'minimization': 'Algebraic Minimization'
+            };
+            document.getElementById('prob-type-label').innerText = typeLabel[genTopic];
+
+            // Set Problem
+            document.getElementById('prob-content').innerHTML = item.q;
+            
+            // Build Answer
+            let ansHtml = `
+                <div class="mb-3">
+                    <span class="text-[10px] text-japandi-muted uppercase tracking-widest block mb-1">Final Output</span>
+                    <span class="math-sym text-xl font-bold text-japandi-matcha">${item.a}</span>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-japandi-border shadow-sm text-xs leading-relaxed font-sans">
+                    <span class="font-bold text-japandi-terracotta">Explanation:</span><br>
+                    ${item.exp}
+                </div>
+            `;
+            document.getElementById('ans-content').innerHTML = ansHtml;
+
+            // Hide answer area if open
+            document.getElementById('ans-area').classList.add('hidden');
+            const btn = document.getElementById('btn-toggle-ans');
+            btn.innerHTML = 'Show Answer';
+            btn.classList.replace('bg-japandi-bg', 'bg-white');
         }
 
         window.onload = () => {
             updateTutorialUI();
-            const activeBtn = document.querySelector('.active-btn');
-            if(activeBtn) generateTable(3, activeBtn);
+            generateProblem();
         };
 
         window.addEventListener("scroll", () => {
